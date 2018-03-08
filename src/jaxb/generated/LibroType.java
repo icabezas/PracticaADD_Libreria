@@ -102,14 +102,14 @@ public class LibroType {
     protected List<String> autor;
     protected List<String> categoria;
     protected String lenguaje;
-    protected short anyo;
-    protected Byte edicion;
+    protected int anyo;
+    protected int edicion;
     protected float precio;
     @XmlAttribute(name = "ISBN", required = true)
     protected int isbn;
 
 
-    public LibroType(String titulo, List<String> autor, List<String> categoria, String lenguaje, short anyo, Byte edicion, float precio, int isbn) {
+    public LibroType(String titulo, List<String> autor, List<String> categoria, String lenguaje, int anyo, int edicion, float precio, int isbn) {
         this.titulo = titulo;
         this.autor = autor;
         this.categoria = categoria;
@@ -120,8 +120,8 @@ public class LibroType {
         this.isbn = isbn;
     }
 
-    public LibroType(String isbn) {
-        this.titulo = isbn;
+    public LibroType(int isbn) {
+        this.isbn = isbn;
     }
 
     public LibroType() {
@@ -238,7 +238,7 @@ public class LibroType {
      * Obtiene el valor de la propiedad anyo.
      * 
      */
-    public short getAnyo() {
+    public int getAnyo() {
         return anyo;
     }
 
@@ -258,7 +258,7 @@ public class LibroType {
      *     {@link Byte }
      *     
      */
-    public Byte getEdicion() {
+    public int getEdicion() {
         return edicion;
     }
 
