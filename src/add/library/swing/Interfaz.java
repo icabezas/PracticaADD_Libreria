@@ -5,6 +5,8 @@
  */
 package add.library.swing;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author dam2t1
@@ -33,7 +35,7 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        user = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         pass = new javax.swing.JPasswordField();
@@ -74,7 +76,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(user, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                     .addComponent(pass))
                 .addGap(222, 222, 222))
             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -87,7 +89,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -102,7 +104,35 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       String account = "pepe";
+       String password = "avestruz";
+       String catchaccount;
+       String catchpass;
+       catchaccount = user.getText();
+       catchpass=pass.getText();
+       char[] contra = pass.getPassword();
+       int counter = 0;
+       char[] chars = password.toCharArray();
+
+       for(int i = 0;i<catchpass.length();i++ ){
+           if(contra[i] == chars[i]){
+           counter++;
+           }
+       }
+       
+       if(counter == password.length()){
+           String nl = System.getProperty("line.separator");
+           
+           Main main = new Main();
+           main.setLocationRelativeTo(null);
+           main.setVisible(true);
+           JOptionPane.showMessageDialog(null, "Login" + nl + "Succesfull" + nl + "Diviertete C=!","SI", JOptionPane.INFORMATION_MESSAGE);
+       }else{
+           String nl = System.getProperty("line.separator");
+
+            JOptionPane.showMessageDialog(null, "Soy un mensaje de error" + nl + "tu cuenta o tu contraseña" + nl + "SON ERRONEAS!","SI", JOptionPane.ERROR_MESSAGE);
+ 
+       }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passActionPerformed
@@ -118,8 +148,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPasswordField pass;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 
 }
