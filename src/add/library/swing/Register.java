@@ -127,9 +127,10 @@ public class Register extends javax.swing.JFrame {
             password = p1.getText();
             newuser = usname.getText();
             UsuarioType user = new UsuarioType(newuser, newuser, password, rootPaneCheckingEnabled, null);
-            Methods.nuevoUsuario(method.db, user);
+            method.nuevoUsuario(method.db, user);
 
             JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
+            method.cerrarConexion(method.db);
             dispose();
         } else {
 

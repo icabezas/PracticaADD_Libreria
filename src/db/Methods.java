@@ -20,7 +20,7 @@ public class Methods {
     }
 
     //Para cerrar conexión
-    public static void cerrarConexion(ObjectContainer baseDatos) {
+    public void cerrarConexion(ObjectContainer baseDatos) {
         try {
             baseDatos.close();
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class Methods {
     //Para almacenar objetos en la bbdd
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param LibroType libro es el libro que se desea almacenar
-    public static void almacenarLibro(ObjectContainer baseDatos, LibroType libro) {
+    public  void almacenarLibro(ObjectContainer baseDatos, LibroType libro) {
         if (existeLibroISBN(baseDatos, libro.getISBN()).size() == 0) {
             try {
                 baseDatos.store(libro);
@@ -47,7 +47,7 @@ public class Methods {
 
     //Permite mostrar un libro de la bbdd
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
-    public static void imprimirResultadoConsulta(ObjectSet resultado) {
+    public  void imprimirResultadoConsulta(ObjectSet resultado) {
         System.out.println("Recuperados " + resultado.size() + " libros");
         while (resultado.hasNext()) {
             System.out.println(resultado.next());
@@ -57,7 +57,7 @@ public class Methods {
     //Permite consultar un libro de la bbdd
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param titulo (hay que cmabiar por ISBN, que es el identificador único)
-    private static List<LibroType> existeLibroISBN(ObjectContainer baseDatos, int isbn) {
+    private  List<LibroType> existeLibroISBN(ObjectContainer baseDatos, int isbn) {
         LibroType libro = new LibroType(isbn);
         List<LibroType> librosConISBN = new ArrayList<>();
         ObjectSet resultado = baseDatos.queryByExample(libro);
@@ -71,7 +71,7 @@ public class Methods {
 
     //ADMINISTRACION DE USUARIO
     //ALMACENAJE DE UN USUARIO EN LA BBDD
-    public static void nuevoUsuario(ObjectContainer baseDatos, UsuarioType user) {
+    public void nuevoUsuario(ObjectContainer baseDatos, UsuarioType user) {
         UsuarioType newUsuario = existeUsuario(baseDatos, user.getUsername());
         if (newUsuario == null) {
             try {
@@ -85,7 +85,7 @@ public class Methods {
         }
     }
 
-    private static UsuarioType existeUsuario(ObjectContainer baseDatos, String username) {
+    private UsuarioType existeUsuario(ObjectContainer baseDatos, String username) {
         UsuarioType user = new UsuarioType(username);
         ObjectSet resultado = baseDatos.queryByExample(user);
         if (resultado.size() != 0) {
@@ -95,7 +95,7 @@ public class Methods {
         }
     }
 
-    public static void mostrarUsuarios(ObjectContainer baseDatos) {
+    public  void mostrarUsuarios(ObjectContainer baseDatos) {
         ObjectSet resultado = baseDatos.query(UsuarioType.class);
         for (int i = 0; i < resultado.size(); i++) {
             UsuarioType user = (UsuarioType) resultado.next();
@@ -105,7 +105,7 @@ public class Methods {
 
     //ADMINISTRACION DE LIBRERIA
     //CREACION DE UNA LIBRERIA, SE AÑADE A LA BBDD DEL USUARIO
-    public static void crearLibreriaParaUsuario(ObjectContainer baseDatos, LibreriaType libreria, UsuarioType user) {
+    public  void crearLibreriaParaUsuario(ObjectContainer baseDatos, LibreriaType libreria, UsuarioType user) {
 
 //        if (libreriaExists == null) {
 //            userToAddLibrary.getColecciones().add(libreria);
@@ -116,7 +116,7 @@ public class Methods {
 //        }
     }
 
-    private static LibreriaType existeLibreriaPorNombre(ObjectContainer baseDatos, String nombreLibreria, String userName) {
+    private  LibreriaType existeLibreriaPorNombre(ObjectContainer baseDatos, String nombreLibreria, String userName) {
         UsuarioType usuario = existeUsuario(baseDatos, userName);
         List<LibreriaType> libreriaUser = usuario.getColecciones();
         for (LibreriaType libreria : libreriaUser) {
@@ -128,7 +128,7 @@ public class Methods {
         return null;
     }
 
-    public static void mostrarLibreriasUsuario(ObjectContainer baseDatos, UsuarioType user) {
+    public void mostrarLibreriasUsuario(ObjectContainer baseDatos, UsuarioType user) {
         UsuarioType userToAddLibrary = (UsuarioType) baseDatos.queryByExample(user);
         List<LibreriaType> colecciones = userToAddLibrary.getColecciones();
         for (LibreriaType libreria : colecciones) {

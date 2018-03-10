@@ -26,16 +26,16 @@ public class test {
         List<LibreriaType> colecciones = new ArrayList<>();
         colecciones.add(libreria1);
         UsuarioType admin = new UsuarioType("admin", "admin", "admin", false, colecciones);
-        
+        Methods method = new Methods();
 
         try {
-            Methods.nuevoUsuario(baseDatos, admin);
-            Methods.almacenarLibro(baseDatos, libro1);
-            Methods.crearLibreriaParaUsuario(baseDatos, libreria1, admin);
-            Methods.mostrarLibreriasUsuario(baseDatos, admin);
+            method.nuevoUsuario(method.db, admin);
+            method.almacenarLibro(method.db, libro1);
+            method.crearLibreriaParaUsuario(method.db, libreria1, admin);
+            method.mostrarLibreriasUsuario(method.db, admin);
             
         } finally {
-            Methods.cerrarConexion(baseDatos);
+            method.cerrarConexion(method.db);
         }
 
     }

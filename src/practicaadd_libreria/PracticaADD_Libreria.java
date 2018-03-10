@@ -29,14 +29,14 @@ public class PracticaADD_Libreria {
             Methods method = new Methods();
 
         try {
-            Methods.mostrarUsuarios(method.db);
-            Methods.nuevoUsuario(method.db, admin);
-            Methods.almacenarLibro(method.db, libro1);
+            method.mostrarUsuarios(method.db);
+            method.nuevoUsuario(method.db, admin);
+            method.almacenarLibro(method.db, libro1);
             //Methods.crearLibreriaParaUsuario(method.db, libreria1, admin);
             //Methods.mostrarLibreriasUsuario(method.db, admin);
             
         } finally {
-            Methods.cerrarConexion(method.db);
+            method.cerrarConexion(method.db);
         }
 
     }
