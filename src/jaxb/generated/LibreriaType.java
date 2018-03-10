@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 public class LibreriaType {
 
     protected List<LibroType> libro;
+    protected String nombre;
 
     /**
      * Gets the value of the libro property.
@@ -57,11 +58,34 @@ public class LibreriaType {
      * 
      * 
      */
-    public List<LibroType> getLibro() {
-        if (libro == null) {
-            libro = new ArrayList<LibroType>();
-        }
-        return this.libro;
+    public LibreriaType() {
     }
+    
+    public LibreriaType(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public LibreriaType(List<LibroType> libro, String nombre) {
+        this.libro = libro;
+        this.nombre = nombre;
+    }
+
+    public List<LibroType> getLibro() {
+        return libro;
+    }
+
+    public void setLibro(List<LibroType> libro) {
+        this.libro = libro;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    
 
 }
