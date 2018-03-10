@@ -12,7 +12,6 @@ public class PracticaADD_Libreria {
     public static void main(String[] args) {
 
         //ObjectFactory objectFactory = new ObjectFactory();
-        ObjectContainer baseDatos = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "library.db4o");
         List<String> autores1 = new ArrayList<>();
         autores1.add("Ernest Cline");
         autores1.add("Lovecraft");
@@ -27,16 +26,17 @@ public class PracticaADD_Libreria {
         colecciones.add(libreria1);
         UsuarioType admin = new UsuarioType("admin", "admin", "admin", true, colecciones);
         
+            Methods method = new Methods();
 
         try {
-            Methods.mostrarUsuarios(baseDatos);
-            Methods.nuevoUsuario(baseDatos, admin);
-            Methods.almacenarLibro(baseDatos, libro1);
-            Methods.crearLibreriaParaUsuario(baseDatos, libreria1, admin);
-            Methods.mostrarLibreriasUsuario(baseDatos, admin);
+            Methods.mostrarUsuarios(method.db);
+            Methods.nuevoUsuario(method.db, admin);
+            Methods.almacenarLibro(method.db, libro1);
+            //Methods.crearLibreriaParaUsuario(method.db, libreria1, admin);
+            //Methods.mostrarLibreriasUsuario(method.db, admin);
             
         } finally {
-            Methods.cerrarConexion(baseDatos);
+            Methods.cerrarConexion(method.db);
         }
 
     }

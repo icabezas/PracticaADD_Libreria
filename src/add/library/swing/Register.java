@@ -121,20 +121,21 @@ public class Register extends javax.swing.JFrame {
         String nl = System.getProperty("line.separator");
         char pass[] = p1.getPassword();
         char conf[] = p1.getPassword();
-        
-       if(Arrays.equals(pass,conf)){
-         password = p1.getText();
-         newuser = usname.getText();
-         UsuarioType user = new UsuarioType(newuser, newuser, password, rootPaneCheckingEnabled, null);
-           Methods.nuevoUsuario(baseDatos, user);
-        
-         JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password,"SI", JOptionPane.INFORMATION_MESSAGE);
-         dispose();
-       }else{
-           
-       }
-        
-        
+        Methods method = new Methods();
+
+        if (Arrays.equals(pass, conf)) {
+            password = p1.getText();
+            newuser = usname.getText();
+            UsuarioType user = new UsuarioType(newuser, newuser, password, rootPaneCheckingEnabled, null);
+            Methods.nuevoUsuario(method.db, user);
+
+            JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } else {
+
+        }
+
+
     }//GEN-LAST:event_completeActionPerformed
 
     private void usnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usnameActionPerformed
@@ -144,7 +145,6 @@ public class Register extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton complete;

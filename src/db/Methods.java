@@ -1,5 +1,6 @@
 package db;
 
+import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import java.util.ArrayList;
@@ -10,7 +11,14 @@ import jaxb.generated.UsuarioType;
 
 public class Methods {
 
+    public ObjectContainer db;
+
     //ADMINISTRACIÓN CONEXIÓN BBDD
+    //ABRIR CONEXION
+    public Methods() {
+        db = Db4oEmbedded.openFile("library.db4o");
+    }
+
     //Para cerrar conexión
     public static void cerrarConexion(ObjectContainer baseDatos) {
         try {
@@ -98,7 +106,7 @@ public class Methods {
     //ADMINISTRACION DE LIBRERIA
     //CREACION DE UNA LIBRERIA, SE AÑADE A LA BBDD DEL USUARIO
     public static void crearLibreriaParaUsuario(ObjectContainer baseDatos, LibreriaType libreria, UsuarioType user) {
-        
+
 //        if (libreriaExists == null) {
 //            userToAddLibrary.getColecciones().add(libreria);
 //            baseDatos.store(userToAddLibrary);
@@ -106,7 +114,6 @@ public class Methods {
 //        } else {
 //            System.out.println("Ya tienes una colección con ese nombre");
 //        }
-
     }
 
     private static LibreriaType existeLibreriaPorNombre(ObjectContainer baseDatos, String nombreLibreria, String userName) {
