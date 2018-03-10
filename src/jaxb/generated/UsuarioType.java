@@ -17,15 +17,28 @@ public class UsuarioType {
     private String nombre;
     private String password;
     private List<LibreriaType> colecciones;
+    private boolean isAdmin;
 
     public UsuarioType() {
     }
+    public UsuarioType(String username) {
+        this.username = username;
+    }
 
-    public UsuarioType(String username, String nombre, String password, List<LibreriaType> colecciones) {
+    public UsuarioType(String username, String nombre, String password, boolean isAdmin, List<LibreriaType> colecciones) {
         this.username = username;
         this.nombre = nombre;
         this.password = password;
+        this.isAdmin = isAdmin;
         this.colecciones = colecciones;
+    }
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public String getUsername() {

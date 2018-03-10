@@ -64,44 +64,61 @@ public class Methods {
     //ADMINISTRACION DE USUARIO
     //ALMACENAJE DE UN USUARIO EN LA BBDD
     public static void nuevoUsuario(ObjectContainer baseDatos, UsuarioType user) {
-        UsuarioType newUsuario = existeUsuario(baseDatos, user);
+        UsuarioType newUsuario = existeUsuario(baseDatos, user.getUsername());
         if (newUsuario == null) {
             try {
-                baseDatos.store(newUsuario);
-                System.out.println("Se han guardado los datos del nuevo usuario " + newUsuario.getNombre());
+                baseDatos.store(user);
+                System.out.println("Se han guardado los datos del nuevo usuario " + user.getNombre());
             } catch (Exception e) {
                 System.out.println("Se ha producido un error, no se ha podido insertar");
             }
+        } else {
+            System.out.println("Ya existe un usuario con este username");
         }
     }
 
-    private static UsuarioType existeUsuario(ObjectContainer baseDatos, UsuarioType user) {
-        UsuarioType usuarioBBDD = (UsuarioType) baseDatos.queryByExample(user);
-        if (usuarioBBDD != null) {
-            return usuarioBBDD;
+    private static UsuarioType existeUsuario(ObjectContainer baseDatos, String username) {
+        UsuarioType user = new UsuarioType(username);
+        ObjectSet resultado = baseDatos.queryByExample(user);
+        if (resultado.size() != 0) {
+            return (UsuarioType) resultado.next();
+        } else {
+            return null;
         }
-        return usuarioBBDD;
+    }
+
+    public static void mostrarUsuarios(ObjectContainer baseDatos) {
+        ObjectSet resultado = baseDatos.query(UsuarioType.class);
+        for (int i = 0; i < resultado.size(); i++) {
+            UsuarioType user = (UsuarioType) resultado.next();
+            System.out.println("\nUsername" + user.getUsername());
+        }
     }
 
     //ADMINISTRACION DE LIBRERIA
     //CREACION DE UNA LIBRERIA, SE AÑADE A LA BBDD DEL USUARIO
-    public static void crearLibreria(ObjectContainer baseDatos, LibreriaType libreria, UsuarioType user) {
-        UsuarioType userToAddLibrary = (UsuarioType) baseDatos.queryByExample(user);
-        LibreriaType libreriaExists = existeLibreriaPorNombre(baseDatos, libreria.getNombre(), user);
-        if (libreriaExists == null) {
-            userToAddLibrary.getColecciones().add(libreria);
-            baseDatos.store(userToAddLibrary);
-            baseDatos.store(libreria);
-        }else{
-            System.out.println("Ya tienes una colección con ese nombre");
-        }
+    public static void crearLibreriaParaUsuario(ObjectContainer baseDatos, LibreriaType libreria, UsuarioType user) {
+        
+//        if (libreriaExists == null) {
+//            userToAddLibrary.getColecciones().add(libreria);
+//            baseDatos.store(userToAddLibrary);
+//            baseDatos.store(libreria);
+//        } else {
+//            System.out.println("Ya tienes una colección con ese nombre");
+//        }
 
     }
 
-    private static LibreriaType existeLibreriaPorNombre(ObjectContainer baseDatos, String nombreLibreria, UsuarioType user) {
-        LibreriaType libreria = (LibreriaType) baseDatos.queryByExample(new LibreriaType(nombreLibreria));
-//        imprimirResultadoConsulta(resultado);
-        return libreria;
+    private static LibreriaType existeLibreriaPorNombre(ObjectContainer baseDatos, String nombreLibreria, String userName) {
+        UsuarioType usuario = existeUsuario(baseDatos, userName);
+        List<LibreriaType> libreriaUser = usuario.getColecciones();
+        for (LibreriaType libreria : libreriaUser) {
+            ObjectSet resultado = baseDatos.queryByExample(libreria);
+            if (resultado.size() != 0) {
+                return libreria;
+            }
+        }
+        return null;
     }
 
     public static void mostrarLibreriasUsuario(ObjectContainer baseDatos, UsuarioType user) {

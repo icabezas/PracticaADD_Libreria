@@ -25,13 +25,13 @@ public class test {
         LibreriaType libreria1 = new LibreriaType(libros, "Libreria1");
         List<LibreriaType> colecciones = new ArrayList<>();
         colecciones.add(libreria1);
-        UsuarioType admin = new UsuarioType("admin", "admin", "admin", colecciones);
+        UsuarioType admin = new UsuarioType("admin", "admin", "admin", false, colecciones);
         
 
         try {
             Methods.nuevoUsuario(baseDatos, admin);
             Methods.almacenarLibro(baseDatos, libro1);
-            Methods.crearLibreria(baseDatos, libreria1, admin);
+            Methods.crearLibreriaParaUsuario(baseDatos, libreria1, admin);
             Methods.mostrarLibreriasUsuario(baseDatos, admin);
             
         } finally {
