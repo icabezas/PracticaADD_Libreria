@@ -18,6 +18,7 @@ public class Interfaz extends javax.swing.JFrame {
         initComponents();
         
     }
+    //CACA
 
     /**
      * This method is called from within the constructor to initialize the form.
