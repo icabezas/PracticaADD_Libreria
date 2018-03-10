@@ -5,8 +5,11 @@
  */
 package add.library.swing;
 
+import db.Methods;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
+import jaxb.generated.UsuarioType;
 
 /**
  *
@@ -122,7 +125,8 @@ public class Register extends javax.swing.JFrame {
        if(Arrays.equals(pass,conf)){
          password = p1.getText();
          newuser = usname.getText();
-         
+         UsuarioType user = new UsuarioType(newuser, newuser, password, rootPaneCheckingEnabled, null);
+           Methods.nuevoUsuario(baseDatos, user);
         
          JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password,"SI", JOptionPane.INFORMATION_MESSAGE);
          dispose();
