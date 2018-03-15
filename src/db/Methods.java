@@ -20,9 +20,9 @@ public class Methods {
     }
 
     //Para cerrar conexión
-    public void cerrarConexion(ObjectContainer baseDatos) {
+    public void cerrarConexion() {
         try {
-            baseDatos.close();
+            db.close();
         } catch (Exception e) {
             System.out.println("No se pudo conectar con la BBDD");
         }
@@ -32,10 +32,10 @@ public class Methods {
     //Para almacenar objetos en la bbdd
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param LibroType libro es el libro que se desea almacenar
-    public  void almacenarLibro(ObjectContainer baseDatos, LibroType libro) {
-        if (existeLibroISBN(baseDatos, libro.getISBN()).size() == 0) {
+    public void almacenarLibro(LibroType libro) {
+        if (existeLibroISBN(libro.getISBN()).size() == 0) {
             try {
-                baseDatos.store(libro);
+                db.store(libro);
                 System.out.println("Se ha guardado el libro " + libro.getTitulo());
             } catch (Exception e) {
                 System.out.println("Se ha producido un error, no se ha podido insertar");
@@ -45,22 +45,31 @@ public class Methods {
         }
     }
 
-    //Permite mostrar un libro de la bbdd
-    //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
-    public  void imprimirResultadoConsulta(ObjectSet resultado) {
-        System.out.println("Recuperados " + resultado.size() + " libros");
-        while (resultado.hasNext()) {
-            System.out.println(resultado.next());
+    //Retorna una lista de todos los libros en bbdd
+    public List<LibroType> getListaLibros() {
+        List<LibroType> libros = new ArrayList<>();
+        ObjectSet resultado = db.query(LibroType.class);
+        for (int i = 0; i < resultado.size(); i++) {
+            LibroType libro = (LibroType) resultado.next();
+            libros.add(libro);
         }
+        return libros;
     }
 
+    //Permite mostrar un libro de la bbdd
+//    public void imprimirResultadoConsulta(ObjectSet resultado) {
+//        System.out.println("Recuperados " + resultado.size() + " libros");
+//        while (resultado.hasNext()) {
+//            System.out.println(resultado.next());
+//        }
+//    }
     //Permite consultar un libro de la bbdd
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param titulo (hay que cmabiar por ISBN, que es el identificador único)
-    private  List<LibroType> existeLibroISBN(ObjectContainer baseDatos, int isbn) {
+    private List<LibroType> existeLibroISBN(int isbn) {
         LibroType libro = new LibroType(isbn);
         List<LibroType> librosConISBN = new ArrayList<>();
-        ObjectSet resultado = baseDatos.queryByExample(libro);
+        ObjectSet resultado = db.queryByExample(libro);
 //        imprimirResultadoConsulta(resultado);
         for (int i = 0; i < resultado.size(); i++) {
             LibroType lib = (LibroType) resultado.next();
@@ -69,13 +78,14 @@ public class Methods {
         return librosConISBN;
     }
 
+    //
     //ADMINISTRACION DE USUARIO
     //ALMACENAJE DE UN USUARIO EN LA BBDD
-    public void nuevoUsuario(ObjectContainer baseDatos, UsuarioType user) {
-        UsuarioType newUsuario = existeUsuario(baseDatos, user.getUsername());
+    public void nuevoUsuario(UsuarioType user) {
+        UsuarioType newUsuario = existeUsuario(user.getUsername());
         if (newUsuario == null) {
             try {
-                baseDatos.store(user);
+                db.store(user);
                 System.out.println("Se han guardado los datos del nuevo usuario " + user.getNombre());
             } catch (Exception e) {
                 System.out.println("Se ha producido un error, no se ha podido insertar");
@@ -85,9 +95,9 @@ public class Methods {
         }
     }
 
-    private UsuarioType existeUsuario(ObjectContainer baseDatos, String username) {
+    private UsuarioType existeUsuario(String username) {
         UsuarioType user = new UsuarioType(username);
-        ObjectSet resultado = baseDatos.queryByExample(user);
+        ObjectSet resultado = db.queryByExample(user);
         if (resultado.size() != 0) {
             return (UsuarioType) resultado.next();
         } else {
@@ -95,8 +105,8 @@ public class Methods {
         }
     }
 
-    public  void mostrarUsuarios(ObjectContainer baseDatos) {
-        ObjectSet resultado = baseDatos.query(UsuarioType.class);
+    public void mostrarUsuarios() {
+        ObjectSet resultado = db.query(UsuarioType.class);
         for (int i = 0; i < resultado.size(); i++) {
             UsuarioType user = (UsuarioType) resultado.next();
             System.out.println("\nUsername" + user.getUsername());
@@ -105,35 +115,36 @@ public class Methods {
 
     //ADMINISTRACION DE LIBRERIA
     //CREACION DE UNA LIBRERIA, SE AÑADE A LA BBDD DEL USUARIO
-    public  void crearLibreriaParaUsuario(ObjectContainer baseDatos, LibreriaType libreria, UsuarioType user) {
-
-//        if (libreriaExists == null) {
-//            userToAddLibrary.getColecciones().add(libreria);
-//            baseDatos.store(userToAddLibrary);
-//            baseDatos.store(libreria);
-//        } else {
-//            System.out.println("Ya tienes una colección con ese nombre");
-//        }
+    //MODIFICAR FUNCION, RECIBE LISTA DE LIBROS Y LAS METE EN UNA LIBRERIA
+    public void crearLibreriaParaUsuario(LibreriaType libreria, UsuarioType userToAddLibrary) {
+        if (existeColeccionUsuarioPorNombre(libreria.getNombre(), userToAddLibrary.getNombre()) == null) {
+            userToAddLibrary.getColecciones().add(libreria);
+            db.store(userToAddLibrary);
+            db.store(libreria);
+        } else {
+            System.out.println("Ya tienes una colección con ese nombre");
+        }
     }
 
-    private  LibreriaType existeLibreriaPorNombre(ObjectContainer baseDatos, String nombreLibreria, String userName) {
-        UsuarioType usuario = existeUsuario(baseDatos, userName);
+    private LibreriaType existeColeccionUsuarioPorNombre(String nombreLibreria, String userName) {
+        UsuarioType usuario = existeUsuario(userName);
         List<LibreriaType> libreriaUser = usuario.getColecciones();
         for (LibreriaType libreria : libreriaUser) {
-            ObjectSet resultado = baseDatos.queryByExample(libreria);
-            if (resultado.size() != 0) {
+            if (libreria.getNombre().equals(nombreLibreria)) {
                 return libreria;
             }
         }
         return null;
     }
 
-    public void mostrarLibreriasUsuario(ObjectContainer baseDatos, UsuarioType user) {
-        UsuarioType userToAddLibrary = (UsuarioType) baseDatos.queryByExample(user);
+    public List<LibreriaType> mostrarLibreriasUsuario(UsuarioType user) {
+        UsuarioType userToAddLibrary = existeUsuario(user.getUsername());
         List<LibreriaType> colecciones = userToAddLibrary.getColecciones();
-        for (LibreriaType libreria : colecciones) {
-            System.out.println(libreria.getNombre());
+        if (colecciones.isEmpty()) {
+            colecciones = null;
+            System.out.println("Este usuario no tiene colecciones");
         }
+        return colecciones;
     }
 
 }

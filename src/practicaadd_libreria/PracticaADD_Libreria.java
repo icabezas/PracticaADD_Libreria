@@ -25,18 +25,18 @@ public class PracticaADD_Libreria {
         List<LibreriaType> colecciones = new ArrayList<>();
         colecciones.add(libreria1);
         UsuarioType admin = new UsuarioType("admin", "admin", "admin", true, colecciones);
-        
-            Methods method = new Methods();
+
+        Methods method = new Methods();
 
         try {
-            method.mostrarUsuarios(method.db);
-            method.nuevoUsuario(method.db, admin);
-            method.almacenarLibro(method.db, libro1);
-            //Methods.crearLibreriaParaUsuario(method.db, libreria1, admin);
-            //Methods.mostrarLibreriasUsuario(method.db, admin);
-            
+            method.mostrarUsuarios();
+            method.nuevoUsuario(admin);
+            method.almacenarLibro(libro1);
+            method.crearLibreriaParaUsuario(libreria1, admin);
+            method.mostrarLibreriasUsuario(admin);
+
         } finally {
-            method.cerrarConexion(method.db);
+            method.cerrarConexion();
         }
 
     }
