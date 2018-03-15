@@ -5,6 +5,7 @@
  */
 package swing;
 
+import db.Methods;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -17,6 +18,7 @@ import jaxb.generated.LibroType;
 public class Añadirlibrerias extends javax.swing.JFrame {
 private List<LibroType> listaLibrosNuevacolection;
 private List<LibroType> listaLibrosAñadir;
+Methods method = new Methods();
     /**
      * Creates new form Añadirlibrerias
      */
@@ -24,6 +26,7 @@ private List<LibroType> listaLibrosAñadir;
         initComponents();
         listaLibrosNuevacolection = new ArrayList<>();
         listaLibrosAñadir = new ArrayList<>();
+        
     }
 
     /**
@@ -76,7 +79,7 @@ private List<LibroType> listaLibrosAñadir;
         jLabel5.setText("-----------------------------------------");
 
         listaLibroColeccion.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { " " };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -126,11 +129,6 @@ private List<LibroType> listaLibrosAñadir;
 
         jLabel4.setText("--------------------------------------");
 
-        listalibrosbbdd.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         listalibrosbbdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listalibrosbbddMouseClicked(evt);
@@ -224,19 +222,29 @@ private List<LibroType> listaLibrosAñadir;
     }//GEN-LAST:event_salirActionPerformed
 
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
-    
-        
+        LibroType libro = new LibroType();
+        llenarListaLibrosAñadidos(libro);
         listaLibrosNuevacolection.add(libro);
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
     private void llenarListaLibros(){
-    listaLibrosNuevacolection = getListaLibros();    
+    listaLibrosNuevacolection = method.getListaLibros();    
     DefaultListModel<String> demolist = new DefaultListModel<>();
     for(LibroType libro : listaLibrosNuevacolection){
        demolist.addElement(libro.getTitulo()); 
     }
     
     listalibrosbbdd.setModel(demolist);
+    }
+    
+    private void llenarListaLibrosAñadidos(LibroType libro){
+       
+    DefaultListModel<String> demolist2 = new DefaultListModel<>();
+    
+       demolist2.addElement(libro.getTitulo()); 
+    
+    
+    listaLibroColeccion.setModel(demolist2);
     }
     /**
      * @param args the command line arguments
