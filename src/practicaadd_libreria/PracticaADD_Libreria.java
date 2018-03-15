@@ -29,11 +29,16 @@ public class PracticaADD_Libreria {
         Methods method = new Methods();
 
         try {
-            method.mostrarUsuarios();
-            method.nuevoUsuario(admin);
-            method.almacenarLibro(libro1);
-            method.crearLibreriaParaUsuario(libreria1, admin);
-            method.mostrarLibreriasUsuario(admin);
+              for (LibroType libro : method.getListaLibros()){
+                  System.out.println(libro.getTitulo());
+              }
+//            method.mostrarUsuarios();
+//            method.nuevoUsuario(admin);
+//            method.almacenarLibro(libro1);
+//            method.crearLibreriaParaUsuario(libros,"Coleccion1", admin);
+//            for(LibreriaType coleccion : method.getLibreriasUsuario(admin)){
+//                System.out.println(coleccion.getNombre());
+//            }
 
         } finally {
             method.cerrarConexion();

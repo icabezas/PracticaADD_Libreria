@@ -116,11 +116,15 @@ public class Methods {
     //ADMINISTRACION DE LIBRERIA
     //CREACION DE UNA LIBRERIA, SE AÑADE A LA BBDD DEL USUARIO
     //MODIFICAR FUNCION, RECIBE LISTA DE LIBROS Y LAS METE EN UNA LIBRERIA
-    public void crearLibreriaParaUsuario(LibreriaType libreria, UsuarioType userToAddLibrary) {
-        if (existeColeccionUsuarioPorNombre(libreria.getNombre(), userToAddLibrary.getNombre()) == null) {
-            userToAddLibrary.getColecciones().add(libreria);
-            db.store(userToAddLibrary);
-            db.store(libreria);
+    public void crearLibreriaParaUsuario(List<LibroType> libros, String nombreLibreria, UsuarioType user) {
+        if (existeColeccionUsuarioPorNombre(nombreLibreria, user.getNombre()) == null) {
+            LibreriaType nuevaLibreria = new LibreriaType(libros, nombreLibreria);
+            List<LibreriaType> colecciones = user.getColecciones();
+            colecciones.add(nuevaLibreria);
+            user.setColecciones(colecciones);
+            db.store(user);
+            db.store(nuevaLibreria);
+            System.out.println("Coleccion: " + nombreLibreria + " añadida.");
         } else {
             System.out.println("Ya tienes una colección con ese nombre");
         }
@@ -137,7 +141,7 @@ public class Methods {
         return null;
     }
 
-    public List<LibreriaType> mostrarLibreriasUsuario(UsuarioType user) {
+    public List<LibreriaType> getLibreriasUsuario(UsuarioType user) {
         UsuarioType userToAddLibrary = existeUsuario(user.getUsername());
         List<LibreriaType> colecciones = userToAddLibrary.getColecciones();
         if (colecciones.isEmpty()) {
