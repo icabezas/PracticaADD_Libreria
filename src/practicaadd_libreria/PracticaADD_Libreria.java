@@ -13,13 +13,15 @@ public class PracticaADD_Libreria {
 
         //ObjectFactory objectFactory = new ObjectFactory();
         List<String> autores1 = new ArrayList<>();
+        List<String> autores2 = new ArrayList<>();
         autores1.add("Ernest Cline");
         autores1.add("Lovecraft");
+        autores2.add("Andrei Kurkov");
         List<String> categoria1 = new ArrayList<>();
         categoria1.add("Ciencia ficción");
 
         LibroType libro1 = new LibroType("Ready Player One", autores1, categoria1, "Multi", 2011, Byte.MIN_VALUE, 0, 0);
-        LibroType libro2 = new LibroType("Libro2", autores1, categoria1, "Multi", 0, 0, 0, 0);
+        LibroType libro2 = new LibroType("Muerte Con Pinguino", autores2, categoria1, "Multi", 0, 0, 0, 0);
         List<LibroType> libros = new ArrayList<>();
         LibreriaType libreria1 = new LibreriaType(libros, "Libreria1");
         List<LibreriaType> colecciones = new ArrayList<>();
@@ -34,7 +36,7 @@ public class PracticaADD_Libreria {
               }
 //            method.mostrarUsuarios();
 //            method.nuevoUsuario(admin);
-//            method.almacenarLibro(libro1);
+            method.almacenarLibro(libro1);
 //            method.crearLibreriaParaUsuario(libros,"Coleccion1", admin);
 //            for(LibreriaType coleccion : method.getLibreriasUsuario(admin)){
 //                System.out.println(coleccion.getNombre());
