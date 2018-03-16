@@ -6,6 +6,9 @@
 package swing;
 
 import db.Methods;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -26,6 +29,7 @@ Methods method = new Methods();
         initComponents();
         listaLibrosNuevacolection = new ArrayList<>();
         listaLibrosAñadir = new ArrayList<>();
+        llenarListaLibros();
         
     }
 
@@ -69,8 +73,6 @@ Methods method = new Methods();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-        jTextField1.setText("jTextField1");
 
         jLabel1.setText("Crear nueva libreria");
 
@@ -222,15 +224,17 @@ Methods method = new Methods();
     }//GEN-LAST:event_salirActionPerformed
 
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
-        LibroType libro = new LibroType();
-        llenarListaLibrosAñadidos(libro);
-        listaLibrosNuevacolection.add(libro);
+        int pos  = listalibrosbbdd.locationToIndex(evt.getPoint()); 
+       
+        listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
+        
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
     private void llenarListaLibros(){
     listaLibrosNuevacolection = method.getListaLibros();    
     DefaultListModel<String> demolist = new DefaultListModel<>();
     for(LibroType libro : listaLibrosNuevacolection){
+        String infoLibro=libro.getTitulo()+" | "+ libro.getAutor().get(0) + " | " + libro.getISBN() ;
        demolist.addElement(libro.getTitulo()); 
     }
     
@@ -246,6 +250,8 @@ Methods method = new Methods();
     
     listaLibroColeccion.setModel(demolist2);
     }
+    
+
     /**
      * @param args the command line arguments
      */
