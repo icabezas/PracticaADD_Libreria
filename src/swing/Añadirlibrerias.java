@@ -19,9 +19,11 @@ import jaxb.generated.LibroType;
  * @author dam2t1
  */
 public class Añadirlibrerias extends javax.swing.JFrame {
-private List<LibroType> listaLibrosNuevacolection;
-private List<LibroType> listaLibrosAñadir;
-Methods method = new Methods();
+
+    private List<LibroType> listaLibrosNuevacolection;
+    private List<LibroType> listaLibrosAñadir;
+    Methods method = new Methods();
+
     /**
      * Creates new form Añadirlibrerias
      */
@@ -30,7 +32,7 @@ Methods method = new Methods();
         listaLibrosNuevacolection = new ArrayList<>();
         listaLibrosAñadir = new ArrayList<>();
         llenarListaLibros();
-        
+
     }
 
     /**
@@ -214,8 +216,7 @@ Methods method = new Methods();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      
-        
+
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -224,38 +225,33 @@ Methods method = new Methods();
     }//GEN-LAST:event_salirActionPerformed
 
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
-        int pos  = listalibrosbbdd.locationToIndex(evt.getPoint()); 
-       
+        int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
+        System.out.println(pos);
         listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
-        
+
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
-    private void llenarListaLibros(){
-    listaLibrosNuevacolection = method.getListaLibros();    
-    DefaultListModel<String> demolist = new DefaultListModel<>();
-    for(LibroType libro : listaLibrosNuevacolection){
-        String infoLibro=libro.getTitulo()+" | "+ libro.getAutor().get(0) + " | " + libro.getISBN() ;
-       demolist.addElement(libro.getTitulo()); 
+    private void llenarListaLibros() {
+        listaLibrosAñadir = method.getListaLibros();
+        //System.out.println(listaLibrosAñadir.get(0).getTitulo());
+        DefaultListModel<String> demolist = new DefaultListModel<>();
+        if (!listaLibrosAñadir.isEmpty()) {
+            for (LibroType libro : listaLibrosAñadir) {
+                System.out.println(libro.getTitulo());
+                String infoLibro = libro.getTitulo() + " | " + libro.getAutor().get(0) + " | " + libro.getISBN();
+                demolist.addElement(infoLibro);
+            }
+        }else{
+            System.out.println("Caca, no hay libros");
+        }
+
+        listalibrosbbdd.setModel(demolist);
     }
-    
-    listalibrosbbdd.setModel(demolist);
-    }
-    
-    private void llenarListaLibrosAñadidos(LibroType libro){
-       
-    DefaultListModel<String> demolist2 = new DefaultListModel<>();
-    
-       demolist2.addElement(libro.getTitulo()); 
-    
-    
-    listaLibroColeccion.setModel(demolist2);
-    }
-    
 
     /**
      * @param args the command line arguments
      */
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
