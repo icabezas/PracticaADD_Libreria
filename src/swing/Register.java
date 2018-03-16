@@ -135,7 +135,7 @@ public class Register extends javax.swing.JFrame {
         } else {
 
         }
-
+        method.cerrarConexion();
 
     }//GEN-LAST:event_completeActionPerformed
 
