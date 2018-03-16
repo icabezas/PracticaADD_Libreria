@@ -18,3 +18,5 @@ build/classes/jaxb/generated/LibreriaType.class
 build/classes/libreria.xsd
 /dist/built-jar.properties
 build/built-jar\.properties
+
+library\.db4o
