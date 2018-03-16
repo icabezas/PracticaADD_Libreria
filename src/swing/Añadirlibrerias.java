@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import jaxb.generated.LibroType;
 
 /**
@@ -86,6 +87,11 @@ public class Añadirlibrerias extends javax.swing.JFrame {
             String[] strings = { " " };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        listaLibroColeccion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaLibroColeccionMouseClicked(evt);
+            }
         });
         jScrollPane2.setViewportView(listaLibroColeccion);
 
@@ -226,10 +232,29 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
         int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
-        System.out.println(pos);
-        listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
+        for(int i = 0;i<listaLibrosNuevacolection.size();i++){
+            if((listaLibrosAñadir.get(i).getISBN())== (listaLibrosNuevacolection.get(i).getISBN())){
+       String nl = System.getProperty("line.separator");
 
+            JOptionPane.showMessageDialog(null, "Ese libro" + nl + "ya esta en tu libreria" + nl + "bribon! =C","error panel", JOptionPane.ERROR_MESSAGE);
+        }else{
+              String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor().get(0) + " | " + listaLibrosAñadir.get(pos).getISBN();
+        listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
+        DefaultListModel<String> demolist2 = new DefaultListModel<>();
+        listaLibroColeccion.setModel(demolist2);
+        demolist2.addElement(infoLibro);   
+            }
+       }
     }//GEN-LAST:event_listalibrosbbddMouseClicked
+
+    private void listaLibroColeccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaLibroColeccionMouseClicked
+        int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
+        DefaultListModel<String> demolist2 = new DefaultListModel<>();
+        listaLibroColeccion.setModel(demolist2);
+        listaLibrosNuevacolection.remove(pos);
+        demolist2.removeElementAt(pos);
+        
+    }//GEN-LAST:event_listaLibroColeccionMouseClicked
 
     private void llenarListaLibros() {
         listaLibrosAñadir = method.getListaLibros();
