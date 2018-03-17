@@ -23,7 +23,10 @@ public class PracticaADD_Libreria {
         LibroType libro1 = new LibroType("Ready Player One", autores1, categoria1, "Multi", 2011, Byte.MIN_VALUE, 0, 0);
         LibroType libro2 = new LibroType("Muerte Con Pinguino", autores2, categoria1, "Multi", 2010, 0, 0, 1);
         List<LibroType> libros = new ArrayList<>();
-        LibreriaType libreria1 = new LibreriaType(libros, "Libreria1");
+        libros.add(libro1);
+        libros.add(libro2);
+        LibreriaType libreria1 = new LibreriaType(libros, "Mis favoritos");
+        LibreriaType libreria2 = new LibreriaType(libros, "Coleccion1");
         List<LibreriaType> colecciones = new ArrayList<>();
         colecciones.add(libreria1);
         UsuarioType admin = new UsuarioType("admin", "admin", "admin", true, colecciones);
@@ -31,17 +34,19 @@ public class PracticaADD_Libreria {
         Methods method = new Methods();
 
         try {
-              for (LibroType libro : method.getListaLibros()){
-                  System.out.println(libro.getTitulo());
-              }
+
             method.mostrarUsuarios();
-//            method.nuevoUsuario(admin);
+            method.nuevoUsuario(admin);
+            method.mostrarUsuarios();
             method.almacenarLibro(libro1);
             method.almacenarLibro(libro2);
-//            method.crearLibreriaParaUsuario(libros,"Coleccion1", admin);
-//            for(LibreriaType coleccion : method.getLibreriasUsuario(admin)){
-//                System.out.println(coleccion.getNombre());
-//            }
+            method.crearLibreriaParaUsuario(libreria2, admin);
+            for (LibreriaType coleccion : method.getLibreriasUsuario(admin)) {
+                System.out.println(coleccion.getNombre());
+                for (LibroType libro : coleccion.getLibro()) {
+                    System.out.println("- " + libro.getTitulo());
+                }
+            }
 
         } finally {
             method.cerrarConexion();
