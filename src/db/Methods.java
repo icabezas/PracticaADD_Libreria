@@ -38,6 +38,7 @@ public class Methods {
             try {
                 System.out.println(libro.getTitulo() + " - " + libro.getAutor());
                 db.store(libro);
+                db.commit();
                 System.out.println("Se ha guardado el libro " + libro.getTitulo());
             } catch (Exception e) {
                 System.out.println("Se ha producido un error, no se ha podido insertar");
@@ -71,7 +72,7 @@ public class Methods {
     //@param titulo (hay que cmabiar por ISBN, que es el identificador único)
     //RETOCAR MAAAAAAL
     private List<LibroType> existeLibroISBN(int isbn) {
-         LibroType libro = new LibroType(isbn);
+        LibroType libro = new LibroType(isbn);
         List<LibroType> librosConISBN = new ArrayList<>();
         ObjectSet resultado = db.queryByExample(libro);
 //        imprimirResultadoConsulta(resultado);
@@ -80,8 +81,7 @@ public class Methods {
             librosConISBN.add(lib);
         }
         return librosConISBN;
-        
-        
+
 //        System.out.println("isbn: " + isbn);
 //        LibroType libro = new LibroType(isbn);
 //        System.out.println(libro.toString());
@@ -95,10 +95,11 @@ public class Methods {
     //ADMINISTRACION DE USUARIO
     //ALMACENAJE DE UN USUARIO EN LA BBDD
     public void nuevoUsuario(UsuarioType user) {
-        UsuarioType newUsuario = existeUsuario(user.getUsername());
+        List<UsuarioType> newUsuario = existeUsuario(user.getUsername());
         if (newUsuario == null) {
             try {
                 db.store(user);
+                db.commit();
                 System.out.println("Se han guardado los datos del nuevo usuario " + user.getNombre());
             } catch (Exception e) {
                 System.out.println("Se ha producido un error, no se ha podido insertar");
@@ -108,45 +109,51 @@ public class Methods {
         }
     }
 
-    private UsuarioType existeUsuario(String username) {
+    public List<UsuarioType> existeUsuario(String username) {
+        //ARREGLAR
         UsuarioType user = new UsuarioType(username);
+        List<UsuarioType> usuarios = new ArrayList<>();
         ObjectSet resultado = db.queryByExample(user);
-        if (resultado.size() != 0) {
-            return (UsuarioType) resultado.next();
-        } else {
+//        imprimirResultadoConsulta(resultado);
+        if (resultado.isEmpty()) {
             return null;
+        } else {
+            usuarios = resultado;
+            return usuarios;
         }
     }
 
     public void mostrarUsuarios() {
         ObjectSet resultado = db.query(UsuarioType.class);
-        if(resultado.isEmpty()) System.out.println("No hay usuarios");
+        if (resultado.isEmpty()) {
+            System.out.println("No hay usuarios");
+        }
         for (int i = 0; i < resultado.size(); i++) {
             UsuarioType user = (UsuarioType) resultado.next();
-            System.out.println("\nUsername" + user.getUsername());
+            System.out.println("\nUsername: " + user.getUsername());
         }
     }
 
     //ADMINISTRACION DE LIBRERIA
     //CREACION DE UNA LIBRERIA, SE AÑADE A LA BBDD DEL USUARIO
     //MODIFICAR FUNCION, RECIBE LISTA DE LIBROS Y LAS METE EN UNA LIBRERIA
-    public void crearLibreriaParaUsuario(List<LibroType> libros, String nombreLibreria, UsuarioType user) {
-        if (existeColeccionUsuarioPorNombre(nombreLibreria, user.getNombre()) == null) {
-            LibreriaType nuevaLibreria = new LibreriaType(libros, nombreLibreria);
+    public void crearLibreriaParaUsuario(LibreriaType nuevaLibreria, UsuarioType user) {
+        if (existeColeccionUsuarioPorNombre(nuevaLibreria.getNombre(), user.getNombre()) == null) {
             List<LibreriaType> colecciones = user.getColecciones();
             colecciones.add(nuevaLibreria);
             user.setColecciones(colecciones);
             db.store(user);
-            db.store(nuevaLibreria);
-            System.out.println("Coleccion: " + nombreLibreria + " añadida.");
+            db.commit();
+//            db.store(nuevaLibreria);
+            System.out.println("Coleccion: " + nuevaLibreria.getNombre() + " añadida.");
         } else {
             System.out.println("Ya tienes una colección con ese nombre");
         }
     }
 
     private LibreriaType existeColeccionUsuarioPorNombre(String nombreLibreria, String userName) {
-        UsuarioType usuario = existeUsuario(userName);
-        List<LibreriaType> libreriaUser = usuario.getColecciones();
+        UsuarioType usuario = existeUsuario(userName).get(0);
+        List<LibreriaType> libreriaUser = getLibreriasUsuario(usuario);
         for (LibreriaType libreria : libreriaUser) {
             if (libreria.getNombre().equals(nombreLibreria)) {
                 return libreria;
@@ -156,7 +163,7 @@ public class Methods {
     }
 
     public List<LibreriaType> getLibreriasUsuario(UsuarioType user) {
-        UsuarioType userToAddLibrary = existeUsuario(user.getUsername());
+        UsuarioType userToAddLibrary = existeUsuario(user.getUsername()).get(0);
         List<LibreriaType> colecciones = userToAddLibrary.getColecciones();
         if (colecciones.isEmpty()) {
             colecciones = null;
