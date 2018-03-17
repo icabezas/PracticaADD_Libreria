@@ -33,7 +33,7 @@ public class Methods {
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param LibroType libro es el libro que se desea almacenar
     public void almacenarLibro(LibroType libro) {
-        LibroType newLibro = existeLibroISBN(libro.getISBN());
+        LibroType newLibro = existeLibroISBN(libro.getISBN()).get(0);
         if (newLibro == null) {
             try {
                 System.out.println(libro.getTitulo() + " - " + libro.getAutor());
@@ -70,12 +70,25 @@ public class Methods {
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param titulo (hay que cmabiar por ISBN, que es el identificador único)
     //RETOCAR MAAAAAAL
-    private LibroType existeLibroISBN(int isbn) {
-        LibroType libro = new LibroType(isbn);
+    private List<LibroType> existeLibroISBN(int isbn) {
+         LibroType libro = new LibroType(isbn);
+        List<LibroType> librosConISBN = new ArrayList<>();
         ObjectSet resultado = db.queryByExample(libro);
 //        imprimirResultadoConsulta(resultado);
-        libro = (LibroType) resultado.next();
-        return libro;
+        for (int i = 0; i < resultado.size(); i++) {
+            LibroType lib = (LibroType) resultado.next();
+            librosConISBN.add(lib);
+        }
+        return librosConISBN;
+        
+        
+//        System.out.println("isbn: " + isbn);
+//        LibroType libro = new LibroType(isbn);
+//        System.out.println(libro.toString());
+//        ObjectSet resultado = db.queryByExample(libro);
+////        imprimirResultadoConsulta(resultado);
+//        libro = (LibroType) resultado.next();
+//        return libro;
     }
 
     //
@@ -107,6 +120,7 @@ public class Methods {
 
     public void mostrarUsuarios() {
         ObjectSet resultado = db.query(UsuarioType.class);
+        if(resultado.isEmpty()) System.out.println("No hay usuarios");
         for (int i = 0; i < resultado.size(); i++) {
             UsuarioType user = (UsuarioType) resultado.next();
             System.out.println("\nUsername" + user.getUsername());
