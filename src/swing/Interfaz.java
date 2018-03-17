@@ -6,6 +6,7 @@
 package swing;
 
 import javax.swing.JOptionPane;
+import jaxb.generated.UsuarioType;
 
 /**
  *
@@ -120,6 +121,7 @@ public class Interfaz extends javax.swing.JFrame {
        String catchpass;
        catchaccount = user.getText();
        catchpass=pass.getText();
+       UsuarioType user = new UsuarioType();
        char[] contra = pass.getPassword();
        int counter = 0;
        char[] chars = password.toCharArray();

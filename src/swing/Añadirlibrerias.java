@@ -233,17 +233,13 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
         int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
         for(int i = 0;i<listaLibrosNuevacolection.size();i++){
-            if((listaLibrosAñadir.get(i).getISBN())== (listaLibrosNuevacolection.get(i).getISBN())){
-       String nl = System.getProperty("line.separator");
-
-            JOptionPane.showMessageDialog(null, "Ese libro" + nl + "ya esta en tu libreria" + nl + "bribon! =C","error panel", JOptionPane.ERROR_MESSAGE);
-        }else{
+    
               String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor().get(0) + " | " + listaLibrosAñadir.get(pos).getISBN();
         listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
         DefaultListModel<String> demolist2 = new DefaultListModel<>();
         listaLibroColeccion.setModel(demolist2);
         demolist2.addElement(infoLibro);   
-            }
+            
        }
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
@@ -252,6 +248,9 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         DefaultListModel<String> demolist2 = new DefaultListModel<>();
         listaLibroColeccion.setModel(demolist2);
         listaLibrosNuevacolection.remove(pos);
+        for(LibroType libro: listaLibrosNuevacolection){
+            System.out.println(libro.getTitulo());
+        }
         demolist2.removeElementAt(pos);
         
     }//GEN-LAST:event_listaLibroColeccionMouseClicked
@@ -262,7 +261,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         DefaultListModel<String> demolist = new DefaultListModel<>();
         if (!listaLibrosAñadir.isEmpty()) {
             for (LibroType libro : listaLibrosAñadir) {
-                System.out.println(libro.getTitulo());
+                
                 String infoLibro = libro.getTitulo() + " | " + libro.getAutor().get(0) + " | " + libro.getISBN();
                 demolist.addElement(infoLibro);
             }
