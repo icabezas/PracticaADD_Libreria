@@ -39,7 +39,14 @@ public class Main extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         des = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
+        funcs = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -114,11 +121,46 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        funcs.setText("Gestion de datos");
+
+        jMenuItem1.setText("Crear libro");
+        funcs.add(jMenuItem1);
+
+        jMenuItem2.setText("Eliminar libro");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        funcs.add(jMenuItem2);
+
+        jMenuItem6.setText("Ver lista de libros");
+        funcs.add(jMenuItem6);
+
+        jMenuBar1.add(funcs);
+
+        jMenu1.setText("Gestion de usuarios");
+
+        jMenuItem3.setText("Borrar usuarios");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("Ver lista de usuario");
+        jMenu1.add(jMenuItem4);
+
+        jMenuItem5.setText("Añadir libreria a un usuario");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
+
+        jMenu2.setText("Ver lista de librerias de todos los usuarios");
+        jMenu1.add(jMenu2);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -157,7 +199,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(choose)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                         .addComponent(des))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -188,6 +230,14 @@ public class Main extends javax.swing.JFrame {
        dispose();
     }//GEN-LAST:event_desActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -196,12 +246,19 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton choose;
     private javax.swing.JButton createlibrary;
     private javax.swing.JButton des;
+    private javax.swing.JMenu funcs;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
