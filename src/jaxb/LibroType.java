@@ -1,6 +1,8 @@
 
-package jaxb.generated;
+package jaxb;
 
+//import com.db4o.collections.ActivatableArrayList;
+//import com.db4o.collections.ActivatableList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;

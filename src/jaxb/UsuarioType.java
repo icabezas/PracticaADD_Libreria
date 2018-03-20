@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jaxb.generated;
+package jaxb;
+
+//import java.util.List;
 
 import java.util.List;
+
+
 
 /**
  *
@@ -13,11 +17,11 @@ import java.util.List;
  */
 public class UsuarioType {
     
-    private String username;
-    private String nombre;
-    private String password;
-    private List<LibreriaType> colecciones;
-    private boolean isAdmin;
+    public String username;
+    public String nombre;
+    public String password;
+    public List<LibreriaType> colecciones;
+    public boolean isAdmin;
 
     public UsuarioType() {
     }
