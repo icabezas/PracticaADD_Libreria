@@ -1,0 +1,16 @@
+0123456001
+El capote
+Nikolai Gogol
+Novela
+esp
+1840
+2
+25.55
+0123456002
+La Historia Interminable
+Michael Ende
+Fantasia
+esp
+1981
+1
+19.99
