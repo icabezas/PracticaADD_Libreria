@@ -52,7 +52,7 @@ public class Methods {
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param LibroType libro es el libro que se desea almacenar
     public void almacenarLibro(LibroType libro) {
-        LibroType newLibro = existeLibroISBN(libro.getISBN()).get(0);
+        LibroType newLibro = existeLibroISBN(libro.getISBN());
         if (newLibro == null) {
             try {
                 System.out.println(libro.getTitulo() + " - " + libro.getAutor());
@@ -69,6 +69,7 @@ public class Methods {
 
     //Retorna una lista de todos los libros en bbdd
     public List<LibroType> getListaLibros() {
+        abrirConexion("library.db4o");
         List<LibroType> libros = new ArrayList<>();
         ObjectSet resultado = db.query(LibroType.class);
         System.out.println("SIZE LIBROS " + resultado.size());
@@ -76,6 +77,7 @@ public class Methods {
             LibroType libro = (LibroType) resultado.next();
             libros.add(libro);
         }
+        cerrarConexion();
         return libros;
     }
 
@@ -89,16 +91,15 @@ public class Methods {
     //Permite consultar un libro de la bbdd
     //@param baseDatos el objeto que representa la bbdd en la que se almacenará el libro
     //@param titulo (hay que cmabiar por ISBN, que es el identificador único)
-    private List<LibroType> existeLibroISBN(int isbn) {
+    private LibroType existeLibroISBN(int isbn) {
         LibroType libro = new LibroType(isbn);
-        List<LibroType> librosConISBN = new ArrayList<>();
+       LibroType dbLibro = null;
         ObjectSet resultado = db.queryByExample(libro);
 //        imprimirResultadoConsulta(resultado);
-        for (int i = 0; i < resultado.size(); i++) {
-            LibroType lib = (LibroType) resultado.next();
-            librosConISBN.add(lib);
-        }
-        return librosConISBN;
+    if(!resultado.isEmpty()){
+        dbLibro = (LibroType) resultado.next();        
+    }
+        return dbLibro;
     }
 
     //
