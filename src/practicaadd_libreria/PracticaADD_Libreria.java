@@ -25,8 +25,8 @@ public class PracticaADD_Libreria {
         categoria1.add("Ciencia ficción");
 
         LibroType libro3 = new LibroType("caca", autores2, categoria1, "en", 0, 0, 0, 0);
-//        LibroType libro1 = new LibroType("Ready Player One", autores1, categoria1, "Multi", 2011, Byte.MIN_VALUE, 0, 0);
-//        LibroType libro2 = new LibroType("Muerte Con Pinguino", autores2, categoria1, "Multi", 2010, 0, 0, 1);
+        LibroType libro1 = new LibroType("Ready Player One", autores1, categoria1, "Multi", 2011, Byte.MIN_VALUE, 0, 0);
+        LibroType libro2 = new LibroType("Muerte Con Pinguino", autores2, categoria1, "Multi", 2010, 0, 0, 1);
         List<LibroType> libros = new ArrayList<>();
         libros.add(libro3);
 //        libros.add(libro2);
@@ -36,31 +36,31 @@ public class PracticaADD_Libreria {
         colecciones.add(libreria1);
         UsuarioType admin = new UsuarioType("admin", "admin", "admin", true, colecciones);
 
-//        Methods method = new Methods();
-//        method.abrirConexion("library.db4o");
+        Methods method = new Methods();
+        method.abrirConexion("library.db4o");
+        try {
 //            for (LibroType libro : method.getListaLibros()){
-//                System.out.println(libro.getTitulo());
-//            }
+ //               System.out.println(libro.getTitulo());
+   //         }
+ //           method.mostrarUsuarios();
+   //         method.nuevoUsuario(admin);
 //            method.mostrarUsuarios();
-//            method.nuevoUsuario(admin);
-////            method.mostrarUsuarios();
-////            method.almacenarLibro(libro1);
-////            method.almacenarLibro(libro2);
-//
-//            
-//            method.crearLibreriaUser(libreria2, admin);
-////            List<UsuarioType> usuario = method.existeUsuario("admin");
-////            List<LibreriaType> libreriaUsuario = usuario.getColecciones();
-////            for (LibreriaType coleccion : method.getLibreriasUsuario(admin)) {
-////                System.out.println(coleccion.getNombre());
-////                for (LibroType libro : coleccion.getLibro()) {
-////                    System.out.println("- " + libro.getTitulo());
-////                }
-////            }
+            method.almacenarLibro(libro1);
+           method.almacenarLibro(libro2);
 
-            LibroGeneroDAO libGenDAO = new LibroGeneroDAO();
-            libGenDAO.crearLibroGenero(1, 2);
-            libGenDAO.showAllLibroGenero();
+            
+ //           method.crearLibreriaUser(libreria2, admin);
+//            List<UsuarioType> usuario = method.existeUsuario("admin");
+//            List<LibreriaType> libreriaUsuario = usuario.getColecciones();
+//            for (LibreriaType coleccion : method.getLibreriasUsuario(admin)) {
+//                System.out.println(coleccion.getNombre());
+//                for (LibroType libro : coleccion.getLibro()) {
+//                    System.out.println("- " + libro.getTitulo());
+//                }
+//            }
+
+        } finally {
+            method.cerrarConexion();
         }
 
 

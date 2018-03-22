@@ -6,7 +6,7 @@
 package swing;
 
 import javax.swing.JOptionPane;
-import jaxb.generated.UsuarioType;
+import jaxb.UsuarioType;
 
 /**
  *

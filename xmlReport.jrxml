@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="xmlReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a09f169d-c16a-4fe5-be4e-31bc49c27c6e">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="XMLsampple"/>
+	<queryString language="xPath">
+		<![CDATA[/libreria/libro]]>
+	</queryString>
+	<field name="ISBN_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="@ISBN"/>
+		<fieldDescription><![CDATA[@ISBN]]></fieldDescription>
+	</field>
+	<field name="titulo_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="titulo"/>
+		<fieldDescription><![CDATA[titulo]]></fieldDescription>
+	</field>
+	<field name="autor_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="autor"/>
+		<fieldDescription><![CDATA[autor]]></fieldDescription>
+	</field>
+	<field name="categoria_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="categoria"/>
+		<fieldDescription><![CDATA[categoria]]></fieldDescription>
+	</field>
+	<field name="lenguaje_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="lenguaje"/>
+		<fieldDescription><![CDATA[lenguaje]]></fieldDescription>
+	</field>
+	<field name="anyo_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="anyo"/>
+		<fieldDescription><![CDATA[anyo]]></fieldDescription>
+	</field>
+	<field name="edicion_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="edicion"/>
+		<fieldDescription><![CDATA[edicion]]></fieldDescription>
+	</field>
+	<field name="precio_1" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="precio"/>
+		<fieldDescription><![CDATA[precio]]></fieldDescription>
+	</field>
+	<group name="categoria_1">
+		<groupExpression><![CDATA[$F{categoria_1}]]></groupExpression>
+	</group>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{categoria_1}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<textField>
+					<reportElement x="0" y="0" width="555" height="41" uuid="9c1006d0-0a2f-4576-8bcb-83a66e31c7bf"/>
+					<textElement verticalAlignment="Middle">
+						<font size="20" isBold="true"/>
+						<paragraph lineSpacing="1_1_2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{categoria_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="400" height="79" uuid="5337a65b-cb02-4906-9d91-e1737117d4d8"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Proyecto Libreria AAD
+Eduardo Caballero
+Irene Cabezas
+Pol Galbarro]]></text>
+			</staticText>
+			<image>
+				<reportElement x="400" y="0" width="160" height="91" uuid="286d1cdc-dc22-4947-878c-ac8c22465522"/>
+				<imageExpression><![CDATA["https://www.stucom.com/wp-content/uploads/2013/10/LOGO_CURS.2.1.1.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="164" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="0" width="200" height="30" uuid="5c741ca1-aa49-4af1-a974-de9b48c81b07"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titulo_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-100" y="0" width="100" height="30" uuid="070c9f39-4841-470b-b69f-15ed3356b043"/>
+				<text><![CDATA[titulo_1]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="30" width="180" height="20" uuid="f312c533-e316-4743-a8ce-e26dda05b2fd"/>
+				<textFieldExpression><![CDATA[$F{ISBN_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="30" width="100" height="20" uuid="0d57b10e-cb42-4a50-b1f7-a6c69c4ba0b2"/>
+				<text><![CDATA[ISBN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="50" width="180" height="20" uuid="f9ca8b8c-c835-492a-9303-37049f9e575c"/>
+				<textFieldExpression><![CDATA[$F{autor_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="50" width="100" height="20" uuid="9c20f0a7-09b3-4d66-918c-f0d630d906a8"/>
+				<text><![CDATA[Autor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="70" width="180" height="20" uuid="da4d76a2-1f2a-479a-973a-2509762700b6"/>
+				<textFieldExpression><![CDATA[$F{lenguaje_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="70" width="100" height="20" uuid="dd153c85-5289-4962-8bae-5117dd942e09"/>
+				<text><![CDATA[Lenguaje:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="90" width="180" height="20" uuid="97c88c0f-729a-43ed-91e9-c353e443a2a6"/>
+				<textFieldExpression><![CDATA[$F{anyo_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="90" width="100" height="20" uuid="a977a787-b5e9-4151-8ec2-9d0fa0ec9790"/>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="110" width="180" height="20" uuid="778e7970-5c47-4763-a923-299e4fae9f82"/>
+				<textFieldExpression><![CDATA[$F{edicion_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="110" width="100" height="20" uuid="5039085c-792c-474f-8a1f-7765e599babc"/>
+				<text><![CDATA[Edición:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="130" width="180" height="20" uuid="b5beb752-8fb7-4ef7-9e8a-8bf708185dff"/>
+				<textFieldExpression><![CDATA[$F{precio_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="130" width="100" height="20" uuid="a1479657-92d8-470a-ab52-40eecfc34d6e"/>
+				<text><![CDATA[Precio:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

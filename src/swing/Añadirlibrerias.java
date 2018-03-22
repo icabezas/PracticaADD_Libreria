@@ -5,15 +5,17 @@
  */
 package swing;
 
-import db.Methods;
+import daos.Methods;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import jaxb.generated.LibroType;
+import jaxb.LibroType;
+import jaxb.UsuarioType;
 
 /**
  *
@@ -24,7 +26,8 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     private List<LibroType> listaLibrosNuevacolection;
     private List<LibroType> listaLibrosAñadir;
     Methods method = new Methods();
-
+    DefaultListModel<String> demolist2 = new DefaultListModel<>();
+    
     /**
      * Creates new form Añadirlibrerias
      */
@@ -232,38 +235,44 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
         int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
-       
+       listaLibroColeccion.setModel(demolist2);
          System.out.println(pos);
         String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor().get(0) + " | " + listaLibrosAñadir.get(pos).getISBN();
-        listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
-        DefaultListModel<String> demolist2 = new DefaultListModel<>();
-        listaLibroColeccion.setModel(demolist2);
-        for (int i = 0;i<listaLibrosNuevacolection.size();i++){
-        demolist2.addElement(listaLibrosNuevacolection.get(i).getTitulo());   
-        }
-       
+            if(!listaLibrosNuevacolection.contains(listaLibrosAñadir.get(pos))){
+                listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
+                demolist2.addElement(listaLibrosAñadir.get(pos).getTitulo()); 
+
+                 System.out.println("entra");
+            }else{
+
+            String nl = System.getProperty("line.separator");
+            JOptionPane.showMessageDialog(null, "ese libro ya esta en tu lista" , "SI", JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
     private void listaLibroColeccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaLibroColeccionMouseClicked
         if(listaLibrosNuevacolection.size() > 0){
+            listaLibroColeccion.setModel(demolist2);
         int pos = listaLibroColeccion.locationToIndex(evt.getPoint());
+        
         System.out.println(pos);
-        DefaultListModel<String> demolist2 = new DefaultListModel<>();
+        
         
         String str = listaLibroColeccion.getSelectedValue();
        
-        for (int i = 0;i<listaLibrosNuevacolection.size();i++){
-            if((listaLibrosNuevacolection.get(i).getTitulo()).equals(str)){
-        listaLibrosNuevacolection.remove(i);
         
-        System.out.println("removed from arry");
-         }
+        listaLibrosNuevacolection.remove(pos);
+        for(int i = 0 ; i<listaLibrosNuevacolection.size();i++){
+        System.out.println(listaLibrosNuevacolection.get(i));
         }
+        System.out.println("removed from arry");
+         
        
         demolist2.removeElementAt(pos);
         listaLibroColeccion.setModel(demolist2);
         System.out.println("removed from list");
         }
+        
     }//GEN-LAST:event_listaLibroColeccionMouseClicked
 
     private void llenarListaLibros() {
