@@ -14,12 +14,8 @@ public class Coleccion {
     private int idColeccion;
     private String nombre;
     private int idUsuario;
-
-    public Coleccion(String nombre) {
-        this.nombre = nombre;
-    }
     
-    public Coleccion(int idUsuario){
+    public Coleccion(int idUsuario, String nombre){
         this.idUsuario = idUsuario;
     }
 

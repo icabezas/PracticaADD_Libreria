@@ -19,8 +19,8 @@ public class Libro {
     private int edicion;
     private double precio;
 
-    public Libro(int isbn) {
-        this.isbn = isbn;
+    public Libro(int idLibro) {
+        this.idLibro = idLibro;
     }
 
     public Libro(int isbn, String titulo, String autor, String idioma, int anyo, int edicion, double precio) {

@@ -5,15 +5,22 @@
  */
 package daos;
 
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Genero;
 import modelo.Libro;
+import modelo.LibroGenero;
 
 /**
  * DAO PARA LA ADMINISTRACION DE LIBROS
  *
  */
-public class LibroDAO extends DBDAO {
+public class LibroDAO {
+
+    public ObjectContainer db;
 
     public LibroDAO() {
 
@@ -23,15 +30,18 @@ public class LibroDAO extends DBDAO {
     //CREAR LIBRO
     public void crearLibro(Libro libro, Genero genero) {
         //ABRIMOS CONEXION
-        abrirConexion();
-        
-        libro.setIdLibro(getIdLibroLast());
-        
-        if (existeLibroPorISBN(libro.getIsbn()) == null) {
+//        abrirConexion();
+
+        if (existeLibroPorID(libro.getIdLibro()) == null) {
+            libro.setIdLibro(getIdLibroLast());
+            LibroGeneroDAO libroGeneroRelacion = new LibroGeneroDAO();
             try {
+//                cerrarConexion();
+                libroGeneroRelacion.crearLibroGenero(getIdLibroLast(), genero.getIdGenero());
+                abrirConexion();
                 db.store(libro);
             } catch (Exception ex) {
-                System.out.println("No se ha podido guardar el objeto LibroGenero");
+                System.out.println("No se ha podido guardar el objeto Libro");
             }
         } else {
             System.out.println("Ya existe este libro");
@@ -40,63 +50,122 @@ public class LibroDAO extends DBDAO {
         //CERRAMOS CONEXION
         cerrarConexion();
     }
-    
-    //RETORNA EL ULTIMO IDLIBRO PARA CREAR UNO NUEVO
-    public int getIdLibroLast(){
-        ObjectSet resultado = db.query(Libro.class);
-        if (resultado.isEmpty()) {
-            System.out.println("No hay libros");
-            return 1;
-        }
-        return resultado.size()+1;
-    }
 
     //BORRAR LIBRO
-    public void borrarLibro(Libro libro) {
-        Libro dbLibro = existeLibroPorISBN(libro.getIsbn());
-        if (dbLibro != null) {
+    //TO-DO: BORRAR LIBROCOLECCION Y LIBROGENERO
+    public void deleteLibro(int idLibro) {
+        abrirConexion();
+        ObjectSet result = db.queryByExample(new Libro(idLibro));
+        if (!result.isEmpty()) {
+            Libro found = (Libro) result.next();
             try {
-                db.delete(dbLibro);
+                db.delete(found);
+                System.out.println("Deleted " + found.toString());
             } catch (Exception ex) {
-                System.out.println("No se ha podido borrar");
+                System.out.println("Problema al borrar libro " + idLibro);
             }
         } else {
-            System.out.println("Problema al borrar");
+            System.out.println("No se ha encontrado el libro " + idLibro);
         }
+        cerrarConexion();
     }
 
     //MODIFICAR DATOS LIBRO
     public void modificarLibro(Libro libroOld, Libro libroNew) {
-        if (libroOld.getIsbn() == libroNew.getIsbn()) {
-            Libro dbLibroOld = existeLibroPorISBN(libroOld.getIsbn());
-            if(dbLibroOld != null){
-                dbLibroOld.setAnyo(libroNew.getAnyo());
-                dbLibroOld.setAutor(libroNew.getAutor());
-                dbLibroOld.setEdicion(libroNew.getEdicion());
-                dbLibroOld.setIdioma(libroNew.getIdioma());
-                dbLibroOld.setPrecio(libroNew.getPrecio());
-                dbLibroOld.setTitulo(libroNew.getTitulo());
-                try{
-                    db.store(dbLibroOld);
-                }catch(Exception ex){
+        abrirConexion();
+        if (libroOld.getIdLibro()== libroNew.getIdLibro()) {
+            ObjectSet result = db.queryByExample(new Libro(libroOld.getIdLibro()));
+            if (!result.isEmpty()) {
+                Libro newLibro = (Libro) result.next();
+                newLibro.setAnyo(libroNew.getAnyo());
+                newLibro.setAutor(libroNew.getAutor());
+                newLibro.setEdicion(libroNew.getEdicion());
+                newLibro.setIdioma(libroNew.getIdioma());
+                newLibro.setPrecio(libroNew.getPrecio());
+                newLibro.setTitulo(libroNew.getTitulo());
+                try {
+                    db.store(newLibro);
+                    System.out.println("Actualizado");
+                } catch (Exception ex) {
                     System.out.println("No se ha podido realizar el update");
                 }
             }
         } else {
             System.out.println("El isbn no puede modificarse");
         }
+
+        //CERRAMOS CONEXION
+        cerrarConexion();
     }
 
-    //EXISTE LIBRO
-    public Libro existeLibroPorISBN(int isbn) {
-        Libro libro = new Libro(isbn);
+    //DEVUELVE LISTA DE TODOS LOS LIBROS EN BBDD
+    public List<Libro> getListaLibrosBBDD() {
+        abrirConexion();
+        List<Libro> librosBBDD = new ArrayList<>();
+        ObjectSet resultado = db.query(Libro.class);
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                Libro libro = (Libro) resultado.next();
+                librosBBDD.add(libro);
+            }
+        }else{
+            librosBBDD = null;
+        }
+        cerrarConexion();
+        return librosBBDD;
+    }
+
+    //RETORNA EL ULTIMO IDLIBRO PARA CREAR UNO NUEVO
+    public int getIdLibroLast() {
+        abrirConexion();
+        ObjectSet resultado = db.query(Libro.class);
+        int total = resultado.size() + 1;
+        cerrarConexion();
+        return total;
+    }
+
+    //EXISTE LIBRO PRO ISBN
+    public Libro existeLibroPorID(int idLibro) {
+        abrirConexion();
+        Libro libro = new Libro(idLibro);
         Libro dbLibro = null;
 
         ObjectSet resultado = db.queryByExample(libro);
         if (!resultado.isEmpty()) {
             dbLibro = (Libro) resultado.next();
         }
-
+        cerrarConexion();
         return dbLibro;
+    }
+
+    public void abrirConexion() {
+        try {
+            db = Db4oEmbedded.openFile("libreria.db4o");
+        } catch (Exception ex) {
+            System.out.println("No se ha podido conectar con la base de datos");
+        }
+    }
+
+    public void cerrarConexion() {
+        try {
+            db.close();
+        } catch (Exception e) {
+            System.out.println("No se pudo conectar con la BBDD");
+        }
+    }
+
+    //TESTING
+    public void showAllLibros() {
+        //ABRIMOS CONEXION
+        abrirConexion();
+        System.out.println("LIBROS:");
+        ObjectSet resultado = db.query(Libro.class);
+        for (int i = 0; i < resultado.size(); i++) {
+            Libro libro = (Libro) resultado.next();
+            System.out.println("LibroID: " + libro.getIdLibro() + "\nTitulo: " + libro.getTitulo());
+        }
+
+        //CERRAMOS CONEXION
+        cerrarConexion();
     }
 }

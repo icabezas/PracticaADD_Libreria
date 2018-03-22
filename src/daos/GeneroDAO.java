@@ -5,18 +5,117 @@
  */
 package daos;
 
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import modelo.Genero;
+
 /**
  *
  * @author THOR
  */
 public class GeneroDAO {
 
-    private GeneroDAO() {
+    private ObjectContainer db;
+
+    public GeneroDAO() {
     }
 
-    //TODAS LAS FUNCIONES ABREN CONEXION Y CIERRAN DENTRO DE ELLAS MISMAS
     //CREAR GENERO
+    public void crearGenero(String nombre) {
+        if (existeGeneroNombre(nombre) == null) {
+            
+            //ABRIMOS CONEXION
+            abrirConexion();
+            
+            Genero genero = new Genero(getIdGeneroLast(), nombre);
+            try {
+                db.store(genero);
+            } catch (Exception ex) {
+                System.out.println("No se ha podido guardar el objeto Genero");
+            }
+        } else {
+            System.out.println("Ya existe este objeto Genero");
+        }
+
+        //CERRAMOS CONEXION
+        cerrarConexion();
+    }
+
     //BORRAR GENERO
-    
+    public void deleteGenero(String nombre) {
+        //ABRIMOS CONEXION
+        abrirConexion();
+        
+        ObjectSet result = db.queryByExample(new Genero(nombre));
+        if (!result.isEmpty()) {
+            Genero genero = (Genero) result.next();
+            try {
+                db.delete(genero);
+                System.out.println("Deleted " + genero.getNombre());
+            } catch (Exception ex) {
+                System.out.println("Problema al borrar genero " + nombre);
+            }
+        } else {
+            System.out.println("No se ha encontrado el género " + nombre);
+        }
+        
+        //CERRAMOS CONEXION
+        cerrarConexion();
+    }
+
     //EXISTE GENERO
+    public Genero existeGeneroNombre(String nombre) {
+        //ABRIMOS CONEXION
+        abrirConexion();
+        
+        Genero genero = new Genero(nombre);
+        Genero dbGenero = null;
+        ObjectSet resultado = db.queryByExample(genero);
+        if (!resultado.isEmpty()) {
+            dbGenero = (Genero) resultado.next();
+        }
+        
+        //CERRAMOS CONEXION
+        cerrarConexion();
+        return dbGenero;
+    }
+
+    public int getIdGeneroLast() {
+        ObjectSet resultado = db.query(Genero.class);
+        int total = resultado.size() + 1;
+        return total;
+    }
+
+    public void abrirConexion() {
+        try {
+            db = Db4oEmbedded.openFile("libreria.db4o");
+        } catch (Exception ex) {
+            System.out.println("No se ha podido conectar con la base de datos");
+        }
+    }
+
+    public void cerrarConexion() {
+        try {
+            db.close();
+        } catch (Exception e) {
+            System.out.println("No se pudo conectar con la BBDD");
+        }
+    }
+
+    //TESTING
+    public void showAllGeneros() {
+        //ABRIMOS CONEXION
+        abrirConexion();
+        
+        System.out.println("GENEROS:");
+        ObjectSet resultado = db.query(Genero.class);
+        for (int i = 0; i < resultado.size(); i++) {
+            Genero genero = (Genero) resultado.next();
+            System.out.println("GeneroID: " + genero.getIdGenero() + "\nNombre: " + genero.getNombre());
+        }
+
+        //CERRAMOS CONEXION
+        cerrarConexion();
+    }
 }
