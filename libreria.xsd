@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="libreria" type="libreriaType"/>
+  <xs:complexType name="libreriaType">
+    <xs:sequence>
+      <xs:element type="libroType" name="libro" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="libroType">
+    <xs:sequence>
+      <xs:element name="titulo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="autor" maxOccurs="unbounded" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="categoria" maxOccurs="unbounded" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Policial"/>
+            <xs:enumeration value="Romántica"/>
+            <xs:enumeration value="Aventura"/>
+            <xs:enumeration value="Terror"/>
+            <xs:enumeration value="Ficción/Realidad"/>
+            <xs:enumeration value="Ciencia Ficción"/>
+            <xs:enumeration value="Investigación"/>
+            <xs:enumeration value="Biográfica"/>
+            <xs:enumeration value="Infantil"/>
+            <xs:enumeration value="Autoayuda"/>
+            <xs:enumeration value="Erótica"/>
+            <xs:enumeration value="Hogar"/>
+            <xs:enumeration value="Enciclopedia/Manual"/>
+            <xs:enumeration value="Política"/>
+            <xs:enumeration value="Economía/Marketing"/>
+            <xs:enumeration value="Sociedad"/>
+            <xs:enumeration value="Deportes"/>
+            <xs:enumeration value="Viajes/Cultura"/>
+            <xs:enumeration value="Varios"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="lenguaje" minOccurs="0"/>
+      <xs:element name="anyo">
+        <xs:simpleType>
+          <xs:restriction base="xs:short">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="edicion" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:byte">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:float">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:int" name="ISBN" use="required"/>
+  </xs:complexType>
+</xs:schema>
