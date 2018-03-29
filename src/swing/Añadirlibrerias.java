@@ -5,6 +5,7 @@
  */
 package swing;
 
+import daos.ColeccionDAO;
 import daos.Methods;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,10 +23,12 @@ import jaxb.UsuarioType;
  * @author dam2t1
  */
 public class Añadirlibrerias extends javax.swing.JFrame {
-
+    
+    
     private List<LibroType> listaLibrosNuevacolection;
     private List<LibroType> listaLibrosAñadir;
     Methods method = new Methods();
+    ColeccionDAO c = new ColeccionDAO();
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
     
     /**
@@ -51,7 +54,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollBar1 = new javax.swing.JScrollBar();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        nl = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -115,7 +118,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(nl, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2)))
@@ -130,7 +133,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
@@ -225,7 +228,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        c.crearColeccion(1, nl.getText(), listaLibrosNuevacolection);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -291,6 +294,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
         listalibrosbbdd.setModel(demolist);
     }
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -306,9 +310,9 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JList<String> listaLibroColeccion;
     private javax.swing.JList<String> listalibrosbbdd;
+    private javax.swing.JTextField nl;
     private javax.swing.JButton salir;
     // End of variables declaration//GEN-END:variables
 }
