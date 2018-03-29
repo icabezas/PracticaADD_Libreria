@@ -31,8 +31,7 @@ public class LibroDAO {
     public void crearLibro(Libro libro, Genero genero) {
         //ABRIMOS CONEXION
 //        abrirConexion();
-
-        if (existeLibroPorID(libro.getIdLibro()) == null) {
+        if (existeLibroPorISBN(libro.getIsbn()) == null) {
             libro.setIdLibro(getIdLibroLast());
             LibroGeneroDAO libroGeneroRelacion = new LibroGeneroDAO();
             try {
@@ -53,13 +52,20 @@ public class LibroDAO {
 
     //BORRAR LIBRO
     //TO-DO: BORRAR LIBROCOLECCION Y LIBROGENERO
-    public void deleteLibro(int idLibro) {
+    public void borrarLibro(int idLibro) {
         abrirConexion();
         ObjectSet result = db.queryByExample(new Libro(idLibro));
         if (!result.isEmpty()) {
             Libro found = (Libro) result.next();
             try {
                 db.delete(found);
+                LibroColeccionDAO libroColeccionDAO = new LibroColeccionDAO();
+                LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
+                cerrarConexion();
+                //COMPROBAR SI FUNCIONA
+                libroColeccionDAO.borrarLibroColeccion(idLibro, true);
+                libroGeneroDAO.borrarLibroGenero(idLibro, true);
+
                 System.out.println("Deleted " + found.toString());
             } catch (Exception ex) {
                 System.out.println("Problema al borrar libro " + idLibro);
@@ -67,13 +73,12 @@ public class LibroDAO {
         } else {
             System.out.println("No se ha encontrado el libro " + idLibro);
         }
-        cerrarConexion();
     }
 
     //MODIFICAR DATOS LIBRO
     public void modificarLibro(Libro libroOld, Libro libroNew) {
         abrirConexion();
-        if (libroOld.getIdLibro()== libroNew.getIdLibro()) {
+        if (libroOld.getIdLibro() == libroNew.getIdLibro()) {
             ObjectSet result = db.queryByExample(new Libro(libroOld.getIdLibro()));
             if (!result.isEmpty()) {
                 Libro newLibro = (Libro) result.next();
@@ -108,11 +113,25 @@ public class LibroDAO {
                 Libro libro = (Libro) resultado.next();
                 librosBBDD.add(libro);
             }
-        }else{
+        } else {
             librosBBDD = null;
         }
         cerrarConexion();
         return librosBBDD;
+    }
+
+    //RETORNA UNA LISTA DE LIBROS DADO UN IDGENERO
+    public List<Libro> getAllLibrosPorIdGenero(int idGenero) {
+        List<Libro> librosPorGenero = new ArrayList<>();
+        LibroGeneroDAO libGenDAO = new LibroGeneroDAO();
+        List<LibroGenero> libGenList = libGenDAO.getAllLibroGeneroPorIdGenero(idGenero);
+        if (libGenList != null) {
+            for (LibroGenero libroGenero : libGenList) {
+                librosPorGenero.add(existeLibroPorID(libroGenero.getIdLibro()));
+            }
+        }
+
+        return librosPorGenero;
     }
 
     //RETORNA EL ULTIMO IDLIBRO PARA CREAR UNO NUEVO
@@ -136,6 +155,33 @@ public class LibroDAO {
         }
         cerrarConexion();
         return dbLibro;
+    }
+
+    //COMPRUEBA SI EXISTE UN LIBRO CON ESE ISBN
+    public Libro existeLibroPorISBN(int isbn) {
+        List<Libro> todosLibros = getListaLibrosBBDD();
+        Libro lib = null;
+        if (todosLibros != null) {
+            for (Libro libro : todosLibros) {
+                if (libro.getIsbn() == isbn) {
+                    return libro;
+                }
+            }
+        }
+        return lib;
+    }
+
+    //EXISTEN LIBROS EN LA BBDD
+    public boolean existenTodosLibros(ArrayList<Libro> libros) {
+        boolean existenTodos = true;
+        LibroDAO libroDAO = new LibroDAO();
+        for (Libro libro : libros) {
+            if (libroDAO.existeLibroPorID(libro.getIdLibro()) == null) {
+                existenTodos = false;
+                break;
+            }
+        }
+        return existenTodos;
     }
 
     public void abrirConexion() {

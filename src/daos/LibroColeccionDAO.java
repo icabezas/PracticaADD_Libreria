@@ -46,19 +46,25 @@ public class LibroColeccionDAO {
         cerrarConexion();
     }
 
-    //BORRAR LIBROGENERO 
-    public void borrarLibroColeccion(int idLibro, int idColeccion) {
+    //BORRAR LIBROCOLECCION por idColeccion o por idLibro
+    public void borrarLibroColeccion(int id, boolean esPorLibro) {
         //ABRIMOS CONEXION
         abrirConexion();
-
-        ObjectSet result = db.queryByExample(new LibroColeccion(idLibro, idColeccion));
+        ObjectSet result = null;
+        if (esPorLibro) {
+            result = db.queryByExample(new LibroColeccion(id, 0));
+        } else {
+            result = db.queryByExample(new LibroColeccion(id));
+        }
         if (!result.isEmpty()) {
-            LibroColeccion libCol = (LibroColeccion) result.next();
-            try {
-                db.delete(libCol);
-                System.out.println("Deleted LibroColeccion");
-            } catch (Exception ex) {
-                System.out.println("DB: No se ha podido borrar objeto LibroColeccion");
+            for (int i = 0; i < result.size(); i++) {
+                LibroColeccion libCol = (LibroColeccion) result.next();
+                try {
+                    db.delete(libCol);
+                    System.out.println("Deleted LibroColeccion");
+                } catch (Exception ex) {
+                    System.out.println("DB: No se ha podido borrar objeto LibroColeccion");
+                }
             }
         } else {
             System.out.println("No se ha encontrado LibroColeccion indicada");
@@ -134,11 +140,12 @@ public class LibroColeccionDAO {
         abrirConexion();
 
         ObjectSet resultado = db.query(LibroColeccion.class);
-        for (int i = 0; i < resultado.size(); i++) {
-            LibroColeccion libCol = (LibroColeccion) resultado.next();
-            System.out.println("LibroID: " + libCol.getIdLibro() + "\nColeccionID:" + libCol.getIdColeccion());
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                LibroColeccion libCol = (LibroColeccion) resultado.next();
+                System.out.println("LibroID: " + libCol.getIdLibro() + "\nColeccionID:" + libCol.getIdColeccion());
+            }
         }
-
         //CERRAMOS CONEXION
         cerrarConexion();
     }

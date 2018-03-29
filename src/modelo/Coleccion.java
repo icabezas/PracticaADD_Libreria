@@ -18,6 +18,10 @@ public class Coleccion {
     public Coleccion(int idUsuario, String nombre){
         this.idUsuario = idUsuario;
     }
+    
+    public Coleccion(int idUsuario){
+        this.idUsuario = idUsuario;
+    }
 
     public Coleccion(int idColeccion, String nombre, int idUsuario) {
         this.idColeccion = idColeccion;

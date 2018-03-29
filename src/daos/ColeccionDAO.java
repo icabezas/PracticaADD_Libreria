@@ -9,6 +9,7 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import java.util.ArrayList;
+import java.util.List;
 import modelo.Coleccion;
 import modelo.Libro;
 
@@ -26,7 +27,8 @@ public class ColeccionDAO {
     //CREAR COLECCION
     public void crearColeccion(int idUsuario, String nombreColeccion, ArrayList<Libro> libros) {
         //COMPROBAR SI EXISTE LIBRO Y COLECCION PRIMERO
-        if (existeColeccionUsuarioNombre(idUsuario, nombreColeccion) == null && existenTodosLibros(libros)) {
+        LibroDAO libroDAO = new LibroDAO();
+        if (existeColeccionUsuarioNombre(idUsuario, nombreColeccion) == null && libroDAO.existenTodosLibros(libros)) {
             Coleccion coleccion = new Coleccion(getIdColeccionLast(), nombreColeccion, idUsuario);
             for (Libro libro : libros) {
                 LibroColeccionDAO libroColeccion = new LibroColeccionDAO();
@@ -41,13 +43,36 @@ public class ColeccionDAO {
         } else {
             System.out.println("Ya existe este objeto LibroColeccion o no existe alguno de los libros en bbdd, quien sabe");
         }
+        cerrarConexion();
     }
 
     //BORRAR COLECCION
     //TO-DO: BORRAR LIBROCOLECCION
-    
-    
-    //MODIFICAR COLECCION??
+    public void borrarColeccion(String nombreColeccion, int idUsuario) {
+        abrirConexion();
+        ObjectSet result = db.queryByExample(new Coleccion(idUsuario, nombreColeccion));
+        if (!result.isEmpty()) {
+            Coleccion coleccion = (Coleccion) result.next();
+            try {
+                db.delete(coleccion);
+                LibroColeccionDAO libroColeccionDAO = new LibroColeccionDAO();
+                //COMPROBAR SI FUNCIONA
+                libroColeccionDAO.borrarLibroColeccion(coleccion.getIdColeccion(), false);
+
+                System.out.println("Deleted " + nombreColeccion);
+            } catch (Exception ex) {
+                System.out.println("Problema al borrar la coleccion " + nombreColeccion);
+            }
+        } else {
+            System.out.println("No se ha encontrado la coleccion con nombre " + nombreColeccion);
+        }
+        cerrarConexion();
+    }
+
+    //MODIFICAR COLECCION
+    public void modificarColeccion(String nombreColeccion, List<Libro> libros){
+        //ESTO SE DEBERIA HACER EN LIBROCOLECCION
+    }
     
     
     //EXISTE COLECCION DEL USUARIO CON ESE NOMBRE
@@ -62,18 +87,17 @@ public class ColeccionDAO {
         cerrarConexion();
         return dbColeccionUsuario;
     }
-
-    //EXISTEN LIBROS EN LA BBDD
-    public boolean existenTodosLibros(ArrayList<Libro> libros) {
-        boolean existenTodos = true;
-        LibroDAO libroDAO = new LibroDAO();
-        for (Libro libro : libros) {
-            if (libroDAO.existeLibroPorID(libro.getIdLibro()) == null) {
-                existenTodos = false;
-                break;
+    
+    public List<Coleccion> getAllColeccionesUsuario(int idUsuario){
+        abrirConexion();
+        List<Coleccion> coleccionesUsuario = new ArrayList<>();
+            Coleccion coleccion = new Coleccion(idUsuario);
+            ObjectSet resultado = db.queryByExample(coleccion);
+            if(!resultado.isEmpty()){
+                coleccion = (Coleccion) resultado.next();
             }
-        }
-        return existenTodos;
+        cerrarConexion();
+        return coleccionesUsuario;
     }
 
     //RETORNA EL ULTIMO IDCOLECCION PARA CREAR UNA NUEVA

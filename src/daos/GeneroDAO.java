@@ -8,6 +8,8 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Genero;
 
 /**
@@ -24,10 +26,10 @@ public class GeneroDAO {
     //CREAR GENERO
     public void crearGenero(String nombre) {
         if (existeGeneroNombre(nombre) == null) {
-            
+
             //ABRIMOS CONEXION
             abrirConexion();
-            
+
             Genero genero = new Genero(getIdGeneroLast(), nombre);
             try {
                 db.store(genero);
@@ -46,11 +48,14 @@ public class GeneroDAO {
     public void deleteGenero(String nombre) {
         //ABRIMOS CONEXION
         abrirConexion();
-        
+
         ObjectSet result = db.queryByExample(new Genero(nombre));
         if (!result.isEmpty()) {
             Genero genero = (Genero) result.next();
             try {
+                LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
+                //PROBAR SI FUNCIONA
+                libroGeneroDAO.borrarLibroGenero(genero.getIdGenero(), false);
                 db.delete(genero);
                 System.out.println("Deleted " + genero.getNombre());
             } catch (Exception ex) {
@@ -59,7 +64,7 @@ public class GeneroDAO {
         } else {
             System.out.println("No se ha encontrado el género " + nombre);
         }
-        
+
         //CERRAMOS CONEXION
         cerrarConexion();
     }
@@ -68,19 +73,34 @@ public class GeneroDAO {
     public Genero existeGeneroNombre(String nombre) {
         //ABRIMOS CONEXION
         abrirConexion();
-        
+
         Genero genero = new Genero(nombre);
         Genero dbGenero = null;
         ObjectSet resultado = db.queryByExample(genero);
         if (!resultado.isEmpty()) {
             dbGenero = (Genero) resultado.next();
         }
-        
+
         //CERRAMOS CONEXION
         cerrarConexion();
         return dbGenero;
     }
 
+    //DEVUELVE UNA LISTA DE TODOS LOS GENEROS
+    public List<Genero> getListAllGeneros() {
+        List<Genero> generoList = new ArrayList<>();
+        generoList = null;
+        ObjectSet resultado = db.query(Genero.class);
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                Genero genero = (Genero) resultado.next();
+                generoList.add(genero);
+            }
+        }
+        return generoList;
+    }
+    
+    //DEVUELVE EL ID PARA AÑADIR UN ELEMENTO (TAMAÑO ARRAY + 1)
     public int getIdGeneroLast() {
         ObjectSet resultado = db.query(Genero.class);
         int total = resultado.size() + 1;
@@ -107,7 +127,7 @@ public class GeneroDAO {
     public void showAllGeneros() {
         //ABRIMOS CONEXION
         abrirConexion();
-        
+
         System.out.println("GENEROS:");
         ObjectSet resultado = db.query(Genero.class);
         for (int i = 0; i < resultado.size(); i++) {

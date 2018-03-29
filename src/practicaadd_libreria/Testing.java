@@ -53,7 +53,7 @@ public class Testing extends DBDAO {
         ColeccionDAO coleccionDAO = new ColeccionDAO();
         coleccionDAO.crearColeccion(1, "Mis favoritos", libros);
 
-//        libroDAO.deleteLibro(libro.getIsbn());
+ //       libroDAO.borrarLibro(3);
 //        generoDAO.deleteGenero("Ciencia Ficcion");
 //        libroDAO.modificarLibro(libro, newLibro);
 //        generoDAO.showAllGeneros();
@@ -68,6 +68,12 @@ public class Testing extends DBDAO {
         for(Libro lib : librosDadaColeccion){
             System.out.println("ID: " + lib.getIdLibro());
             System.out.println("NOMBRE: " + lib.getTitulo());
+        }
+        
+        System.out.println("Lista de libros por genero: 2");
+        List<Libro> librosDadoGenero = libroDAO.getAllLibrosPorIdGenero(2);
+        for(Libro libroGenero : librosDadoGenero){
+            System.out.println("Titulo Libro: " + libroGenero.getTitulo());
         }
 
 //        dbdao.cerrarConexion();

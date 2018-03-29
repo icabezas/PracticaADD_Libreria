@@ -44,24 +44,32 @@ public class LibroGeneroDAO {
     }
 
     //TO-DO: COMPROBAR QUE SE PUEDE BORRAR LIBROGENERO
-    //BORRAR LIBROGENERO 
-    public void borrarLibroGenero(int idLibro, int idGenero) {
+    //BORRAR LIBROGENERO puede ser por idGenero o por idLibro
+    public void borrarLibroGenero(int id, boolean esPorLibro) {
         //ABRIMOS CONEXION
-//        abrirConexion();
-
-        LibroGenero dbLibroGenero = existeLibroGenero(idLibro, idGenero);
-        if (dbLibroGenero != null) {
-            try {
-                db.delete(dbLibroGenero);
-            } catch (Exception ex) {
-                System.out.println("No se ha podido borrar");
-            }
+        abrirConexion();
+        ObjectSet result = null;
+        if (esPorLibro) {
+            result = db.queryByExample(new LibroGenero(id, 0));
         } else {
-            System.out.println("Problema al borrar");
+            result = db.queryByExample(new LibroGenero(0, id));
         }
+        if (!result.isEmpty()) {
+            for (int i = 0; i < result.size(); i++) {
+                LibroGenero libGen = (LibroGenero) result.next();
+                try {
+                    db.delete(libGen);
+                    System.out.println("Deleted LibroGenero");
+                } catch (Exception ex) {
+                    System.out.println("DB: No se ha podido borrar objeto LibroGenero");
+                }
+            }
 
+        } else {
+            System.out.println("No se ha encontrado LibroGenero indicada");
+        }
         //CERRAMOS CONEXION
-//        cerrarConexion();
+        cerrarConexion();
     }
 
     //EXISTE LIBROGENERO
@@ -79,6 +87,25 @@ public class LibroGeneroDAO {
         //CERRAMOS CONEXION
         cerrarConexion();
         return dbLibroGenero;
+    }
+
+    //RETORNA UNA LISTA DE LIBROGENERO POR IDGENERO
+    public List<LibroGenero> getAllLibroGeneroPorIdGenero(int idGenero) {
+        abrirConexion();
+        List<LibroGenero> libGenList = new ArrayList<>();
+        LibroGenero libGen = new LibroGenero(0, idGenero);
+        ObjectSet resultado = db.queryByExample(libGen);
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                libGen = (LibroGenero) resultado.next();
+                libGenList.add(libGen);
+            }
+        } else {
+            System.out.println("No existe este genero: 2");
+            libGenList = null;
+        }
+        cerrarConexion();
+        return libGenList;
     }
 
     //GETID LAST LIBROGENERO
