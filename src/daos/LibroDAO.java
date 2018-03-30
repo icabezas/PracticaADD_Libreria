@@ -104,9 +104,9 @@ public class LibroDAO {
     }
 
     //DEVUELVE LISTA DE TODOS LOS LIBROS EN BBDD
-    public List<Libro> getListaLibrosBBDD() {
+    public ArrayList<Libro> getListaLibrosBBDD() {
         abrirConexion();
-        List<Libro> librosBBDD = new ArrayList<>();
+        ArrayList<Libro> librosBBDD = new ArrayList<>();
         ObjectSet resultado = db.query(Libro.class);
         if (!resultado.isEmpty()) {
             for (int i = 0; i < resultado.size(); i++) {

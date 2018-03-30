@@ -47,7 +47,6 @@ public class ColeccionDAO {
     }
 
     //BORRAR COLECCION
-    //TO-DO: BORRAR LIBROCOLECCION
     public void borrarColeccion(String nombreColeccion, int idUsuario) {
         abrirConexion();
         ObjectSet result = db.queryByExample(new Coleccion(idUsuario, nombreColeccion));
@@ -79,7 +78,12 @@ public class ColeccionDAO {
     public Coleccion existeColeccionUsuarioNombre(int idUsuario, String nombreColeccion) {
         abrirConexion();
         Coleccion dbColeccionUsuario = null;
-        Coleccion coleccion = new Coleccion(idUsuario, nombreColeccion);
+        Coleccion coleccion = new Coleccion();
+        
+        coleccion.setIdUsuario(idUsuario);
+        coleccion.setNombre(nombreColeccion);
+        coleccion.setIdColeccion(0);
+        
         ObjectSet resultado = db.queryByExample(coleccion);
         if (!resultado.isEmpty()) {
             dbColeccionUsuario = (Coleccion) resultado.next();
@@ -109,7 +113,6 @@ public class ColeccionDAO {
         return total;
     }
 
-    //PARA TEST
     public void abrirConexion() {
         try {
             db = Db4oEmbedded.openFile("libreria.db4o");
