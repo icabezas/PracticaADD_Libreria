@@ -22,6 +22,9 @@ public class Usuario {
         this.isAdmin = isAdmin;
     }
 
+    public Usuario() {
+    }
+    
     public Usuario(String username) {
         this.username = username;
     }
@@ -30,11 +33,11 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public int getId_usuario() {
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public void setId_usuario(int idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 

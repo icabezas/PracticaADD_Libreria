@@ -17,6 +17,11 @@ public class Coleccion {
     
     public Coleccion(int idUsuario, String nombre){
         this.idUsuario = idUsuario;
+        this.nombre = nombre;
+    }
+    
+    public Coleccion(){
+        
     }
     
     public Coleccion(int idUsuario){
