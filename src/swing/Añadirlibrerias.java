@@ -17,6 +17,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import jaxb.LibroType;
 import jaxb.UsuarioType;
+import modelo.Libro;
+import daos.LibroDAO;
 
 /**
  *
@@ -25,8 +27,9 @@ import jaxb.UsuarioType;
 public class Añadirlibrerias extends javax.swing.JFrame {
     
     
-    private List<LibroType> listaLibrosNuevacolection;
-    private List<LibroType> listaLibrosAñadir;
+    private ArrayList<Libro> listaLibrosNuevacolection;
+    private ArrayList<Libro> listaLibrosAñadir;
+    private LibroDAO libroDAO = new LibroDAO();
     Methods method = new Methods();
     ColeccionDAO c = new ColeccionDAO();
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
@@ -240,7 +243,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
        listaLibroColeccion.setModel(demolist2);
          System.out.println(pos);
-        String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor().get(0) + " | " + listaLibrosAñadir.get(pos).getISBN();
+        String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor() + " | " + listaLibrosAñadir.get(pos).getIsbn();
             if(!listaLibrosNuevacolection.contains(listaLibrosAñadir.get(pos))){
                 listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
                 demolist2.addElement(listaLibrosAñadir.get(pos).getTitulo()); 
@@ -279,13 +282,13 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     }//GEN-LAST:event_listaLibroColeccionMouseClicked
 
     private void llenarListaLibros() {
-        listaLibrosAñadir = method.getListaLibros();
+        listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
         //System.out.println(listaLibrosAñadir.get(0).getTitulo());
         DefaultListModel<String> demolist = new DefaultListModel<>();
         if (!listaLibrosAñadir.isEmpty()) {
-            for (LibroType libro : listaLibrosAñadir) {
+            for (Libro libro : listaLibrosAñadir) {
                 
-                String infoLibro = libro.getTitulo() + " | " + libro.getAutor().get(0) + " | " + libro.getISBN();
+                String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
                 demolist.addElement(infoLibro);
             }
         }else{
