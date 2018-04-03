@@ -5,7 +5,14 @@
  */
 package swing;
 
+import daos.ColeccionDAO;
+import exceptiones.LibreriaExcepciones;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import modelo.Coleccion;
+import modelo.Libro;
 
 /**
  *
@@ -13,12 +20,22 @@ import javax.swing.DefaultListModel;
  */
 public class Main extends javax.swing.JFrame {
    DefaultListModel<String> demolist2 = new DefaultListModel<>();
+   private ArrayList<Coleccion> listaUser;
+   ColeccionDAO c = new ColeccionDAO();
     /**
      * Creates new form main
      */
     public Main() {
-        initComponents();
-        list.setModel(demolist2);
+       try {
+           initComponents();
+           list.setModel(demolist2);
+           listaUser = (ArrayList<Coleccion>) c.getAllColeccionesUsuario(Swim.userSession.getIdUsuario());
+           for(int i =0; i<listaUser.size();i++){
+           demolist2.addElement(listaUser.get(i).getNombre());
+           }
+       } catch (LibreriaExcepciones ex) {
+           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+       }
     }
 
     /**
