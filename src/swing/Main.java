@@ -5,18 +5,20 @@
  */
 package swing;
 
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author dam2t1
  */
 public class Main extends javax.swing.JFrame {
-
+   DefaultListModel<String> demolist2 = new DefaultListModel<>();
     /**
      * Creates new form main
      */
     public Main() {
         initComponents();
-       
+        list.setModel(demolist2);
     }
 
     /**

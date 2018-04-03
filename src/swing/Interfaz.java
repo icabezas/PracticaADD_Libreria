@@ -8,6 +8,7 @@ package swing;
 import daos.UsuarioDAO;
 import javax.swing.JOptionPane;
 import jaxb.UsuarioType;
+import modelo.Usuario;
 
 /**
  *
@@ -117,9 +118,10 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       if(u.loginUsuario(user.getText(), pass.getText())){
+       
+        if(u.loginUsuario(user.getText(), pass.getText())){
                String nl = System.getProperty("line.separator");
-           
+           Swim.userSession = new Usuario(user.getText());
            Main main = new Main();
            main.setLocationRelativeTo(null);
            main.setVisible(true);
