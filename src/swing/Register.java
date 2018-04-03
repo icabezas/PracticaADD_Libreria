@@ -6,6 +6,7 @@
 package swing;
 
 import daos.Methods;
+import daos.UsuarioDAO;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -20,6 +21,7 @@ public class Register extends javax.swing.JFrame {
     /**
      * Creates new form Register
      */
+    UsuarioDAO u = new UsuarioDAO();
     public Register() {
         initComponents();
     }
@@ -116,27 +118,16 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void completeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeActionPerformed
-        String newuser;
-        String password;
+        String newuser = usname.getText();
+        String password= p1.getText();
         String nl = System.getProperty("line.separator");
-        char pass[] = p1.getPassword();
-        char conf[] = p1.getPassword();
-        Methods method = new Methods();
-
-        if (Arrays.equals(pass, conf)) {
-            password = p1.getText();
-            newuser = usname.getText();
-            UsuarioType user = new UsuarioType(newuser, newuser, password, rootPaneCheckingEnabled, null);
-            method.nuevoUsuario(user);
-
-            JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
-            method.cerrarConexion();
-            dispose();
-        } else {
-
+        try{
+        u.crearUsuario(newuser, password);
+        JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
+        }catch(LibreriaExcepciones ex){
+            JOptionPane.showMessageDialog(null, "No" + nl + "se ha completado" + newuser + nl + "el registro: " + password, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        method.cerrarConexion();
-
+       
     }//GEN-LAST:event_completeActionPerformed
 
     private void usnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usnameActionPerformed

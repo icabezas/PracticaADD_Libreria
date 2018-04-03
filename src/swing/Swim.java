@@ -5,9 +5,11 @@
  */
 package swing;
 
+import modelo.Usuario;
+
 public class Swim {
 
-
+    public static Usuario userSession;
 
     public static void main(String[] args) {
 

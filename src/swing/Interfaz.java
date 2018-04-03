@@ -5,8 +5,10 @@
  */
 package swing;
 
+import daos.UsuarioDAO;
 import javax.swing.JOptionPane;
 import jaxb.UsuarioType;
+import modelo.Usuario;
 
 /**
  *
@@ -17,6 +19,7 @@ public class Interfaz extends javax.swing.JFrame {
     /**
      * Creates new form Interfaz
      */
+    UsuarioDAO u = new UsuarioDAO();
     public Interfaz() {
         initComponents();
         
@@ -115,35 +118,18 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       String account = "pepe";
-       String password = "avestruz";
-       String catchaccount;
-       String catchpass;
-       catchaccount = user.getText();
-       catchpass=pass.getText();
-       UsuarioType user = new UsuarioType();
-       char[] contra = pass.getPassword();
-       int counter = 0;
-       char[] chars = password.toCharArray();
-
-       for(int i = 0;i<catchpass.length();i++ ){
-           if(contra[i] == chars[i]){
-           counter++;
-           }
-       }
        
-       if(counter == password.length()){
-           String nl = System.getProperty("line.separator");
-           
+        if(u.loginUsuario(user.getText(), pass.getText())){
+               String nl = System.getProperty("line.separator");
+           Swim.userSession = new Usuario(user.getText());
            Main main = new Main();
            main.setLocationRelativeTo(null);
            main.setVisible(true);
            JOptionPane.showMessageDialog(null, "Login" + nl + "Succesfull" + nl + "Diviertete C=!","SI", JOptionPane.INFORMATION_MESSAGE);
        }else{
-           String nl = System.getProperty("line.separator");
+             String nl = System.getProperty("line.separator");
 
             JOptionPane.showMessageDialog(null, "Soy un mensaje de error" + nl + "tu cuenta o tu contraseña" + nl + "SON ERRONEAS!","SI", JOptionPane.ERROR_MESSAGE);
- 
        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
