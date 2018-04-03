@@ -11,11 +11,13 @@ import daos.GeneroDAO;
 import daos.LibroColeccionDAO;
 import daos.LibroDAO;
 import daos.LibroGeneroDAO;
+import daos.UsuarioDAO;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
-import modelo.Coleccion;
 import modelo.Genero;
 import modelo.Libro;
+import modelo.Usuario;
 
 /**
  *
@@ -24,9 +26,8 @@ import modelo.Libro;
 public class Test extends DBDAO {
 
     public static void main(String[] args) {
-        
-        //LOS METODOS COMENTADOS FUNCIONAN TODOS
 
+        //LOS METODOS COMENTADOS FUNCIONAN TODOS
         LibroDAO libroDAO = new LibroDAO();
         GeneroDAO generoDAO = new GeneroDAO();
         LibroGeneroDAO libGenDAO = new LibroGeneroDAO();
@@ -51,9 +52,13 @@ public class Test extends DBDAO {
         libros.add(libro3);
 
         ColeccionDAO coleccionDAO = new ColeccionDAO();
-        coleccionDAO.crearColeccion(1, "Mis favoritos", libros);
+        try {
+            coleccionDAO.crearColeccion(1, "Mis favoritos", libros);
+        }catch(LibreriaExcepciones ex){
+            System.out.println(ex.getMessage());
+        }
 
- //       libroDAO.borrarLibro(3);
+        //       libroDAO.borrarLibro(3);
 //        generoDAO.deleteGenero("Ciencia Ficcion");
 //        libroDAO.modificarLibro(libro, newLibro);
 //        generoDAO.showAllGeneros();
@@ -62,18 +67,64 @@ public class Test extends DBDAO {
 //        libColDAO.crearLibroColeccion(1, 1);
 //        libColDAO.borrarLibroColeccion(1, 1);
         libColDAO.showAllLibroColeccion();
-        
+
         List<Libro> librosDadaColeccion = libColDAO.getLibrosDadaColeccion(1);
         System.out.println("Coleccion: 1");
-        for(Libro lib : librosDadaColeccion){
+        for (Libro lib : librosDadaColeccion) {
             System.out.println("ID: " + lib.getIdLibro());
             System.out.println("NOMBRE: " + lib.getTitulo());
         }
-        
+
         System.out.println("Lista de libros por genero: 2");
         List<Libro> librosDadoGenero = libroDAO.getAllLibrosPorIdGenero(2);
-        for(Libro libroGenero : librosDadoGenero){
+        for (Libro libroGenero : librosDadoGenero) {
             System.out.println("Titulo Libro: " + libroGenero.getTitulo());
+        }
+
+        System.out.println("<---------------- TESTING FUNCIONES DE USUARIO ----------------->");
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Usuario usuarioTest = new Usuario("pepe");
+        try {
+            usuarioDAO.crearUsuario("Pepe", "avestruz");
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
+        }
+        try {
+            usuarioDAO.showAllUsuariosDB();
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println("*** DELETE USER ***");
+
+        //usuarioDAO.borrarUsuario("Pepe");
+        //usuarioDAO.showAllUsuariosDB();
+        System.out.println("*** LOGIN USER WRONG ***");
+        try {
+            if (usuarioDAO.loginUsuario("Pepe", "avestruz") != null) {
+                System.out.println("Login correcto");
+            } else {
+                System.out.println("Login maaaaal");
+            }
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        System.out.println("*** GIVE USER ADMIN PRIVILEGES ***");
+        try {
+            usuarioDAO.changeUserPrivileges("Pepe", true);
+            usuarioDAO.showAllUsuariosDB();
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
+        }
+        try {
+            Usuario usuarioOld = usuarioDAO.existeUsuario("Pepe");
+            Usuario usuarioNew = usuarioOld;
+            usuarioNew.setIsAdmin(false);
+            usuarioNew.setPassword("123456");
+            usuarioDAO.modificarPasswordUsuario(usuarioOld, usuarioNew);
+            usuarioDAO.showAllUsuariosDB();
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
         }
 
 //        dbdao.cerrarConexion();

@@ -11,6 +11,7 @@ import com.db4o.ObjectSet;
 import java.util.ArrayList;
 import java.util.List;
 import jaxb.LibroType;
+import modelo.Genero;
 import modelo.LibroGenero;
 
 /**
@@ -29,8 +30,8 @@ public class LibroGeneroDAO {
     public void crearLibroGenero(int idLibro, int idGenero) {
         if (existeLibroGenero(idLibro, idGenero) == null) {
             LibroGenero libroGenero = new LibroGenero(idLibro, idGenero);
+            abrirConexion();
             try {
-                abrirConexion();
                 db.store(libroGenero);
             } catch (Exception ex) {
                 System.out.println("No se ha podido guardar el objeto LibroGenero");
@@ -87,6 +88,22 @@ public class LibroGeneroDAO {
         //CERRAMOS CONEXION
         cerrarConexion();
         return dbLibroGenero;
+    }
+
+    //RETORNA EL GENERO DE UN LIBRO DADO UN IDLIBRO
+    public Genero getLibroGenero(int idLibro) {
+        abrirConexion();
+
+        Genero gen = null;
+        GeneroDAO generoDAO = new GeneroDAO();
+        List<LibroGenero> libGenAllDB = getAllLibroGenero();
+        for (LibroGenero libroGenero : libGenAllDB) {
+            if (libroGenero.getIdGenero() == idLibro) {
+                gen = generoDAO.getGeneroFromID(libroGenero.getIdGenero());
+            }
+        }
+        cerrarConexion();
+        return gen;
     }
 
     //RETORNA UNA LISTA DE LIBROGENERO POR IDGENERO
@@ -146,5 +163,22 @@ public class LibroGeneroDAO {
 
         //CERRAMOS CONEXION
         cerrarConexion();
+    }
+
+    //RETORNA UNA LISTA DE TODOS LOS LIBROGENERO EN DB
+    public List<LibroGenero> getAllLibroGenero() {
+        //ABRIMOS CONEXION
+        abrirConexion();
+
+        List<LibroGenero> libGenAllDB = new ArrayList<>();
+        ObjectSet resultado = db.query(LibroGenero.class);
+        for (int i = 0; i < resultado.size(); i++) {
+            LibroGenero libGen = (LibroGenero) resultado.next();
+            libGenAllDB.add(libGen);
+        }
+        //CERRAMOS CONEXION
+        cerrarConexion();
+
+        return libGenAllDB;
     }
 }

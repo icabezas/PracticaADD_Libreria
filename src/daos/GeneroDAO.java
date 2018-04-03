@@ -8,6 +8,7 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Genero;
@@ -24,20 +25,19 @@ public class GeneroDAO {
     }
 
     //CREAR GENERO
-    public void crearGenero(String nombre) {
+    public void crearGenero(String nombre) throws LibreriaExcepciones {
         if (existeGeneroNombre(nombre) == null) {
-
-            //ABRIMOS CONEXION
-            abrirConexion();
 
             Genero genero = new Genero(getIdGeneroLast(), nombre);
             try {
+                abrirConexion();
                 db.store(genero);
             } catch (Exception ex) {
-                System.out.println("No se ha podido guardar el objeto Genero");
+                cerrarConexion();
+                throw new LibreriaExcepciones("No se ha podido guardar el objeto Genero");
             }
         } else {
-            System.out.println("Ya existe este objeto Genero");
+            throw new LibreriaExcepciones("Ya existe este objeto Genero");
         }
 
         //CERRAMOS CONEXION
@@ -45,7 +45,7 @@ public class GeneroDAO {
     }
 
     //BORRAR GENERO
-    public void deleteGenero(String nombre) {
+    public void deleteGenero(String nombre) throws LibreriaExcepciones {
         //ABRIMOS CONEXION
         abrirConexion();
 
@@ -59,10 +59,11 @@ public class GeneroDAO {
                 db.delete(genero);
                 System.out.println("Deleted " + genero.getNombre());
             } catch (Exception ex) {
-                System.out.println("Problema al borrar genero " + nombre);
+                cerrarConexion();
+                throw new LibreriaExcepciones("Problema al borrar genero " + nombre);
             }
         } else {
-            System.out.println("No se ha encontrado el género " + nombre);
+            throw new LibreriaExcepciones("No se ha encontrado el genero " + nombre);
         }
 
         //CERRAMOS CONEXION
@@ -70,7 +71,7 @@ public class GeneroDAO {
     }
 
     //EXISTE GENERO
-    public Genero existeGeneroNombre(String nombre) {
+    public Genero existeGeneroNombre(String nombre) throws LibreriaExcepciones {
         //ABRIMOS CONEXION
         abrirConexion();
 
@@ -99,32 +100,47 @@ public class GeneroDAO {
         }
         return generoList;
     }
-    
+
+    //DEVUELVE OBJETO GENERO A PARTIR DE IDGENERO
+    public Genero getGeneroFromID(int idGenero) throws LibreriaExcepciones {
+        Genero genero = new Genero(idGenero, "");
+        Genero genDB = null;
+        abrirConexion();
+        ObjectSet resultado = db.queryByExample(genero);
+        if (!resultado.isEmpty()) {
+            genDB = (Genero) resultado.next();
+        }
+        cerrarConexion();
+        return genDB;
+    }
+
     //DEVUELVE EL ID PARA AÑADIR UN ELEMENTO (TAMAÑO ARRAY + 1)
-    public int getIdGeneroLast() {
+    public int getIdGeneroLast() throws LibreriaExcepciones {
+        abrirConexion();
         ObjectSet resultado = db.query(Genero.class);
         int total = resultado.size() + 1;
+        cerrarConexion();
         return total;
     }
 
-    public void abrirConexion() {
+    public void abrirConexion() throws LibreriaExcepciones {
         try {
             db = Db4oEmbedded.openFile("libreria.db4o");
         } catch (Exception ex) {
-            System.out.println("No se ha podido conectar con la base de datos");
+            throw new LibreriaExcepciones("No se pudo conectar con la BBDD");
         }
     }
 
-    public void cerrarConexion() {
+    public void cerrarConexion() throws LibreriaExcepciones {
         try {
             db.close();
         } catch (Exception e) {
-            System.out.println("No se pudo conectar con la BBDD");
+            throw new LibreriaExcepciones("No se pudo conectar con la BBDD");
         }
     }
 
     //TESTING
-    public void showAllGeneros() {
+    public void showAllGeneros() throws LibreriaExcepciones {
         //ABRIMOS CONEXION
         abrirConexion();
 

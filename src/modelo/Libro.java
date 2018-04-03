@@ -5,11 +5,14 @@
  */
 package modelo;
 
+import daos.LibroGeneroDAO;
+
 /**
  *
  * @author THOR
  */
 public class Libro {
+
     private int idLibro;
     private int isbn;
     private String titulo;
@@ -95,5 +98,16 @@ public class Libro {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-    } 
+    }
+
+    private Genero getGenero(int idLibro) {
+        LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
+        return libroGeneroDAO.getLibroGenero(idLibro);
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: " + getGenero(this.idLibro).getNombre();
+    }
+
 }

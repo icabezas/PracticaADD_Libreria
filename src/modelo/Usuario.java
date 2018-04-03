@@ -15,8 +15,7 @@ public class Usuario {
     private String password;
     private boolean isAdmin;
 
-    public Usuario(int idUsuario, String username, String password, boolean isAdmin) {
-        this.idUsuario = idUsuario;
+    public Usuario(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
@@ -64,6 +63,12 @@ public class Usuario {
     public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
+
+    @Override
+    public String toString() {
+        return "ID: " + this.idUsuario + "\n Username: " + this.username + "\n Password: " + this.password + "\n IsAdmin: " + this.isAdmin;
+    }
+    
     
     
 }

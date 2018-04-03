@@ -8,9 +8,9 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
-import modelo.Coleccion;
 import modelo.Libro;
 import modelo.LibroColeccion;
 
@@ -26,29 +26,25 @@ public class LibroColeccionDAO {
     }
 
     //CREAR LIBROCOLECCION
-    public void crearLibroColeccion(int idLibro, int idColeccion) {
-        //ABRIMOS CONEXION
-        abrirConexion();
-
+    public void crearLibroColeccion(int idLibro, int idColeccion) throws LibreriaExcepciones {
         //COMPROBAR SI EXISTE RELACION LIBRO Y COLECCION PRIMERO
         if (existeLibroColeccion(idLibro, idColeccion) == null) {
             LibroColeccion libroColeccion = new LibroColeccion(idLibro, idColeccion);
+            abrirConexion();
             try {
                 db.store(libroColeccion);
             } catch (Exception ex) {
-                System.out.println("No se ha podido guardar el objeto LibroColeccion");
+                cerrarConexion();
+                throw new LibreriaExcepciones("No se ha podido guardar el objeto LibroColeccion");
             }
+            cerrarConexion();
         } else {
-            System.out.println("Ya existe este objeto LibroColeccion");
+            throw new LibreriaExcepciones("Ya existe este objeto LibroColeccion");
         }
-
-        //CERRAMOS CONEXION
-        cerrarConexion();
     }
 
     //BORRAR LIBROCOLECCION por idColeccion o por idLibro
-    public void borrarLibroColeccion(int id, boolean esPorLibro) {
-        //ABRIMOS CONEXION
+    public void borrarLibroColeccion(int id, boolean esPorLibro) throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet result = null;
         if (esPorLibro) {
@@ -63,13 +59,13 @@ public class LibroColeccionDAO {
                     db.delete(libCol);
                     System.out.println("Deleted LibroColeccion");
                 } catch (Exception ex) {
-                    System.out.println("DB: No se ha podido borrar objeto LibroColeccion");
+                    cerrarConexion();
+                    throw new LibreriaExcepciones("DB: No se ha podido borrar objeto LibroColeccion");
                 }
             }
         } else {
             System.out.println("No se ha encontrado LibroColeccion indicada");
         }
-        //CERRAMOS CONEXION
         cerrarConexion();
     }
 
@@ -100,12 +96,14 @@ public class LibroColeccionDAO {
 
     //EXISTE LIBROGENERO
     public LibroColeccion existeLibroColeccion(int idLibro, int idColeccion) {
+        abrirConexion();
         LibroColeccion dbLibroColeccion = null;
         LibroColeccion libroColeccion = new LibroColeccion(idLibro, idColeccion);
         ObjectSet resultado = db.queryByExample(libroColeccion);
         if (!resultado.isEmpty()) {
             dbLibroColeccion = (LibroColeccion) resultado.next();
         }
+        cerrarConexion();
         return dbLibroColeccion;
     }
 

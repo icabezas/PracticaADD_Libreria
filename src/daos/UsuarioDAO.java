@@ -8,6 +8,7 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Usuario;
@@ -25,84 +26,92 @@ public class UsuarioDAO {
     //TODAS LAS FUNCIONES ABREN CONEXION Y CIERRAN DENTRO DE ELLAS MISMAS
 
     //CREAR USUARIO
-    public void crearUsuario(String username, String password) {
+    public void crearUsuario(String username, String password) throws LibreriaExcepciones {
         Usuario usuario = new Usuario();
-        usuario.setIdUsuario(getIdUsuarioLast());
-        usuario.setUsername(username);
-        abrirConexion();
-        if (existeUsuario(usuario) == null) {
+        usuario.setUsername(username.toLowerCase());
+        usuario.setIsAdmin(false);
+        if (existeUsuario(username.toLowerCase()) == null) {
+            usuario.setIdUsuario(getIdUsuarioLast());
+            usuario.setPassword(password);
+            abrirConexion();
             try {
-                usuario.setIsAdmin(false);
-                usuario.setPassword(password);
                 db.store(usuario);
             } catch (Exception ex) {
-                System.out.println("Este usuario ya existe");
+                cerrarConexion();
+                throw new LibreriaExcepciones("No se ha podido almacenar el usuario");
             }
+            cerrarConexion();
+        } else {
+            throw new LibreriaExcepciones("Este usuario ya existe");
         }
     }
 
     //BORRAR USUARIO
-    public void borrarUsuario(String username) {
+    public void borrarUsuario(String username) throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet result = null;
-
-        result = db.queryByExample(new Usuario(username));
+        result = db.queryByExample(new Usuario(username.toLowerCase()));
         if (!result.isEmpty()) {
             Usuario userDelete = (Usuario) result.next();
             try {
                 db.delete(userDelete);
-                System.out.println("Deleted Usuario " + username);
+                System.out.println("Deleted Usuario " + username.toLowerCase());
             } catch (Exception ex) {
-                System.out.println("DB: No se ha podido borrar el usuario " + username);
+                cerrarConexion();
+                throw new LibreriaExcepciones("No se ha podido borrar el usuario " + username.toLowerCase());
             }
         } else {
-            System.out.println("No se ha encontrado el usuario indicado");
+            cerrarConexion();
+            throw new LibreriaExcepciones("No se ha encontrado el usuario indicado");
         }
         //CERRAMOS CONEXION
         cerrarConexion();
     }
 
     //LOGIN USUARIO
-    public boolean loginUsuario(String username, String password) {
-        Usuario usuario = existeUsuario(new Usuario(username));
-        if (usuario.getUsername().equals(username) && usuario.getPassword().equals(password)) {
-            return true;
+    public Usuario loginUsuario(String username, String password) throws LibreriaExcepciones {
+        Usuario loginUser = new Usuario(username.toLowerCase());
+        Usuario usuario = existeUsuario(loginUser.getUsername().toLowerCase());
+        if (usuario != null) {
+            if (usuario.getUsername().equals(username.toString().toLowerCase()) && usuario.getPassword().equals(password)) {
+                return usuario;
+            } else {
+                throw new LibreriaExcepciones("El nombre de usuario o la contraseña son incorrectos");
+            }
         } else {
-            return false;
+            throw new LibreriaExcepciones("El nombre de usuario o la contraseña son incorrectos");
         }
     }
 
     //MODIFICAR USUARIO
     //SOLO SE PUEDE MODIFICAR LA PASSWORD DE MOMENTO
-    public void modificarUsuario(Usuario usuarioOld, Usuario usuarioNew) {
-        abrirConexion();
-        if (usuarioOld.getUsername() == usuarioNew.getUsername()) {
+    public void modificarPasswordUsuario(Usuario usuarioOld, Usuario usuarioNew) throws LibreriaExcepciones {
+        if (usuarioOld.getUsername().equals(usuarioNew.getUsername())) {
+            abrirConexion();
             ObjectSet result = db.queryByExample(new Usuario(usuarioOld.getIdUsuario()));
             if (!result.isEmpty()) {
                 Usuario newUsuario = (Usuario) result.next();
                 newUsuario.setPassword(usuarioNew.getPassword());
                 try {
                     db.store(newUsuario);
-                    System.out.println("Actualizado");
                 } catch (Exception ex) {
-                    System.out.println("No se ha podido realizar el update");
+                    cerrarConexion();
+                    throw new LibreriaExcepciones("No se ha podido modificar el usuario");
                 }
             }
+            cerrarConexion();
         } else {
-            System.out.println("El username no puede modificarse");
+            throw new LibreriaExcepciones("El username no se puede modificar");
         }
-
-        //CERRAMOS CONEXION
-        cerrarConexion();
     }
 
     //EXISTE USUARIO
-    public Usuario existeUsuario(Usuario usuario) {
+    public Usuario existeUsuario(String username) throws LibreriaExcepciones {
         abrirConexion();
 
         Usuario userDB = new Usuario();
-
-        ObjectSet resultado = db.queryByExample(usuario);
+        Usuario userExists = new Usuario(username.toLowerCase());
+        ObjectSet resultado = db.queryByExample(userExists);
         if (!resultado.isEmpty()) {
             userDB = (Usuario) resultado.next();
         } else {
@@ -114,7 +123,7 @@ public class UsuarioDAO {
     }
 
     //RETORNA LISTA DE TODOS LOS USUARIOS EN BBDD
-    public List<Usuario> getAllUsuariosDB() {
+    public List<Usuario> getAllUsuariosDB() throws LibreriaExcepciones {
         abrirConexion();
         List<Usuario> usuariosDB = new ArrayList<>();
         ObjectSet resultado = db.query(Usuario.class);
@@ -124,34 +133,44 @@ public class UsuarioDAO {
                 usuariosDB.add(user);
             }
         } else {
-            System.out.println("No hay usuarios en la db");
+            cerrarConexion();
+            throw new LibreriaExcepciones("No hay usuarios en la DB");
         }
         cerrarConexion();
         return usuariosDB;
     }
 
     //CONVIERTE UN USUARIO NORMAL A ADMINISTRADOR
-    public void makeUserAdmin(Usuario usuario) {
+    public void changeUserPrivileges(String username, boolean makeAdmin) throws LibreriaExcepciones {
         abrirConexion();
+        Usuario usuario = new Usuario(username.toString().toLowerCase());
         ObjectSet resultado = db.queryByExample(usuario);
         if (!resultado.isEmpty()) {
             Usuario userDB = (Usuario) resultado.next();
-            if (!userDB.isIsAdmin()) {
+            if (userDB.isIsAdmin() && makeAdmin) {
+                throw new LibreriaExcepciones("Este usuario ya es administrador");
+            } else if (userDB.isIsAdmin() && !makeAdmin) {
+                userDB.setIsAdmin(false);
+            } else if (!userDB.isIsAdmin() && makeAdmin) {
                 userDB.setIsAdmin(true);
-                try {
-                    db.store(userDB);
-                } catch (Exception ex) {
-                    System.out.println("Problema al guardar usuario");
-                }
-            }else{
-                System.out.println("Este usuario ya es administrador");
+            } else if (!userDB.isIsAdmin() && !makeAdmin) {
+                throw new LibreriaExcepciones("Este usuario no tiene privilegios");
             }
+            try {
+                db.store(userDB);
+            } catch (Exception ex) {
+                cerrarConexion();
+                throw new LibreriaExcepciones("No se ha podido modificar los privilegios del usuario");
+            }
+        } else {
+            cerrarConexion();
+            throw new LibreriaExcepciones("No se ha encontrado el usuario " + username);
         }
         cerrarConexion();
     }
 
     //RETORNA EL ULTIMO IDCOLECCION PARA CREAR UNA NUEVA
-    public int getIdUsuarioLast() {
+    public int getIdUsuarioLast() throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet resultado = db.query(Usuario.class);
         int total = resultado.size() + 1;
@@ -159,19 +178,34 @@ public class UsuarioDAO {
         return total;
     }
 
-    public void abrirConexion() {
+    public void abrirConexion() throws LibreriaExcepciones {
         try {
             db = Db4oEmbedded.openFile("libreria.db4o");
         } catch (Exception ex) {
-            System.out.println("No se ha podido conectar con la base de datos");
+            throw new LibreriaExcepciones("No se ha podido conectar con la base de datos");
         }
     }
 
-    public void cerrarConexion() {
+    public void cerrarConexion() throws LibreriaExcepciones {
         try {
             db.close();
         } catch (Exception e) {
-            System.out.println("No se pudo conectar con la BBDD");
+            throw new LibreriaExcepciones("No se ha podido conectar con la base de datos");
         }
+    }
+
+    //TESTING
+    public void showAllUsuariosDB() throws LibreriaExcepciones {
+        abrirConexion();
+        ObjectSet resultado = db.query(Usuario.class);
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                Usuario user = (Usuario) resultado.next();
+                System.out.println(user.toString());
+            }
+        } else {
+            System.out.println("No hay usuarios en la DB");
+        }
+        cerrarConexion();
     }
 }

@@ -8,6 +8,7 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Coleccion;
@@ -25,7 +26,7 @@ public class ColeccionDAO {
     }
 
     //CREAR COLECCION
-    public void crearColeccion(int idUsuario, String nombreColeccion, ArrayList<Libro> libros) {
+    public void crearColeccion(int idUsuario, String nombreColeccion, ArrayList<Libro> libros) throws LibreriaExcepciones {
         //COMPROBAR SI EXISTE LIBRO Y COLECCION PRIMERO
         LibroDAO libroDAO = new LibroDAO();
         if (existeColeccionUsuarioNombre(idUsuario, nombreColeccion) == null && libroDAO.existenTodosLibros(libros)) {
@@ -38,16 +39,17 @@ public class ColeccionDAO {
                 abrirConexion();
                 db.store(coleccion);
             } catch (Exception ex) {
-                System.out.println("No se ha podido guardar el objeto Coleccion");
+                cerrarConexion();
+                throw new LibreriaExcepciones("No se ha podido guardar el objeto Coleccion");
             }
         } else {
-            System.out.println("Ya existe este objeto LibroColeccion o no existe alguno de los libros en bbdd, quien sabe");
+            throw new LibreriaExcepciones("Ya existe este objeto LibroColeccion o no existe alguno de los libros en bbdd, quien sabe");
         }
         cerrarConexion();
     }
 
     //BORRAR COLECCION
-    public void borrarColeccion(String nombreColeccion, int idUsuario) {
+    public void borrarColeccion(String nombreColeccion, int idUsuario) throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet result = db.queryByExample(new Coleccion(idUsuario, nombreColeccion));
         if (!result.isEmpty()) {
@@ -60,52 +62,46 @@ public class ColeccionDAO {
 
                 System.out.println("Deleted " + nombreColeccion);
             } catch (Exception ex) {
-                System.out.println("Problema al borrar la coleccion " + nombreColeccion);
+                cerrarConexion();
+                throw new LibreriaExcepciones("Problema al borrar la coleccion " + nombreColeccion);
             }
         } else {
-            System.out.println("No se ha encontrado la coleccion con nombre " + nombreColeccion);
+            throw new LibreriaExcepciones("No se ha encontrado la coleccion con nombre " + nombreColeccion);
         }
         cerrarConexion();
     }
 
     //MODIFICAR COLECCION
-    public void modificarColeccion(String nombreColeccion, List<Libro> libros){
+    public void modificarColeccion(String nombreColeccion, List<Libro> libros) {
         //ESTO SE DEBERIA HACER EN LIBROCOLECCION
     }
-    
-    
+
     //EXISTE COLECCION DEL USUARIO CON ESE NOMBRE
-    public Coleccion existeColeccionUsuarioNombre(int idUsuario, String nombreColeccion) {
+    public Coleccion existeColeccionUsuarioNombre(int idUsuario, String nombreColeccion) throws LibreriaExcepciones {
+        List<Coleccion> coleccionesUsuario = getAllColeccionesUsuario(idUsuario);
+        Coleccion coleccionUsuario = null;
+        for (Coleccion coleccion : coleccionesUsuario) {
+            if (coleccion.getNombre().toLowerCase().equals(nombreColeccion.toLowerCase())) {
+                coleccionUsuario = coleccion;
+            }
+        }
+        return coleccionUsuario;
+    }
+
+    public List<Coleccion> getAllColeccionesUsuario(int idUsuario) throws LibreriaExcepciones {
+        List<Coleccion> coleccionesUsuario = new ArrayList<>();
+        Coleccion coleccion = new Coleccion(idUsuario);
         abrirConexion();
-        Coleccion dbColeccionUsuario = null;
-        Coleccion coleccion = new Coleccion();
-        
-        coleccion.setIdUsuario(idUsuario);
-        coleccion.setNombre(nombreColeccion);
-        coleccion.setIdColeccion(0);
-        
         ObjectSet resultado = db.queryByExample(coleccion);
         if (!resultado.isEmpty()) {
-            dbColeccionUsuario = (Coleccion) resultado.next();
+            coleccion = (Coleccion) resultado.next();
         }
-        cerrarConexion();
-        return dbColeccionUsuario;
-    }
-    
-    public List<Coleccion> getAllColeccionesUsuario(int idUsuario){
-        abrirConexion();
-        List<Coleccion> coleccionesUsuario = new ArrayList<>();
-            Coleccion coleccion = new Coleccion(idUsuario);
-            ObjectSet resultado = db.queryByExample(coleccion);
-            if(!resultado.isEmpty()){
-                coleccion = (Coleccion) resultado.next();
-            }
         cerrarConexion();
         return coleccionesUsuario;
     }
 
     //RETORNA EL ULTIMO IDCOLECCION PARA CREAR UNA NUEVA
-    public int getIdColeccionLast() {
+    public int getIdColeccionLast() throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet resultado = db.query(Coleccion.class);
         int total = resultado.size() + 1;
@@ -113,19 +109,19 @@ public class ColeccionDAO {
         return total;
     }
 
-    public void abrirConexion() {
+    public void abrirConexion() throws LibreriaExcepciones {
         try {
             db = Db4oEmbedded.openFile("libreria.db4o");
         } catch (Exception ex) {
-            System.out.println("No se ha podido conectar con la base de datos");
+            throw new LibreriaExcepciones("No se ha podido conectar con la base de datos");
         }
     }
 
-    public void cerrarConexion() {
+    public void cerrarConexion() throws LibreriaExcepciones {
         try {
             db.close();
         } catch (Exception e) {
-            System.out.println("No se pudo conectar con la BBDD");
+            throw new LibreriaExcepciones("No se ha podido conectar con la base de datos");
         }
     }
 }
