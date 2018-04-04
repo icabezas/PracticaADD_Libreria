@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE libreria [
         <!ELEMENT libreria (libro+)>
-        <!ELEMENT libro (titulo, autor+, categoria*, lenguaje?, anyo?, edicion?, precio)>
+        <!ELEMENT libro (titulo, autor+, genero*, idioma?, anyo?, edicion?, precio)>
         <!ATTLIST libro ISBN CDATA #REQUIRED>
         <!ELEMENT titulo (#PCDATA)>
         <!ELEMENT autor (#PCDATA)>
-        <!ELEMENT categoria (#PCDATA)>
-        <!ELEMENT lenguaje (#PCDATA)>
+        <!ELEMENT genero (#PCDATA)>
+        <!ELEMENT idioma (#PCDATA)>
         <!ELEMENT anyo (#PCDATA)>
         <!ELEMENT edicion (#PCDATA)>
         <!ELEMENT precio (#PCDATA)>
@@ -15,7 +15,7 @@
   <libro ISBN="0123456001">
     <titulo>AAD1</titulo>
     <autor>Profesor 1</autor>
-    <categoria>Programación</categoria>
+    <genero>Programación</genero>
     <anyo>2009</anyo>
     <edicion>7</edicion>
     <precio>19.99</precio>
@@ -23,7 +23,7 @@
   <libro ISBN="0123456002">
     <titulo>AAD2</titulo>
     <autor>Profesor 1</autor>
-    <categoria>Programación</categoria>
+    <genero>Programación</genero>
     <anyo>2008</anyo>
     <precio>25.99</precio>
   </libro>
@@ -32,9 +32,9 @@
     <autor>Yu Suzuki</autor>
     <autor>Yuji Naka</autor>
     <autor>Yuzo Koshiro</autor>
-    <categoria>Videojuegos</categoria>
-    <categoria>Ocio</categoria>
-    <lenguaje>Japonés</lenguaje>
+    <genero>Videojuegos</genero>
+    <genero>Ocio</genero>
+    <idioma>Japonés</idioma>
     <anyo>1999</anyo>
     <edicion>1</edicion>
     <precio>49.99</precio>
