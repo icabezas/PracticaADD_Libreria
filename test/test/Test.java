@@ -38,13 +38,29 @@ public class Test extends DBDAO {
         Libro libro2 = new Libro(987654321, "Ready Player Two", "Ernest Cline", "EN", 2015, 1, 15.20);
         Libro libro3 = new Libro(147258369, "Ready Player Three", "Ernest Cline", "EN", 2015, 1, 15.20);
 
-        generoDAO.crearGenero("Ciencia Ficcion");
-        generoDAO.crearGenero("Policiaca");
-        libroDAO.crearLibro(libro, new Genero(1, "Ciencia Ficcion"));
-        libroDAO.crearLibro(libro2, new Genero(1, "Ciencia Ficcion"));
-        libroDAO.crearLibro(libro3, new Genero(2, "Policiaca"));
-        libroDAO.showAllLibros();
-        generoDAO.showAllGeneros();
+        System.out.println("<---------------- TESTING FUNCIONES DE GENERO ----------------->");
+        try {
+            generoDAO.crearGenero("Ciencia Ficcion");
+            generoDAO.crearGenero("Policiaca");
+            generoDAO.showAllGeneros();
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        System.out.println("<---------------- TESTING FUNCIONES DE LIBRO ----------------->");
+//        try {
+            libroDAO.crearLibro(libro, new Genero(1, "Ciencia Ficcion"));
+            libroDAO.crearLibro(libro2, new Genero(1, "Ciencia Ficcion"));
+            libroDAO.crearLibro(libro3, new Genero(2, "Policiaca"));
+//            libroDAO.showAllLibros();
+            List<Libro> books = libroDAO.getListaLibrosBBDD();
+            for(Libro book : books){
+                System.out.println(book.getTitulo());
+            }
+//        } catch (LibreriaExcepciones ex) {
+//            System.out.println(ex.getMessage());
+//        }
+
         libGenDAO.showAllLibroGenero();
 
         ArrayList<Libro> libros = new ArrayList<>();
@@ -54,7 +70,7 @@ public class Test extends DBDAO {
         ColeccionDAO coleccionDAO = new ColeccionDAO();
         try {
             coleccionDAO.crearColeccion(1, "Mis favoritos", libros);
-        }catch(LibreriaExcepciones ex){
+        } catch (LibreriaExcepciones ex) {
             System.out.println(ex.getMessage());
         }
 
