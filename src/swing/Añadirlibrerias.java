@@ -6,20 +6,12 @@
 package swing;
 
 import daos.ColeccionDAO;
-import daos.Methods;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import modelo.Libro;
 import daos.LibroDAO;
 import exceptiones.LibreriaExcepciones;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +23,6 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     private ArrayList<Libro> listaLibrosNuevacolection;
     private ArrayList<Libro> listaLibrosAñadir;
     private LibroDAO libroDAO = new LibroDAO();
-    Methods method = new Methods();
     ColeccionDAO c = new ColeccionDAO();
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
     
