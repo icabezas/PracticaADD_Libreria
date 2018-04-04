@@ -11,7 +11,6 @@ import com.db4o.ObjectSet;
 import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
-import jaxb.LibroType;
 import modelo.Genero;
 import modelo.LibroGenero;
 
