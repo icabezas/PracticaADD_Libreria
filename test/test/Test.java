@@ -25,7 +25,7 @@ import modelo.Usuario;
  */
 public class Test extends DBDAO {
 
-    public static void main(String[] args) throws LibreriaExcepciones {
+    public static void main(String[] args) {
 
         //LOS METODOS COMENTADOS FUNCIONAN TODOS
         LibroDAO libroDAO = new LibroDAO();
@@ -37,16 +37,6 @@ public class Test extends DBDAO {
 
         Libro libro2 = new Libro(987654321, "Ready Player Two", "Ernest Cline", "EN", 2015, 1, 15.20);
         Libro libro3 = new Libro(147258369, "Ready Player Three", "Ernest Cline", "EN", 2015, 1, 15.20);
-
-        try{
-            generoDAO.crearGenero("Ciencia Ficcion");
-        generoDAO.crearGenero("Policiaca");
-        libroDAO.crearLibro(libro, new Genero(1, "Ciencia Ficcion"));
-        libroDAO.crearLibro(libro2, new Genero(1, "Ciencia Ficcion"));
-        libroDAO.crearLibro(libro3, new Genero(2, "Policiaca"));
-        libroDAO.showAllLibros();
-        generoDAO.showAllGeneros();
-
 
         System.out.println("<---------------- TESTING FUNCIONES DE GENERO ----------------->");
         try {
@@ -71,12 +61,7 @@ public class Test extends DBDAO {
 //            System.out.println(ex.getMessage());
 //        }
 
-
         libGenDAO.showAllLibroGenero();
-        }catch(LibreriaExcepciones ex){
-            System.out.println(ex.getMessage());
-        }
-        
 
         ArrayList<Libro> libros = new ArrayList<>();
         libros.add(libro2);
@@ -117,7 +102,6 @@ public class Test extends DBDAO {
         Usuario usuarioTest = new Usuario("pepe");
         try {
             usuarioDAO.crearUsuario("Pepe", "avestruz");
-            usuarioDAO.crearUsuario("admin", "admin");
         } catch (LibreriaExcepciones ex) {
             System.out.println(ex.getMessage());
         }
@@ -143,7 +127,7 @@ public class Test extends DBDAO {
 
         System.out.println("*** GIVE USER ADMIN PRIVILEGES ***");
         try {
-            usuarioDAO.changeUserPrivileges("admin", true);
+            usuarioDAO.changeUserPrivileges("Pepe", true);
             usuarioDAO.showAllUsuariosDB();
         } catch (LibreriaExcepciones ex) {
             System.out.println(ex.getMessage());
