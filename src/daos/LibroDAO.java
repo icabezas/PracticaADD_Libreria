@@ -36,6 +36,7 @@ public class LibroDAO {
             LibroGeneroDAO libroGeneroRelacion = new LibroGeneroDAO();
             try {
 //                cerrarConexion();
+//TO-DO HACER GENERO A PARTIR DEL NOMBRE
                 libroGeneroRelacion.crearLibroGenero(getIdLibroLast(), genero.getIdGenero());
                 abrirConexion();
                 db.store(libro);

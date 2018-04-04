@@ -23,6 +23,9 @@ public class Genero {
         this.nombre = nombre;
     }
 
+    public Genero() {
+    }
+
     public int getIdGenero() {
         return idGenero;
     }

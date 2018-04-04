@@ -91,17 +91,19 @@ public class LibroGeneroDAO {
     }
 
     //RETORNA EL GENERO DE UN LIBRO DADO UN IDLIBRO
-    public Genero getLibroGenero(int idLibro) throws LibreriaExcepciones {
+    public ArrayList<Genero> getLibroGenero(int idLibro) throws LibreriaExcepciones {
 
-        Genero gen = null;
+        ArrayList<Genero> generos = new ArrayList<>();
+        Genero gen = new Genero();
         GeneroDAO generoDAO = new GeneroDAO();
         List<LibroGenero> libGenAllDB = getAllLibroGenero();
         for (LibroGenero libroGenero : libGenAllDB) {
             if (libroGenero.getIdGenero() == idLibro) {
                 gen = generoDAO.getGeneroFromID(libroGenero.getIdGenero());
+                generos.add(gen);
             }
         }
-        return gen;
+        return generos;
     }
 
     //RETORNA UNA LISTA DE LIBROGENERO POR IDGENERO
