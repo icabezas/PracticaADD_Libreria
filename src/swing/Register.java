@@ -125,6 +125,7 @@ public class Register extends javax.swing.JFrame {
         try{
         u.crearUsuario(newuser, password);
         JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
         }catch(LibreriaExcepciones ex){
             JOptionPane.showMessageDialog(null, "No" + nl + "se ha completado" + newuser + nl + "el registro: " + password, "ERROR", JOptionPane.ERROR_MESSAGE);
         }

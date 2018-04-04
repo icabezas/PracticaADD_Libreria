@@ -26,8 +26,18 @@ public class Main extends javax.swing.JFrame {
      * Creates new form main
      */
     public Main() {
-       try {
            initComponents();
+           colectionsView(); 
+           menu.setVisible(false);
+           if(Swim.userSession.isIsAdmin()==true){
+               menu.setVisible(true);
+           }
+           for(int i = 0; i < listaUser.size();i++){
+               System.out.print(listaUser.get(i));
+           }
+    }
+    private void colectionsView(){
+        try {
            list.setModel(demolist2);
            listaUser = (ArrayList<Coleccion>) c.getAllColeccionesUsuario(Swim.userSession.getIdUsuario());
            for(int i =0; i<listaUser.size();i++){
@@ -37,7 +47,6 @@ public class Main extends javax.swing.JFrame {
            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
        }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,11 +66,11 @@ public class Main extends javax.swing.JFrame {
         choose = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         des = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        funcs = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        menu = new javax.swing.JMenuBar();
+        getion = new javax.swing.JMenu();
+        createBook = new javax.swing.JMenuItem();
+        deleteBook = new javax.swing.JMenuItem();
+        bookList = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -76,22 +85,18 @@ public class Main extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(list);
 
-        jLabel2.setText("---------------------------");
+        jLabel2.setText("------------------------------------");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(59, 59, 59))))
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,7 +115,7 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 502, Short.MAX_VALUE)
+            .addGap(0, 506, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,25 +145,35 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        menu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        funcs.setText("Gestion de datos");
+        getion.setText("Gestion de datos");
 
-        jMenuItem1.setText("Crear libro");
-        funcs.add(jMenuItem1);
-
-        jMenuItem2.setText("Eliminar libro");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        createBook.setText("Crear libro");
+        createBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                createBookActionPerformed(evt);
             }
         });
-        funcs.add(jMenuItem2);
+        getion.add(createBook);
 
-        jMenuItem6.setText("Ver lista de libros");
-        funcs.add(jMenuItem6);
+        deleteBook.setText("Eliminar libro");
+        deleteBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBookActionPerformed(evt);
+            }
+        });
+        getion.add(deleteBook);
 
-        jMenuBar1.add(funcs);
+        bookList.setText("Ver lista de libros");
+        bookList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookListActionPerformed(evt);
+            }
+        });
+        getion.add(bookList);
+
+        menu.add(getion);
 
         jMenu1.setText("Gestion de usuarios");
 
@@ -179,9 +194,9 @@ public class Main extends javax.swing.JFrame {
         jMenu2.setText("Ver lista de librerias de todos los usuarios");
         jMenu1.add(jMenu2);
 
-        jMenuBar1.add(jMenu1);
+        menu.add(jMenu1);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -193,13 +208,13 @@ public class Main extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(choose)
                             .addComponent(createlibrary, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(82, 82, 82)
                         .addComponent(des)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -214,7 +229,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(createlibrary)
-                        .addGap(12, 12, 12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(choose)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
@@ -249,38 +264,46 @@ public class Main extends javax.swing.JFrame {
        dispose();
     }//GEN-LAST:event_desActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void deleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_deleteBookActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void createBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBookActionPerformed
+       
+    }//GEN-LAST:event_createBookActionPerformed
+
+    private void bookListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bookListActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem bookList;
     private javax.swing.JButton choose;
+    private javax.swing.JMenuItem createBook;
     private javax.swing.JButton createlibrary;
+    private javax.swing.JMenuItem deleteBook;
     private javax.swing.JButton des;
-    private javax.swing.JMenu funcs;
+    private javax.swing.JMenu getion;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> list;
+    private javax.swing.JMenuBar menu;
     // End of variables declaration//GEN-END:variables
 }

@@ -277,9 +277,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
        
         
         listaLibrosNuevacolection.remove(pos);
-        for(int i = 0 ; i<listaLibrosNuevacolection.size();i++){
-        System.out.println(listaLibrosNuevacolection.get(i));
-        }
+     
         System.out.println("removed from arry");
          
        
@@ -291,17 +289,19 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     }//GEN-LAST:event_listaLibroColeccionMouseClicked
 
     private void llenarListaLibros() {
-        listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
+         listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
         //System.out.println(listaLibrosAñadir.get(0).getTitulo());
+        
+        System.out.println(listaLibrosAñadir.size());
         DefaultListModel<String> demolist = new DefaultListModel<>();
-        if (!listaLibrosAñadir.isEmpty()) {
+        if (listaLibrosAñadir.isEmpty()) {
+            System.out.println("Caca, no hay libros");
+        }else{
             for (Libro libro : listaLibrosAñadir) {
                 
                 String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
                 demolist.addElement(infoLibro);
             }
-        }else{
-            System.out.println("Caca, no hay libros");
         }
 
         listalibrosbbdd.setModel(demolist);
