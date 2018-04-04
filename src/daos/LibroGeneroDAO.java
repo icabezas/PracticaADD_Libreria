@@ -8,6 +8,7 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
 import jaxb.LibroType;
@@ -91,8 +92,7 @@ public class LibroGeneroDAO {
     }
 
     //RETORNA EL GENERO DE UN LIBRO DADO UN IDLIBRO
-    public Genero getLibroGenero(int idLibro) {
-        abrirConexion();
+    public Genero getLibroGenero(int idLibro) throws LibreriaExcepciones {
 
         Genero gen = null;
         GeneroDAO generoDAO = new GeneroDAO();
@@ -102,7 +102,6 @@ public class LibroGeneroDAO {
                 gen = generoDAO.getGeneroFromID(libroGenero.getIdGenero());
             }
         }
-        cerrarConexion();
         return gen;
     }
 
