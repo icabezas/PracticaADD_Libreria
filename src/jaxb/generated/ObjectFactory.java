@@ -1,10 +1,11 @@
 
-package jaxb;
+package jaxb.generated;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
+import modelo.*;
 
 
 /**
@@ -42,11 +43,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LibroType }
+     * Create an instance of {@link Libro }
      * 
      */
-    public LibroType createLibroType() {
-        return new LibroType();
+    public Libro createLibroType() {
+        return new Libro();
     }
 
     /**
