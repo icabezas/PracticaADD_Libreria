@@ -3,19 +3,21 @@
     <libro ISBN="123456001">
         <titulo>El capote</titulo>
         <autor>Nikolai Gogol</autor>
-        <categoria>Novela</categoria>
-        <lenguaje>esp</lenguaje>
+        <genero>Novela</genero>
+        <idioma>esp</idioma>
         <anyo>1840</anyo>
         <edicion>2</edicion>
         <precio>25.55</precio>
+        <idLibro>0</idLibro>
     </libro>
     <libro ISBN="123456002">
         <titulo>La Historia Interminable</titulo>
         <autor>Michael Ende</autor>
-        <categoria>Fantasia</categoria>
-        <lenguaje>esp</lenguaje>
+        <genero>Fantasia</genero>
+        <idioma>esp</idioma>
         <anyo>1981</anyo>
         <edicion>1</edicion>
         <precio>19.99</precio>
+        <idLibro>0</idLibro>
     </libro>
 </libreria>
