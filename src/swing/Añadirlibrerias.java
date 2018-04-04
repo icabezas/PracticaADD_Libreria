@@ -15,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import jaxb.LibroType;
-import jaxb.UsuarioType;
 import modelo.Libro;
 import daos.LibroDAO;
 import exceptiones.LibreriaExcepciones;

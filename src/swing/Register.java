@@ -11,7 +11,6 @@ import exceptiones.LibreriaExcepciones;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
-import jaxb.UsuarioType;
 
 /**
  *
