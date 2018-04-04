@@ -88,9 +88,9 @@ public class GeneroDAO {
     }
 
     //DEVUELVE UNA LISTA DE TODOS LOS GENEROS
-    public List<Genero> getListAllGeneros() {
+    public List<Genero> getListAllGeneros() throws LibreriaExcepciones {
+        abrirConexion();
         List<Genero> generoList = new ArrayList<>();
-        generoList = null;
         ObjectSet resultado = db.query(Genero.class);
         if (!resultado.isEmpty()) {
             for (int i = 0; i < resultado.size(); i++) {
@@ -98,6 +98,7 @@ public class GeneroDAO {
                 generoList.add(genero);
             }
         }
+        cerrarConexion();
         return generoList;
     }
 

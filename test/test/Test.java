@@ -15,6 +15,8 @@ import daos.UsuarioDAO;
 import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Genero;
 import modelo.Libro;
 import modelo.Usuario;
@@ -42,11 +44,17 @@ public class Test extends DBDAO {
         try {
             generoDAO.crearGenero("Ciencia Ficcion");
             generoDAO.crearGenero("Policiaca");
-            generoDAO.showAllGeneros();
-        } catch (LibreriaExcepciones ex) {
+            } catch (LibreriaExcepciones ex) {
             System.out.println(ex.getMessage());
         }
 
+            System.out.println("Show all generos: ");
+        try {
+            generoDAO.showAllGeneros();
+        } catch (LibreriaExcepciones ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         System.out.println("<---------------- TESTING FUNCIONES DE LIBRO ----------------->");
 //        try {
             libroDAO.crearLibro(libro, new Genero(1, "Ciencia Ficcion"));
