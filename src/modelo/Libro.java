@@ -6,6 +6,9 @@
 package modelo;
 
 import daos.LibroGeneroDAO;
+import exceptiones.LibreriaExcepciones;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -100,14 +103,24 @@ public class Libro {
         this.precio = precio;
     }
 
-    private Genero getGenero(int idLibro) {
+    private Genero getGenero(int idLibro) throws LibreriaExcepciones {
         LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
         return libroGeneroDAO.getLibroGenero(idLibro);
     }
 
     @Override
     public String toString() {
-        return "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: " + getGenero(this.idLibro).getNombre();
+        Genero genero = null;
+        String nombreGenero = "";
+        try {
+            genero = getGenero(this.idLibro);
+            if(genero != null){
+                nombreGenero = genero.getNombre();
+            }
+        } catch (LibreriaExcepciones ex) {
+            System.out.println(ex.getMessage());
+        }
+        return "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: " + nombreGenero;
     }
 
 }
