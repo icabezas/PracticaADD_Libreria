@@ -29,7 +29,7 @@ public class Main extends javax.swing.JFrame {
            initComponents();
            colectionsView(); 
            menu.setVisible(false);
-           if(Swim.userSession.isIsAdmin()==true){
+           if(Swim.userSession.isIsAdmin() == true){
                menu.setVisible(true);
            }
            for(int i = 0; i < listaUser.size();i++){
