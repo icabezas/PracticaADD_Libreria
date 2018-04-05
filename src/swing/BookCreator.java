@@ -20,6 +20,8 @@ import modelo.Libro;
  * @author dam2t1
  */
 public class BookCreator extends javax.swing.JFrame {
+
+    
     LibroDAO l = new LibroDAO();
     GeneroDAO g = new GeneroDAO();
     public static ArrayList<Genero> listaGeneros;
@@ -30,10 +32,13 @@ public class BookCreator extends javax.swing.JFrame {
      */
     public BookCreator() throws LibreriaExcepciones {
         initComponents();
-        labelGenerator();
+        
+        
        
+    } 
+   public void updateUI() {
+    labelGenerator();  
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -223,14 +228,18 @@ public class BookCreator extends javax.swing.JFrame {
     }//GEN-LAST:event_theunicactionhereActionPerformed
 
     private void masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masActionPerformed
- GeneroSelector principal = new GeneroSelector();
-           
-           // para centrarlo
-           principal.setLocationRelativeTo(null);
-           
-           principal.setVisible(true);
+        try {
+            GeneroSelector principal = new GeneroSelector();
+            
+            // para centrarlo
+            principal.setLocationRelativeTo(null);
+            
+            principal.setVisible(true);
+        } catch (LibreriaExcepciones ex) {
+            Logger.getLogger(BookCreator.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_masActionPerformed
-private void labelGenerator(){
+public void labelGenerator(){
      if(cont == true){
         if(listaGenerosSelected!=null){
         String datos = "";
@@ -241,6 +250,7 @@ private void labelGenerator(){
         }
         }
 }
+
     /**
      * @param args the command line arguments
      */

@@ -5,9 +5,12 @@
  */
 package swing;
 
+import daos.GeneroDAO;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import modelo.Genero;
 import static swing.BookCreator.listaGeneros;
 import static swing.BookCreator.listaGenerosSelected;
 
@@ -17,7 +20,14 @@ import static swing.BookCreator.listaGenerosSelected;
  */
 public class GeneroSelector extends javax.swing.JFrame {
 DefaultListModel<String> demolist2 = new DefaultListModel<>();
- 
+GeneroDAO g = new GeneroDAO();
+
+ public GeneroSelector() throws LibreriaExcepciones{
+     initComponents();
+     fuckingGeneroGetter();
+     listaGeneros();
+     listaGenerosSelected = new ArrayList<>();        
+      }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -140,6 +150,7 @@ DefaultListModel<String> demolist2 = new DefaultListModel<>();
     private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
         dispose();
         BookCreator.cont = true;
+        BookCreator.updateUI();
     }//GEN-LAST:event_selectActionPerformed
 
     private void genListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genListMouseClicked
@@ -177,6 +188,9 @@ DefaultListModel<String> demolist2 = new DefaultListModel<>();
           demolist.addElement(listaGeneros.get(i).getNombre());
         }
  }
+ private void fuckingGeneroGetter() throws LibreriaExcepciones{
+    listaGeneros= (ArrayList<Genero>) g.getListAllGeneros();
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exit;
@@ -189,4 +203,9 @@ DefaultListModel<String> demolist2 = new DefaultListModel<>();
     private javax.swing.JButton select;
     private javax.swing.JList<String> selectedList;
     // End of variables declaration//GEN-END:variables
+
+    private void iniComponents() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+
