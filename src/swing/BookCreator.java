@@ -22,13 +22,19 @@ import modelo.Libro;
 public class BookCreator extends javax.swing.JFrame {
     LibroDAO l = new LibroDAO();
     GeneroDAO g = new GeneroDAO();
-    private ArrayList<Genero> listaGeneros;
+    public static ArrayList<Genero> listaGeneros;
+    public static ArrayList<String> listaGenerosSelected;
     /**
      * Creates new form BookCreatir
      */
     public BookCreator() throws LibreriaExcepciones {
         initComponents();
-        myBox();
+        String datos = "";
+        
+        for(String name : listaGenerosSelected){
+        datos += name + " ";
+        }
+        lb.setText(datos);
     }
 
     /**
@@ -57,7 +63,8 @@ public class BookCreator extends javax.swing.JFrame {
         spi2 = new javax.swing.JSpinner();
         spi3 = new javax.swing.JSpinner();
         spi4 = new javax.swing.JSpinner();
-        comp = new javax.swing.JComboBox<>();
+        mas = new javax.swing.JButton();
+        lb = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,11 +101,14 @@ public class BookCreator extends javax.swing.JFrame {
 
         spi4.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
 
-        comp.addActionListener(new java.awt.event.ActionListener() {
+        mas.setText("+");
+        mas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                compActionPerformed(evt);
+                masActionPerformed(evt);
             }
         });
+
+        lb.setText("No ha seleccionado generos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,22 +125,20 @@ public class BookCreator extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(comp, 0, 199, Short.MAX_VALUE)
-                                    .addComponent(spi)
-                                    .addComponent(two)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(spi, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                                    .addComponent(two)
+                                    .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(mas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(jLabel4)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(17, 17, 17))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel7))
+                                .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(spi3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,7 +151,7 @@ public class BookCreator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(83, 83, 83)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(73, 73, 73))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +168,9 @@ public class BookCreator extends javax.swing.JFrame {
                     .addComponent(spi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(comp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(mas, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lb))
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -184,7 +194,7 @@ public class BookCreator extends javax.swing.JFrame {
                     .addComponent(jLabel9))
                 .addGap(35, 35, 35)
                 .addComponent(theunicactionhere)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -215,27 +225,26 @@ public class BookCreator extends javax.swing.JFrame {
         if(control == true){
         Libro lib = new Libro(isbn,title,autor,idioma,year,edition,price);
         l.crearLibro(lib, gen);
+         dispose();
         }
-        dispose();
+       
     }//GEN-LAST:event_theunicactionhereActionPerformed
 
-    private void compActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compActionPerformed
-      
-        
-    }//GEN-LAST:event_compActionPerformed
-private void myBox() throws LibreriaExcepciones{
-      listaGeneros=(ArrayList<Genero>) g.getListAllGeneros();
-        for(int i = 0 ; i<listaGeneros.size();i++){
-            comp.addItem(listaGeneros.get(i).getNombre());
-        }
-}
+    private void masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masActionPerformed
+ GeneroSelector principal = new GeneroSelector();
+           
+           // para centrarlo
+           principal.setLocationRelativeTo(null);
+           
+           principal.setVisible(true);
+    }//GEN-LAST:event_masActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comp;
     private javax.swing.JTextField cuat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -246,6 +255,8 @@ private void myBox() throws LibreriaExcepciones{
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lb;
+    private javax.swing.JButton mas;
     private javax.swing.JTextField sev;
     private javax.swing.JSpinner spi;
     private javax.swing.JSpinner spi2;
