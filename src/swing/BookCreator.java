@@ -209,22 +209,17 @@ public class BookCreator extends javax.swing.JFrame {
         int year = (int) spi2.getValue();
         int edition = (int) spi3.getValue();
         double price = (double) spi4.getValue();
-        String genero = (String) comp.getSelectedItem();
-        Genero gen = null;
+        
+      
         if(title.equals("")||autor.equals("")||idioma.equals("")){
             control=false;
              JOptionPane.showMessageDialog(null, "Hay campos vacios error al crear el libro" , "Error message", JOptionPane.ERROR_MESSAGE);            
         }
         
-        try {
-            gen = g.existeGeneroNombre(genero);
-            
-        } catch (LibreriaExcepciones ex) {
-            JOptionPane.showMessageDialog(null, "No existe ese genero" , "Error message", JOptionPane.ERROR_MESSAGE);
-        }
+     
         if(control == true){
         Libro lib = new Libro(isbn,title,autor,idioma,year,edition,price);
-        l.crearLibro(lib, gen);
+        l.crearLibro(lib, listaGenerosSelected);
          dispose();
         }
        
