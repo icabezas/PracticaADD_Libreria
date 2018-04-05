@@ -222,7 +222,7 @@ public class LibroDAO {
             cerrarConexion();
             for (Libro book : libros) {
                 System.out.println("LibroID: " + book.getIdLibro() + "\nTitulo: " + book.getTitulo() + "\nGeneros: ");
-                for (Genero genero : book.getGenero(book.getIdLibro())) {
+                for (Genero genero : book.getGenerosFromIDLibro(book.getIdLibro())) {
                     System.out.print(genero.getNombre() + " ");
                 }
                 System.out.println("");

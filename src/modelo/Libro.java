@@ -8,6 +8,7 @@ package modelo;
 import daos.LibroGeneroDAO;
 import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
+
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +39,7 @@ public class Libro {
     @XmlElement(required = true)
     private String titulo;
     private String autor;
-    private String genero;
+    private List<String> genero;
     private String idioma;
     private int anyo;
     private int edicion;
@@ -65,7 +66,7 @@ public class Libro {
         this.precio = precio;
     }
 
-    public Libro(int isbn, String titulo, String autor, String idioma, int anyo, int edicion, double precio, String genero) {
+    public Libro(int isbn, String titulo, String autor, String idioma, int anyo, int edicion, double precio, List<String> genero) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
@@ -142,17 +143,17 @@ public class Libro {
         this.precio = precio;
     }
 
-    public String getGenero() {
+    public List<String> getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(List<String> genero) {
         this.genero = genero;
     }
 
-    public List<Genero> getGenero(int idLibro) {
+    public ArrayList<Genero> getGenerosFromIDLibro(int idLibro) {
         LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
-        List<Genero> generos = new ArrayList<>();
+        ArrayList<Genero> generos = new ArrayList<>();
         try{
             generos = libroGeneroDAO.getLibroGenero(idLibro);
         }catch(LibreriaExcepciones ex){
@@ -164,7 +165,7 @@ public class Libro {
     @Override
     public String toString() {
         String datos = "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: ";
-        for(Genero genero : getGenero(this.idLibro)){
+        for(Genero genero : getGenerosFromIDLibro(this.idLibro)){
             System.out.print(genero.getNombre() + " ");
         }
         return datos;
