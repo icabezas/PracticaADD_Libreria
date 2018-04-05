@@ -64,7 +64,7 @@ public class Manejador extends DefaultHandler {
                 libroActual.setAutor(contenido);
                 break;
             case "genero":
-                libroActual.setGenero(contenido);
+                libroActual.setGenero(Collections.singletonList(contenido));
                 break;
             case "idioma":
                 libroActual.setIdioma(contenido);
