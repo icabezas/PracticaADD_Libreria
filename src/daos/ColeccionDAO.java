@@ -29,9 +29,10 @@ public class ColeccionDAO {
     public void crearColeccion(int idUsuario, String nombreColeccion, ArrayList<Libro> libros) throws LibreriaExcepciones {
         //COMPROBAR SI EXISTE LIBRO Y COLECCION PRIMERO
         LibroDAO libroDAO = new LibroDAO();
-        if (existeColeccionUsuarioNombre(idUsuario, nombreColeccion) == null && libroDAO.existenTodosLibros(libros)) {
+        ArrayList<Libro> librosDB = libroDAO.existenTodosLibros(libros);
+        if (existeColeccionUsuarioNombre(idUsuario, nombreColeccion) == null && librosDB != null) {
             Coleccion coleccion = new Coleccion(getIdColeccionLast(), nombreColeccion, idUsuario);
-            for (Libro libro : libros) {
+            for (Libro libro : librosDB) {
                 LibroColeccionDAO libroColeccion = new LibroColeccionDAO();
                 libroColeccion.crearLibroColeccion(libro.getIdLibro(), getIdColeccionLast());
             }
@@ -88,8 +89,8 @@ public class ColeccionDAO {
         return coleccionUsuario;
     }
 
-    public List<Coleccion> getAllColeccionesUsuario(int idUsuario) throws LibreriaExcepciones {
-        List<Coleccion> coleccionesUsuario = new ArrayList<>();
+    public ArrayList<Coleccion> getAllColeccionesUsuario(int idUsuario) throws LibreriaExcepciones {
+        ArrayList<Coleccion> coleccionesUsuario = new ArrayList<>();
         Coleccion coleccion = new Coleccion(idUsuario);
         abrirConexion();
         ObjectSet resultado = db.queryByExample(coleccion);

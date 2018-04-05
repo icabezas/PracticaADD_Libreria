@@ -178,16 +178,16 @@ public class LibroDAO {
     }
 
     //EXISTEN LIBROS EN LA BBDD
-    public boolean existenTodosLibros(ArrayList<Libro> libros) {
-        boolean existenTodos = true;
+    public ArrayList<Libro> existenTodosLibros(ArrayList<Libro> libros) {
         LibroDAO libroDAO = new LibroDAO();
-        for (Libro libro : libros) {
-            if (libroDAO.existeLibroPorID(libro.getIdLibro()) == null) {
-                existenTodos = false;
-                break;
+        Libro book;
+        ArrayList<Libro> librosDB = new ArrayList<>();
+        for(Libro libro : libros){
+            if(libroDAO.existeLibroPorISBN(libro.getIsbn()) != null){
+                librosDB.add(libroDAO.existeLibroPorISBN(libro.getIsbn()));
             }
         }
-        return existenTodos;
+        return librosDB;
     }
 
     public void abrirConexion() {

@@ -123,9 +123,9 @@ public class UsuarioDAO {
     }
 
     //RETORNA LISTA DE TODOS LOS USUARIOS EN BBDD
-    public List<Usuario> getAllUsuariosDB() throws LibreriaExcepciones {
+    public ArrayList<Usuario> getAllUsuariosDB() throws LibreriaExcepciones {
         abrirConexion();
-        List<Usuario> usuariosDB = new ArrayList<>();
+        ArrayList<Usuario> usuariosDB = new ArrayList<>();
         ObjectSet resultado = db.query(Usuario.class);
         if (!resultado.isEmpty()) {
             for (int i = 0; i < resultado.size(); i++) {
@@ -148,12 +148,14 @@ public class UsuarioDAO {
         if (!resultado.isEmpty()) {
             Usuario userDB = (Usuario) resultado.next();
             if (userDB.isIsAdmin() && makeAdmin) {
+                cerrarConexion();
                 throw new LibreriaExcepciones("Este usuario ya es administrador");
             } else if (userDB.isIsAdmin() && !makeAdmin) {
                 userDB.setIsAdmin(false);
             } else if (!userDB.isIsAdmin() && makeAdmin) {
                 userDB.setIsAdmin(true);
             } else if (!userDB.isIsAdmin() && !makeAdmin) {
+                cerrarConexion();
                 throw new LibreriaExcepciones("Este usuario no tiene privilegios");
             }
             try {
@@ -196,16 +198,12 @@ public class UsuarioDAO {
 
     //TESTING
     public void showAllUsuariosDB() throws LibreriaExcepciones {
-        abrirConexion();
-        ObjectSet resultado = db.query(Usuario.class);
-        if (!resultado.isEmpty()) {
-            for (int i = 0; i < resultado.size(); i++) {
-                Usuario user = (Usuario) resultado.next();
-                System.out.println(user.toString());
-            }
-        } else {
-            System.out.println("No hay usuarios en la DB");
+        ArrayList<Usuario> usersDB = getAllUsuariosDB();
+        for (Usuario user : usersDB) {
+            System.out.println("ID USUARIO: " + user.getIdUsuario()
+                    + "\nUSERNAME: " + user.getUsername()
+                    + "\nPASSWORD: " + user.getPassword()
+                    + "\nIS ADMIN: " + user.isIsAdmin());
         }
-        cerrarConexion();
     }
 }
