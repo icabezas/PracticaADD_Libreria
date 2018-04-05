@@ -17,15 +17,7 @@ import static swing.BookCreator.listaGenerosSelected;
  */
 public class GeneroSelector extends javax.swing.JFrame {
 DefaultListModel<String> demolist2 = new DefaultListModel<>();
-    /**
-     * Creates new form GeneroPracticas
-     */
-    public GeneroSelector() {
-        initComponents();
-        listaGeneros();
-        listaGenerosSelected = new ArrayList<String>();
-    }
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -147,7 +139,7 @@ DefaultListModel<String> demolist2 = new DefaultListModel<>();
 
     private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
         dispose();
-        
+        BookCreator.cont = true;
     }//GEN-LAST:event_selectActionPerformed
 
     private void genListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genListMouseClicked

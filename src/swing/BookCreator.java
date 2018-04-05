@@ -24,17 +24,14 @@ public class BookCreator extends javax.swing.JFrame {
     GeneroDAO g = new GeneroDAO();
     public static ArrayList<Genero> listaGeneros;
     public static ArrayList<String> listaGenerosSelected;
+    public static boolean cont = false;
     /**
      * Creates new form BookCreatir
      */
     public BookCreator() throws LibreriaExcepciones {
         initComponents();
-        String datos = "";
-        
-        for(String name : listaGenerosSelected){
-        datos += name + " ";
-        }
-        lb.setText(datos);
+        labelGenerator();
+       
     }
 
     /**
@@ -233,7 +230,17 @@ public class BookCreator extends javax.swing.JFrame {
            
            principal.setVisible(true);
     }//GEN-LAST:event_masActionPerformed
-
+private void labelGenerator(){
+     if(cont == true){
+        if(listaGenerosSelected!=null){
+        String datos = "";
+        for(String name : listaGenerosSelected){
+        datos += name + " ";
+        }
+        lb.setText(datos);
+        }
+        }
+}
     /**
      * @param args the command line arguments
      */
