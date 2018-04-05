@@ -43,7 +43,7 @@ public class test {
                 linea = in.readLine();
                 libroActual.setAutor(linea);
                 linea = in.readLine();
-                libroActual.setGenero(linea);
+                libroActual.setGenero(Collections.singletonList(linea));
                 linea = in.readLine();
                 libroActual.setIdioma(linea);
                 linea = in.readLine();
