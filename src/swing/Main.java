@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import modelo.Coleccion;
 import modelo.Libro;
 
@@ -29,7 +30,7 @@ public class Main extends javax.swing.JFrame {
            initComponents();
            colectionsView(); 
            menu.setVisible(false);
-           if(Swim.userSession.isIsAdmin()==true){
+           if(Swim.userSession.isIsAdmin() == true){
                menu.setVisible(true);
            }
            for(int i = 0; i < listaUser.size();i++){
@@ -265,7 +266,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_desActionPerformed
 
     private void deleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookActionPerformed
-        // TODO add your handling code here:
+         BookDestroyer principal = new BookDestroyer();
+           
+           // para centrarlo
+           principal.setLocationRelativeTo(null);
+           
+           principal.setVisible(true);
     }//GEN-LAST:event_deleteBookActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -273,7 +279,16 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void createBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBookActionPerformed
-       
+       try {
+           BookCreator principal = new BookCreator();
+           
+           // para centrarlo
+           principal.setLocationRelativeTo(null);
+           
+           principal.setVisible(true);
+       } catch (LibreriaExcepciones ex) {
+            JOptionPane.showMessageDialog(null, "Error fatal" , "Error message", JOptionPane.ERROR_MESSAGE);
+       }
     }//GEN-LAST:event_createBookActionPerformed
 
     private void bookListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookListActionPerformed

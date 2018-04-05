@@ -17,7 +17,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.view.JasperViewer;
 import org.xml.sax.SAXException;
 
 /**

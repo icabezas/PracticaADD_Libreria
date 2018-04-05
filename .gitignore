@@ -20,3 +20,4 @@ build/classes/libreria.xsd
 build/built-jar\.properties
 
 library\.db4o
+/dist/

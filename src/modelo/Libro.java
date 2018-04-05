@@ -6,6 +6,7 @@
 package modelo;
 
 import daos.LibroGeneroDAO;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -149,14 +150,22 @@ public class Libro {
         this.genero = genero;
     }
 
-    public Genero getGenero(int idLibro) {
+    public List<Genero> getGenero(int idLibro) {
         LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
-        return libroGeneroDAO.getLibroGenero(idLibro);
+        List<Genero> generos = new ArrayList<>();
+        try{
+            generos = libroGeneroDAO.getLibroGenero(idLibro);
+        }catch(LibreriaExcepciones ex){
+            System.out.println(ex.getMessage());
+        }
+        return generos;
     }
 
     @Override
     public String toString() {
-        return "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: " + getGenero(this.idLibro).getNombre();
+        String datos = "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: ";
+        return datos;
+        
     }
 
 }

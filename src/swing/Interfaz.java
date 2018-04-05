@@ -10,7 +10,6 @@ import exceptiones.LibreriaExcepciones;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import jaxb.UsuarioType;
 import modelo.Usuario;
 
 /**
@@ -127,7 +126,7 @@ public class Interfaz extends javax.swing.JFrame {
             if(u.loginUsuario(user.getText(), pass.getText())!=null){
                 Swim.userSession = u.loginUsuario(user.getText(), pass.getText());
                 String nl = System.getProperty("line.separator");
-                Swim.userSession = new Usuario(user.getText());
+                
                 Main main = new Main();
                 main.setLocationRelativeTo(null);
                 main.setVisible(true);

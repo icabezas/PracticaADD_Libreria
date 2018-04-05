@@ -5,13 +5,9 @@
  */
 package swing;
 
-import daos.Methods;
 import daos.UsuarioDAO;
 import exceptiones.LibreriaExcepciones;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
-import jaxb.UsuarioType;
 
 /**
  *
