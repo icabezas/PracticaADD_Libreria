@@ -164,6 +164,9 @@ public class Libro {
     @Override
     public String toString() {
         String datos = "ID: " + this.idLibro + "\n Titulo: " + this.titulo + "\n Autor: " + this.autor + "\n Genero: ";
+        for(Genero genero : getGenero(this.idLibro)){
+            System.out.print(genero.getNombre() + " ");
+        }
         return datos;
         
     }

@@ -27,24 +27,23 @@ public class LibroGeneroDAO {
 
     //TODAS LAS FUNCIONES ABREN CONEXION Y CIERRAN DENTRO DE ELLAS MISMAS
     //CREAR LIBROGENERO
-    public void crearLibroGenero(int idLibro, int idGenero) {
-        if (existeLibroGenero(idLibro, idGenero) == null) {
-            LibroGenero libroGenero = new LibroGenero(idLibro, idGenero);
-            abrirConexion();
-            try {
-                db.store(libroGenero);
-            } catch (Exception ex) {
-                System.out.println("No se ha podido guardar el objeto LibroGenero");
+    public void crearLibroGenero(int idLibro, ArrayList<Genero> generos) throws LibreriaExcepciones {
+        for (Genero genero : generos) {
+            if (existeLibroGenero(idLibro, genero.getIdGenero()) == null) {
+                LibroGenero libroGenero = new LibroGenero(idLibro, genero.getIdGenero());
+                abrirConexion();
+                try {
+                    db.store(libroGenero);
+                } catch (Exception ex) {
+                    System.out.println("No se ha podido guardar el objeto LibroGenero");
+                }
+                cerrarConexion();
+            } else {
+                System.out.println("Ya existe la relacion de este libro con este genero");
             }
-        } else {
-            System.out.println("Ya existe este objeto LibroGenero");
         }
-
-        //CERRAMOS CONEXION
-        cerrarConexion();
     }
 
-    //TO-DO: COMPROBAR QUE SE PUEDE BORRAR LIBROGENERO
     //BORRAR LIBROGENERO puede ser por idGenero o por idLibro
     public void borrarLibroGenero(int id, boolean esPorLibro) {
         //ABRIMOS CONEXION
@@ -98,7 +97,7 @@ public class LibroGeneroDAO {
         GeneroDAO generoDAO = new GeneroDAO();
         List<LibroGenero> libGenAllDB = getAllLibroGenero();
         for (LibroGenero libroGenero : libGenAllDB) {
-            if (libroGenero.getIdGenero() == idLibro) {
+            if (libroGenero.getIdLibro()== idLibro) {
                 gen = generoDAO.getGeneroFromID(libroGenero.getIdGenero());
                 generos.add(gen);
             }

@@ -44,30 +44,30 @@ public class Test extends DBDAO {
         try {
             generoDAO.crearGenero("Ciencia Ficcion");
             generoDAO.crearGenero("Policiaca");
-            } catch (LibreriaExcepciones ex) {
+        } catch (LibreriaExcepciones ex) {
             System.out.println(ex.getMessage());
         }
 
-            System.out.println("Show all generos: ");
+        System.out.println("Show all generos: ");
         try {
             generoDAO.showAllGeneros();
         } catch (LibreriaExcepciones ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         System.out.println("<---------------- TESTING FUNCIONES DE LIBRO ----------------->");
-//        try {
-            libroDAO.crearLibro(libro, new Genero(1, "Ciencia Ficcion"));
-            libroDAO.crearLibro(libro2, new Genero(1, "Ciencia Ficcion"));
-            libroDAO.crearLibro(libro3, new Genero(2, "Policiaca"));
-//            libroDAO.showAllLibros();
-            List<Libro> books = libroDAO.getListaLibrosBBDD();
-            for(Libro book : books){
-                System.out.println(book.getTitulo());
-            }
-//        } catch (LibreriaExcepciones ex) {
-//            System.out.println(ex.getMessage());
-//        }
+        System.out.println("*** CREAR LIBRO ***");
+        String genero1 = "Ciencia Ficcion";
+        String genero2 = "Policiaca";
+        String genero3 = "Aventuras";
+        ArrayList<String> generos = new ArrayList<>();
+        generos.add(genero1);
+        generos.add(genero2);
+        generos.add(genero3);
+        libroDAO.crearLibro(libro, generos);
+        libroDAO.crearLibro(libro2, generos);
+        libroDAO.crearLibro(libro3, generos);
+        libroDAO.showAllLibros();
 
         libGenDAO.showAllLibroGenero();
 

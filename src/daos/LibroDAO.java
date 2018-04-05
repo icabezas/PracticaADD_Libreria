@@ -28,18 +28,24 @@ public class LibroDAO {
     //TODAS LAS FUNCIONES ABREN CONEXION Y CIERRAN DENTRO DE ELLAS MISMAS
 
     //CREAR LIBRO
-    public void crearLibro(Libro libro, Genero genero) {
-        //ABRIMOS CONEXION
-//        abrirConexion();
+    public void crearLibro(Libro libro, ArrayList<String> nombresGeneros) {
+        Genero genero;
+        LibroGeneroDAO libroGeneroRelacion = new LibroGeneroDAO();
+        GeneroDAO generoDAO = new GeneroDAO();
+        ArrayList<Genero> generosList = new ArrayList<>();
         if (existeLibroPorISBN(libro.getIsbn()) == null) {
             libro.setIdLibro(getIdLibroLast());
-            LibroGeneroDAO libroGeneroRelacion = new LibroGeneroDAO();
             try {
-//                cerrarConexion();
-//TO-DO HACER GENERO A PARTIR DEL NOMBRE
-                libroGeneroRelacion.crearLibroGenero(getIdLibroLast(), genero.getIdGenero());
+                for (String generoName : nombresGeneros) {
+                    genero = generoDAO.existeGeneroNombre(generoName);
+                    if (genero != null) {
+                        generosList.add(genero);
+                    }
+                }
+                libroGeneroRelacion.crearLibroGenero(getIdLibroLast(), generosList);
                 abrirConexion();
                 db.store(libro);
+                cerrarConexion();
             } catch (Exception ex) {
                 System.out.println("No se ha podido guardar el objeto Libro");
             }
@@ -48,7 +54,6 @@ public class LibroDAO {
         }
 
         //CERRAMOS CONEXION
-        cerrarConexion();
     }
 
     //BORRAR LIBRO
@@ -203,16 +208,27 @@ public class LibroDAO {
 
     //TESTING
     public void showAllLibros() {
+        ArrayList<Libro> libros = new ArrayList<>();
+
         //ABRIMOS CONEXION
         abrirConexion();
         System.out.println("LIBROS:");
         ObjectSet resultado = db.query(Libro.class);
-        for (int i = 0; i < resultado.size(); i++) {
-            Libro libro = (Libro) resultado.next();
-            System.out.println("LibroID: " + libro.getIdLibro() + "\nTitulo: " + libro.getTitulo());
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                Libro libro = (Libro) resultado.next();
+                libros.add(libro);
+            }
+            cerrarConexion();
+            for (Libro book : libros) {
+                System.out.println("LibroID: " + book.getIdLibro() + "\nTitulo: " + book.getTitulo() + "\nGeneros: ");
+                for (Genero genero : book.getGenero(book.getIdLibro())) {
+                    System.out.print(genero.getNombre() + " ");
+                }
+                System.out.println("");
+            }
+        }else{
+            System.out.println("No hay libros en la DB");
         }
-
-        //CERRAMOS CONEXION
-        cerrarConexion();
     }
 }

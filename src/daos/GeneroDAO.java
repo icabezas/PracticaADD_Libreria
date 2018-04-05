@@ -28,7 +28,7 @@ public class GeneroDAO {
     public void crearGenero(String nombre) throws LibreriaExcepciones {
         if (existeGeneroNombre(nombre) == null) {
 
-            Genero genero = new Genero(getIdGeneroLast(), nombre);
+            Genero genero = new Genero(getIdGeneroLast(), nombre.toLowerCase());
             try {
                 abrirConexion();
                 db.store(genero);
@@ -49,7 +49,7 @@ public class GeneroDAO {
         //ABRIMOS CONEXION
         abrirConexion();
 
-        ObjectSet result = db.queryByExample(new Genero(nombre));
+        ObjectSet result = db.queryByExample(new Genero(nombre.toLowerCase()));
         if (!result.isEmpty()) {
             Genero genero = (Genero) result.next();
             try {
@@ -75,7 +75,7 @@ public class GeneroDAO {
         //ABRIMOS CONEXION
         abrirConexion();
 
-        Genero genero = new Genero(nombre);
+        Genero genero = new Genero(nombre.toLowerCase());
         Genero dbGenero = null;
         ObjectSet resultado = db.queryByExample(genero);
         if (!resultado.isEmpty()) {
@@ -104,7 +104,7 @@ public class GeneroDAO {
 
     //DEVUELVE OBJETO GENERO A PARTIR DE IDGENERO
     public Genero getGeneroFromID(int idGenero) throws LibreriaExcepciones {
-        Genero genero = new Genero(idGenero, "");
+        Genero genero = new Genero(idGenero, null);
         Genero genDB = null;
         abrirConexion();
         ObjectSet resultado = db.queryByExample(genero);
