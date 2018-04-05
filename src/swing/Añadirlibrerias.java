@@ -255,33 +255,14 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
     private void listaLibroColeccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaLibroColeccionMouseClicked
-        if(listaLibrosNuevacolection.size() > 0){
-            listaLibroColeccion.setModel(demolist2);
-        int pos = listaLibroColeccion.locationToIndex(evt.getPoint());
-        
-        System.out.println(pos);
-        
-        
-        String str = listaLibroColeccion.getSelectedValue();
-       
-        
-        listaLibrosNuevacolection.remove(pos);
-     
-        System.out.println("removed from arry");
-         
-       
-        demolist2.removeElementAt(pos);
-        listaLibroColeccion.setModel(demolist2);
-        System.out.println("removed from list");
-        }
-        
+      
     }//GEN-LAST:event_listaLibroColeccionMouseClicked
 
     private void llenarListaLibros() {
          listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
         //System.out.println(listaLibrosAñadir.get(0).getTitulo());
         
-        System.out.println(listaLibrosAñadir.size());
+        
         DefaultListModel<String> demolist = new DefaultListModel<>();
         if (listaLibrosAñadir.isEmpty()) {
             System.out.println("Caca, no hay libros");
