@@ -20,23 +20,25 @@ import modelo.Libro;
  * @author dam2t1
  */
 public class BookCreator extends javax.swing.JFrame {
+
+    
     LibroDAO l = new LibroDAO();
     GeneroDAO g = new GeneroDAO();
     public static ArrayList<Genero> listaGeneros;
     public static ArrayList<String> listaGenerosSelected;
+    public static boolean cont = false;
     /**
      * Creates new form BookCreatir
      */
     public BookCreator() throws LibreriaExcepciones {
         initComponents();
-        String datos = "";
         
-        for(String name : listaGenerosSelected){
-        datos += name + " ";
-        }
-        lb.setText(datos);
+        
+       
+    } 
+   public void updateUI() {
+    labelGenerator();  
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -226,13 +228,28 @@ public class BookCreator extends javax.swing.JFrame {
     }//GEN-LAST:event_theunicactionhereActionPerformed
 
     private void masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masActionPerformed
- GeneroSelector principal = new GeneroSelector();
-           
-           // para centrarlo
-           principal.setLocationRelativeTo(null);
-           
-           principal.setVisible(true);
+        try {
+            GeneroSelector principal = new GeneroSelector();
+            
+            // para centrarlo
+            principal.setLocationRelativeTo(null);
+            
+            principal.setVisible(true);
+        } catch (LibreriaExcepciones ex) {
+            Logger.getLogger(BookCreator.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_masActionPerformed
+public void labelGenerator(){
+     if(cont == true){
+        if(listaGenerosSelected!=null){
+        String datos = "";
+        for(String name : listaGenerosSelected){
+        datos += name + " ";
+        }
+        lb.setText(datos);
+        }
+        }
+}
 
     /**
      * @param args the command line arguments

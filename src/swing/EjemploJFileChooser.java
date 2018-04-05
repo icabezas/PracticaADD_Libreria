@@ -21,7 +21,7 @@ public class EjemploJFileChooser extends JFrame {
     private JPanel contentPane;
     private JTextField textField;
     private JTextArea textArea;
- 
+
     /**
      * Launch the application.
      */
