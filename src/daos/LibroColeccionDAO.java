@@ -64,7 +64,7 @@ public class LibroColeccionDAO {
                 }
             }
         } else {
-            System.out.println("No se ha encontrado LibroColeccion indicada");
+            System.out.println("No se ha encontrado libro/coleccion indicada");
         }
         cerrarConexion();
     }
@@ -75,11 +75,12 @@ public class LibroColeccionDAO {
         LibroColeccion libroColeccion = new LibroColeccion(idColeccion);
         List<LibroColeccion> libColeccionList = new ArrayList<>();
         List<Libro> libros = new ArrayList<>();
+        LibroColeccion coleccionBBDD = null;
         abrirConexion();
         ObjectSet resultado = db.queryByExample(libroColeccion);
         if (!resultado.isEmpty()) {
             for (int i = 0; i < resultado.size(); i++) {
-                LibroColeccion coleccionBBDD = (LibroColeccion) resultado.next();
+                coleccionBBDD = (LibroColeccion) resultado.next();
                 libColeccionList.add(coleccionBBDD);
             }
         } else {

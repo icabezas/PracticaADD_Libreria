@@ -10,7 +10,6 @@ import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
-import java.util.List;
 import modelo.Usuario;
 
 /**

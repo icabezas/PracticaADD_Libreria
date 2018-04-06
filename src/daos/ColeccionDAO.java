@@ -96,6 +96,7 @@ public class ColeccionDAO {
         ObjectSet resultado = db.queryByExample(coleccion);
         if (!resultado.isEmpty()) {
             coleccion = (Coleccion) resultado.next();
+            coleccionesUsuario.add(coleccion);
         }
         cerrarConexion();
         return coleccionesUsuario;
