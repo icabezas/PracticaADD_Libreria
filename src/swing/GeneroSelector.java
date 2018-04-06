@@ -18,15 +18,26 @@ import static swing.BookCreator.listaGenerosSelected;
  *
  * @author dam2t1
  */
-public class GeneroSelector extends javax.swing.JFrame {
+public class GeneroSelector extends javax.swing.JFrame 
+{
 DefaultListModel<String> demolist2 = new DefaultListModel<>();
 GeneroDAO g = new GeneroDAO();
+private BookDestroyer bookdestroyer;
 
- public GeneroSelector() throws LibreriaExcepciones{
+    interface OnDisposeListener
+    {
+        void disposed();
+    }
+    
+    private OnDisposeListener listener;
+
+ public GeneroSelector(OnDisposeListener listener) throws LibreriaExcepciones{
+     this.listener = listener;
      initComponents();
      fuckingGeneroGetter();
      listaGeneros();
-     listaGenerosSelected = new ArrayList<>();        
+     listaGenerosSelected = new ArrayList<>();     
+      
       }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,6 +81,11 @@ GeneroDAO g = new GeneroDAO();
         jScrollPane2.setViewportView(selectedList);
 
         select.setText("Seleccionar");
+        select.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectMouseClicked(evt);
+            }
+        });
         select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectActionPerformed(evt);
@@ -144,14 +160,8 @@ GeneroDAO g = new GeneroDAO();
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-        dispose();
+    dispose();
     }//GEN-LAST:event_exitActionPerformed
-
-    private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
-        dispose();
-        BookCreator.cont = true;
-        BookCreator.updateUI();
-    }//GEN-LAST:event_selectActionPerformed
 
     private void genListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genListMouseClicked
  int pos = genList.locationToIndex(evt.getPoint());
@@ -180,6 +190,16 @@ GeneroDAO g = new GeneroDAO();
         System.out.println("removed from list");
         }
     }//GEN-LAST:event_selectedListMouseClicked
+
+    private void selectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectMouseClicked
+       
+    }//GEN-LAST:event_selectMouseClicked
+
+    private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
+ BookCreator.cont = true;
+ listener.disposed();
+ dispose();
+    }//GEN-LAST:event_selectActionPerformed
 
  private void listaGeneros(){
      DefaultListModel<String> demolist = new DefaultListModel<>();

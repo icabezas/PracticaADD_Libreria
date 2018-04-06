@@ -19,26 +19,23 @@ import modelo.Libro;
  *
  * @author dam2t1
  */
-public class BookCreator extends javax.swing.JFrame {
+public class BookCreator extends javax.swing.JFrame implements GeneroSelector.OnDisposeListener {
 
-    
     LibroDAO l = new LibroDAO();
     GeneroDAO g = new GeneroDAO();
     public static ArrayList<Genero> listaGeneros;
     public static ArrayList<String> listaGenerosSelected;
     public static boolean cont = false;
+
     /**
      * Creates new form BookCreatir
      */
     public BookCreator() throws LibreriaExcepciones {
         initComponents();
-        
-        
-       
-    } 
-   public void updateUI() {
-    labelGenerator();  
     }
+
+  
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -211,50 +208,48 @@ public class BookCreator extends javax.swing.JFrame {
         int year = (int) spi2.getValue();
         int edition = (int) spi3.getValue();
         double price = (double) spi4.getValue();
-        
-      
-        if(title.equals("")||autor.equals("")||idioma.equals("")){
-            control=false;
-             JOptionPane.showMessageDialog(null, "Hay campos vacios error al crear el libro" , "Error message", JOptionPane.ERROR_MESSAGE);            
+
+        if (title.equals("") || autor.equals("") || idioma.equals("")) {
+            control = false;
+            JOptionPane.showMessageDialog(null, "Hay campos vacios error al crear el libro", "Error message", JOptionPane.ERROR_MESSAGE);
         }
-        
-     
-        if(control == true){
-        Libro lib = new Libro(isbn,title,autor,idioma,year,edition,price);
-        l.crearLibro(lib, listaGenerosSelected);
-         dispose();
+
+        if (control == true) {
+            Libro lib = new Libro(isbn, title, autor, idioma, year, edition, price);
+            l.crearLibro(lib, listaGenerosSelected);
+            dispose();
         }
-       
+
     }//GEN-LAST:event_theunicactionhereActionPerformed
 
     private void masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masActionPerformed
         try {
-            GeneroSelector principal = new GeneroSelector();
-            
+            GeneroSelector principal = new GeneroSelector(this);
+
             // para centrarlo
             principal.setLocationRelativeTo(null);
-            
+
             principal.setVisible(true);
         } catch (LibreriaExcepciones ex) {
             Logger.getLogger(BookCreator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_masActionPerformed
-public void labelGenerator(){
-     if(cont == true){
-        if(listaGenerosSelected!=null){
-        String datos = "";
-        for(String name : listaGenerosSelected){
-        datos += name + " ";
+    public void labelGenerator() {
+        if (cont == true) {
+            if (listaGenerosSelected != null) {
+                String datos = "";
+                for (String name : listaGenerosSelected) {
+                    datos += name + " | ";
+                }
+                lb.setText(datos);
+                repaint();
+            }
         }
-        lb.setText(datos);
-        }
-        }
-}
+    }
 
     /**
      * @param args the command line arguments
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cuat;
@@ -277,4 +272,12 @@ public void labelGenerator(){
     private javax.swing.JButton theunicactionhere;
     private javax.swing.JTextField two;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void disposed() {
+if (cont == true) {
+            labelGenerator();
+            repaint();
+           
+        }    }
 }
