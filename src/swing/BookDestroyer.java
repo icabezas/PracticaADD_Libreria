@@ -14,13 +14,14 @@ import modelo.Libro;
  *
  * @author dam2t1
  */
-public class BookDestroyer extends javax.swing.JFrame {
-DefaultListModel<String> demolist2 = new DefaultListModel<>();
-LibroDAO l = new LibroDAO();
-private ArrayList<Libro> listaLibros;
-    /**
-     * Creates new form BookDestroyer
-     */
+public class BookDestroyer extends javax.swing.JFrame implements GeneroSelector.OnDisposeListener {
+
+    DefaultListModel<String> demolist2 = new DefaultListModel<>();
+    LibroDAO l = new LibroDAO();
+    private ArrayList<Libro> listaLibros;
+    private boolean know;
+    public static boolean response = false;
+
     public BookDestroyer() {
         initComponents();
         listUpdater();
@@ -109,28 +110,32 @@ private ArrayList<Libro> listaLibros;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void listaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaMouseClicked
-        if(listaLibros.size() > 0){
-            lista.setModel(demolist2);
-        int pos = lista.locationToIndex(evt.getPoint());    
-        l.borrarLibro(listaLibros.get(pos).getIsbn());
-        listaLibros.remove(pos);
-        System.out.println("removed from arry");
-        demolist2.removeElementAt(pos);
-        lista.setModel(demolist2);
-        System.out.println("removed from list");
-        
-        }  
-    }//GEN-LAST:event_listaMouseClicked
-private void listUpdater(){
-    listaLibros=l.getListaLibrosBBDD();
-     lista.setModel(demolist2);
-      for (Libro libro : listaLibros) {
-                
-                String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
-                demolist2.addElement(infoLibro);
+
+        if (know == true) {
+            if (listaLibros.size() > 0) {
+                lista.setModel(demolist2);
+                int pos = lista.locationToIndex(evt.getPoint());
+                l.borrarLibro(listaLibros.get(pos).getIdLibro());
+
+                listaLibros.remove(pos);
+                System.out.println("removed from arry");
+                demolist2.removeElementAt(pos);
+                lista.setModel(demolist2);
+                System.out.println("removed from list");
+
             }
-}
- 
+        }
+    }//GEN-LAST:event_listaMouseClicked
+    private void listUpdater() {
+        listaLibros = l.getListaLibrosBBDD();
+        lista.setModel(demolist2);
+        for (Libro libro : listaLibros) {
+
+            String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
+            demolist2.addElement(infoLibro);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -138,4 +143,13 @@ private void listUpdater(){
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> lista;
     // End of variables declaration//GEN-END:variables
+public boolean isReally() {
+
+        return know;
+    }
+
+    @Override
+    public void disposed() {
+
+    }
 }

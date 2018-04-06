@@ -15,7 +15,6 @@ public class Swim {
         
         Interfaz principal = new Interfaz();
 
-        // para centrarlo
         principal.setLocationRelativeTo(null);
 
         principal.setVisible(true);
