@@ -29,10 +29,9 @@ public class LibroColeccionDAO {
     public void crearLibroColeccion(int idLibro, int idColeccion) throws LibreriaExcepciones {
         //COMPROBAR SI EXISTE RELACION LIBRO Y COLECCION PRIMERO
         if (existeLibroColeccion(idLibro, idColeccion) == null) {
-            LibroColeccion libroColeccion = new LibroColeccion(idLibro, idColeccion);
             abrirConexion();
             try {
-                db.store(libroColeccion);
+                db.store(new LibroColeccion(idLibro, idColeccion));
             } catch (Exception ex) {
                 cerrarConexion();
                 throw new LibreriaExcepciones("No se ha podido guardar el objeto LibroColeccion");
@@ -54,9 +53,8 @@ public class LibroColeccionDAO {
         }
         if (!result.isEmpty()) {
             for (int i = 0; i < result.size(); i++) {
-                LibroColeccion libCol = (LibroColeccion) result.next();
                 try {
-                    db.delete(libCol);
+                    db.delete((LibroColeccion) result.next());
                     System.out.println("Deleted LibroColeccion");
                 } catch (Exception ex) {
                     cerrarConexion();
@@ -75,13 +73,11 @@ public class LibroColeccionDAO {
         LibroColeccion libroColeccion = new LibroColeccion(idColeccion);
         List<LibroColeccion> libColeccionList = new ArrayList<>();
         List<Libro> libros = new ArrayList<>();
-        LibroColeccion coleccionBBDD = null;
         abrirConexion();
         ObjectSet resultado = db.queryByExample(libroColeccion);
         if (!resultado.isEmpty()) {
             for (int i = 0; i < resultado.size(); i++) {
-                coleccionBBDD = (LibroColeccion) resultado.next();
-                libColeccionList.add(coleccionBBDD);
+                libColeccionList.add((LibroColeccion) resultado.next());
             }
         } else {
             libros = null;
@@ -98,14 +94,15 @@ public class LibroColeccionDAO {
     //EXISTE LIBROGENERO
     public LibroColeccion existeLibroColeccion(int idLibro, int idColeccion) {
         abrirConexion();
-        LibroColeccion dbLibroColeccion = null;
         LibroColeccion libroColeccion = new LibroColeccion(idLibro, idColeccion);
         ObjectSet resultado = db.queryByExample(libroColeccion);
         if (!resultado.isEmpty()) {
-            dbLibroColeccion = (LibroColeccion) resultado.next();
+            libroColeccion = (LibroColeccion) resultado.next();
+        } else {
+            libroColeccion = null;
         }
         cerrarConexion();
-        return dbLibroColeccion;
+        return libroColeccion;
     }
 
     //GETID LAST LIBROGENERO

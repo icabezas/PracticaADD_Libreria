@@ -22,7 +22,6 @@ public class UsuarioDAO {
 
     public UsuarioDAO() {
     }
-    //TODAS LAS FUNCIONES ABREN CONEXION Y CIERRAN DENTRO DE ELLAS MISMAS
 
     //CREAR USUARIO
     public void crearUsuario(String username, String password) throws LibreriaExcepciones {

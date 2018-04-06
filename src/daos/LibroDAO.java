@@ -8,6 +8,7 @@ package daos;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Genero;
@@ -15,17 +16,15 @@ import modelo.Libro;
 import modelo.LibroGenero;
 
 /**
- * DAO PARA LA ADMINISTRACION DE LIBROS
  *
+ * @author THOR
  */
 public class LibroDAO {
 
     public ObjectContainer db;
 
     public LibroDAO() {
-
     }
-    //TODAS LAS FUNCIONES ABREN CONEXION Y CIERRAN DENTRO DE ELLAS MISMAS
 
     //CREAR LIBRO
     public void crearLibro(Libro libro, ArrayList<String> nombresGeneros) {
@@ -33,8 +32,9 @@ public class LibroDAO {
         LibroGeneroDAO libroGeneroRelacion = new LibroGeneroDAO();
         GeneroDAO generoDAO = new GeneroDAO();
         ArrayList<Genero> generosList = new ArrayList<>();
+        int lastID = getIdLibroLast();
         if (existeLibroPorISBN(libro.getIsbn()) == null) {
-            libro.setIdLibro(getIdLibroLast());
+            libro.setIdLibro(lastID);
             try {
                 for (String generoName : nombresGeneros) {
                     genero = generoDAO.existeGeneroNombre(generoName);
@@ -42,7 +42,7 @@ public class LibroDAO {
                         generosList.add(genero);
                     }
                 }
-                libroGeneroRelacion.crearLibroGenero(getIdLibroLast(), generosList);
+                libroGeneroRelacion.crearLibroGenero(lastID, generosList);
                 abrirConexion();
                 db.store(libro);
                 cerrarConexion();
@@ -58,26 +58,24 @@ public class LibroDAO {
 
     //BORRAR LIBRO
     //TO-DO: BORRAR LIBROCOLECCION Y LIBROGENERO
-    public void borrarLibro(int idLibro) {
+    public void borrarLibro(int idLibro) throws LibreriaExcepciones {
+        LibroColeccionDAO libroColeccionDAO = new LibroColeccionDAO();
+        LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
+
         abrirConexion();
         ObjectSet result = db.queryByExample(new Libro(idLibro));
         if (!result.isEmpty()) {
-            Libro found = (Libro) result.next();
             try {
-                db.delete(found);
-                LibroColeccionDAO libroColeccionDAO = new LibroColeccionDAO();
-                LibroGeneroDAO libroGeneroDAO = new LibroGeneroDAO();
+                db.delete((Libro) result.next());
                 cerrarConexion();
-                //COMPROBAR SI FUNCIONA
                 libroColeccionDAO.borrarLibroColeccion(idLibro, true);
                 libroGeneroDAO.borrarLibroGenero(idLibro, true);
-
-                System.out.println("Deleted " + found.toString());
+                System.out.println("Deleted ");
             } catch (Exception ex) {
-                System.out.println("Problema al borrar libro " + idLibro);
+                throw new LibreriaExcepciones("Problema al borrar libro " + idLibro);
             }
         } else {
-            System.out.println("No se ha encontrado el libro " + idLibro);
+            throw new LibreriaExcepciones("No se ha encontrado el libro " + idLibro);
         }
     }
 
@@ -182,8 +180,8 @@ public class LibroDAO {
         LibroDAO libroDAO = new LibroDAO();
         Libro book;
         ArrayList<Libro> librosDB = new ArrayList<>();
-        for(Libro libro : libros){
-            if(libroDAO.existeLibroPorISBN(libro.getIsbn()) != null){
+        for (Libro libro : libros) {
+            if (libroDAO.existeLibroPorISBN(libro.getIsbn()) != null) {
                 librosDB.add(libroDAO.existeLibroPorISBN(libro.getIsbn()));
             }
         }
@@ -227,7 +225,7 @@ public class LibroDAO {
                 }
                 System.out.println("");
             }
-        }else{
+        } else {
             System.out.println("No hay libros en la DB");
         }
     }

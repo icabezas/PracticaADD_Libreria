@@ -45,8 +45,7 @@ public class LibroGeneroDAO {
     }
 
     //BORRAR LIBROGENERO puede ser por idGenero o por idLibro
-    public void borrarLibroGenero(int id, boolean esPorLibro) {
-        //ABRIMOS CONEXION
+    public void borrarLibroGenero(int id, boolean esPorLibro) throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet result = null;
         if (esPorLibro) {
@@ -59,24 +58,21 @@ public class LibroGeneroDAO {
                 LibroGenero libGen = (LibroGenero) result.next();
                 try {
                     db.delete(libGen);
-                    System.out.println("Deleted LibroGenero");
+                    cerrarConexion();
                 } catch (Exception ex) {
-                    System.out.println("DB: No se ha podido borrar objeto LibroGenero");
+                    cerrarConexion();
+                    throw new LibreriaExcepciones("DB: No se ha podido borrar objeto LibroGenero");
                 }
             }
-
         } else {
-            System.out.println("No se ha encontrado LibroGenero indicada");
+            cerrarConexion();
+            throw new LibreriaExcepciones("No se ha encontrado LibroGenero indicada");
         }
-        //CERRAMOS CONEXION
-        cerrarConexion();
     }
 
     //EXISTE LIBROGENERO
     public LibroGenero existeLibroGenero(int idLibro, int idGenero) {
-        //ABRIMOS CONEXION
         abrirConexion();
-
         LibroGenero dbLibroGenero = null;
         LibroGenero libroGenero = new LibroGenero(idLibro, idGenero);
         ObjectSet resultado = db.queryByExample(libroGenero);
@@ -97,7 +93,7 @@ public class LibroGeneroDAO {
         GeneroDAO generoDAO = new GeneroDAO();
         List<LibroGenero> libGenAllDB = getAllLibroGenero();
         for (LibroGenero libroGenero : libGenAllDB) {
-            if (libroGenero.getIdLibro()== idLibro) {
+            if (libroGenero.getIdLibro() == idLibro) {
                 gen = generoDAO.getGeneroFromID(libroGenero.getIdGenero());
                 generos.add(gen);
             }
