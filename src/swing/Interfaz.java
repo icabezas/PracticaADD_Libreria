@@ -21,8 +21,9 @@ public class Interfaz extends javax.swing.JFrame {
     UsuarioDAO u = new UsuarioDAO();
 
     public Interfaz() {
+        this.setTitle("LOREM IPSUM");
+        this.setIconImages(Swim.icons);
         initComponents();
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

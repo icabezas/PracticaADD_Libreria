@@ -31,6 +31,7 @@ public class BookCreator extends javax.swing.JFrame implements GeneroSelector.On
      * Creates new form BookCreatir
      */
     public BookCreator() throws LibreriaExcepciones {
+        this.setIconImages(Swim.icons);
         initComponents();
     }
 

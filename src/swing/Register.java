@@ -21,6 +21,8 @@ public class Register extends javax.swing.JFrame {
     UsuarioDAO u = new UsuarioDAO();
 
     public Register() {
+        this.setTitle("NUEVO USUARIO");
+        this.setIconImages(Swim.icons);
         initComponents();
     }
 

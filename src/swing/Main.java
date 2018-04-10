@@ -12,6 +12,7 @@ import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -39,6 +40,8 @@ public class Main extends javax.swing.JFrame {
      * Creates new form main
      */
     public Main() {
+        this.setTitle("LOREM IPSUM");
+        this.setIconImages(Swim.icons);
         initComponents();
         colectionsView();
         menu.setVisible(false);

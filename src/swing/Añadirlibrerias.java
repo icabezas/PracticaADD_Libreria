@@ -29,6 +29,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
      * Creates new form Añadirlibrerias
      */
     public Añadirlibrerias() {
+        this.setIconImages(Swim.icons);
         initComponents();
         listaLibrosNuevacolection = new ArrayList<>();
         listaLibrosAñadir = new ArrayList<>();

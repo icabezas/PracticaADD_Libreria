@@ -24,6 +24,7 @@ public class BookDestroyer extends javax.swing.JFrame {
     public static boolean response = false;
 
     public BookDestroyer() {
+        this.setIconImages(Swim.icons);
         initComponents();
         listUpdater();
     }

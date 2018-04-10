@@ -25,6 +25,7 @@ public class GeneroSelector extends javax.swing.JFrame {
     private BookDestroyer bookdestroyer;
 
     interface OnDisposeListener {
+
         void disposed();
     }
 
@@ -32,6 +33,7 @@ public class GeneroSelector extends javax.swing.JFrame {
 
     public GeneroSelector(OnDisposeListener listener) throws LibreriaExcepciones {
         this.listener = listener;
+        this.setIconImages(Swim.icons);
         initComponents();
         fuckingGeneroGetter();
         listaGeneros();
