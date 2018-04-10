@@ -9,7 +9,6 @@ import daos.ColeccionDAO;
 import daos.LibroColeccionDAO;
 import daos.LibroGeneroDAO;
 import exceptiones.LibreriaExcepciones;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,45 +20,48 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.Coleccion;
 import modelo.Genero;
 import modelo.Libro;
-import modelo.LibroColeccion;
 
 /**
  *
  * @author dam2t1
  */
 public class Main extends javax.swing.JFrame {
-   DefaultListModel<String> demolist2 = new DefaultListModel<>();
-   private ArrayList<Coleccion> listaUser;
-   private ArrayList<Libro> listaLibros;
-   ColeccionDAO c = new ColeccionDAO();
-   LibroColeccionDAO co = new LibroColeccionDAO();
-   LibroGeneroDAO g = new LibroGeneroDAO();
-   private String listChoosed;
+
+    DefaultListModel<String> demolist2 = new DefaultListModel<>();
+    private ArrayList<Coleccion> listaUser;
+    private ArrayList<Libro> listaLibros;
+    ColeccionDAO c = new ColeccionDAO();
+    LibroColeccionDAO co = new LibroColeccionDAO();
+    LibroGeneroDAO g = new LibroGeneroDAO();
+    private String listChoosed;
+
     /**
      * Creates new form main
      */
     public Main() {
-           initComponents();
-           colectionsView(); 
-           menu.setVisible(false);
-           if(Swim.userSession.isIsAdmin() == true){
-               menu.setVisible(true);
-           }
-           for(int i = 0; i < listaUser.size();i++){
-               System.out.print(listaUser.get(i));
-           }
+        initComponents();
+        colectionsView();
+        menu.setVisible(false);
+        if (Swim.userSession.isIsAdmin() == true) {
+            menu.setVisible(true);
+        }
+        for (int i = 0; i < listaUser.size(); i++) {
+            System.out.print(listaUser.get(i));
+        }
     }
-    private void colectionsView(){
+
+    private void colectionsView() {
         try {
-           list.setModel(demolist2);
-           listaUser = (ArrayList<Coleccion>) c.getAllColeccionesUsuario(Swim.userSession.getIdUsuario());
-           for(int i =0; i<listaUser.size();i++){
-           demolist2.addElement(listaUser.get(i).getNombre());
-           }
-       } catch (LibreriaExcepciones ex) {
-           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-       }
+            list.setModel(demolist2);
+            listaUser = (ArrayList<Coleccion>) c.getAllColeccionesUsuario(Swim.userSession.getIdUsuario());
+            for (int i = 0; i < listaUser.size(); i++) {
+                demolist2.addElement(listaUser.get(i).getNombre());
+            }
+        } catch (LibreriaExcepciones ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -105,7 +107,7 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(list);
 
-        jLabel2.setText("------------------------------------");
+        jLabel2.setText("----------------------------------------------------------------");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,7 +116,7 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(91, 91, 91)
+                .addGap(76, 76, 76)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -226,18 +228,22 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(createlibrary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(createlibrary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(choose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(choose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(des)))
+                        .addComponent(des)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -265,19 +271,16 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createlibraryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createlibraryActionPerformed
-           Añadirlibrerias principal = new Añadirlibrerias();
-
+        Añadirlibrerias principal = new Añadirlibrerias();
         // para centrarlo
         principal.setLocationRelativeTo(null);
-
         principal.setVisible(true);
     }//GEN-LAST:event_createlibraryActionPerformed
 
     private void chooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseActionPerformed
-        
-        JFileChooser fc =  new  JFileChooser ();
-        FileFilter filter =  new  FileNameExtensionFilter ( "txt " , "xml " );
-        fc . setFileFilter (filter);
+        JFileChooser fc = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("txt ", "xml ");
+        fc.setFileFilter(filter);
         int response = fc.showOpenDialog(null);
         try {
             if (response == JFileChooser.APPROVE_OPTION) {
@@ -287,22 +290,19 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al elegir archivo");
             }
         } catch (Exception e) {
-            
             e.printStackTrace();
         }
     }//GEN-LAST:event_chooseActionPerformed
 
     private void desActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desActionPerformed
-       dispose();
+        dispose();
     }//GEN-LAST:event_desActionPerformed
 
     private void deleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookActionPerformed
-         BookDestroyer principal = new BookDestroyer();
-           
-           // para centrarlo
-           principal.setLocationRelativeTo(null);
-           
-           principal.setVisible(true);
+        BookDestroyer principal = new BookDestroyer();
+        // para centrarlo
+        principal.setLocationRelativeTo(null);
+        principal.setVisible(true);
     }//GEN-LAST:event_deleteBookActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -310,16 +310,14 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void createBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBookActionPerformed
-       try {
-           BookCreator principal = new BookCreator();
-           
-           // para centrarlo
-           principal.setLocationRelativeTo(null);
-           
-           principal.setVisible(true);
-       } catch (LibreriaExcepciones ex) {
-            JOptionPane.showMessageDialog(null, "Error fatal" , "Error message", JOptionPane.ERROR_MESSAGE);
-       }
+        try {
+            BookCreator principal = new BookCreator();
+            // para centrarlo
+            principal.setLocationRelativeTo(null);
+            principal.setVisible(true);
+        } catch (LibreriaExcepciones ex) {
+            JOptionPane.showMessageDialog(null, "Error fatal", "Error message", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_createBookActionPerformed
 
     private void bookListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookListActionPerformed
@@ -327,29 +325,25 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_bookListActionPerformed
 
     private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
-      listChoosed = list.getSelectedValue();
-      int pos = list.locationToIndex(evt.getPoint());
-    listaLibros=(ArrayList<Libro>) co.getLibrosDadaColeccion(listaUser.get(pos).getIdColeccion());
+        listChoosed = list.getSelectedValue();
+        int pos = list.locationToIndex(evt.getPoint());
+        listaLibros = (ArrayList<Libro>) co.getLibrosDadaColeccion(listaUser.get(pos).getIdColeccion());
         DefaultListModel<String> demolist3 = new DefaultListModel<>();
-     listBook.setModel(demolist3);
-    
- 
-    for(Libro l : listaLibros){
-        String genes = "";
-          try {
-              
-              ArrayList<Genero> gen = g.getLibroGenero(l.getIdLibro());
-              for(Genero g : gen){
-                  
-                  genes += g.getNombre() + " | ";
-                  
-              }
-          } catch (LibreriaExcepciones ex) {
-              Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-          }
-        String infoLibro = l.getTitulo() + " | " + l.getAutor() + " | " + l.getIsbn() + " | " + l.getIdioma() + " | " + genes;
-        demolist3.addElement(infoLibro + " | " + l.getPrecio()+" | " + " | " + l.getEdicion());
-    }
+        listBook.setModel(demolist3);
+
+        for (Libro l : listaLibros) {
+            String genes = "";
+            try {
+                ArrayList<Genero> gen = g.getLibroGenero(l.getIdLibro());
+                for (Genero g : gen) {
+                    genes += g.getNombre() + " | ";
+                }
+            } catch (LibreriaExcepciones ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String infoLibro = l.getTitulo() + " | " + l.getAutor() + " | " + l.getIsbn() + " | " + l.getIdioma() + " | " + genes;
+            demolist3.addElement(infoLibro + " | " + l.getPrecio() + " | " + " | " + l.getEdicion());
+        }
     }//GEN-LAST:event_listMousePressed
 
     /**

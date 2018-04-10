@@ -18,27 +18,26 @@ import static swing.BookCreator.listaGenerosSelected;
  *
  * @author dam2t1
  */
-public class GeneroSelector extends javax.swing.JFrame 
-{
-DefaultListModel<String> demolist2 = new DefaultListModel<>();
-GeneroDAO g = new GeneroDAO();
-private BookDestroyer bookdestroyer;
+public class GeneroSelector extends javax.swing.JFrame {
 
-    interface OnDisposeListener
-    {
+    DefaultListModel<String> demolist2 = new DefaultListModel<>();
+    GeneroDAO g = new GeneroDAO();
+    private BookDestroyer bookdestroyer;
+
+    interface OnDisposeListener {
         void disposed();
     }
-    
+
     private OnDisposeListener listener;
 
- public GeneroSelector(OnDisposeListener listener) throws LibreriaExcepciones{
-     this.listener = listener;
-     initComponents();
-     fuckingGeneroGetter();
-     listaGeneros();
-     listaGenerosSelected = new ArrayList<>();     
-      
-      }
+    public GeneroSelector(OnDisposeListener listener) throws LibreriaExcepciones {
+        this.listener = listener;
+        initComponents();
+        fuckingGeneroGetter();
+        listaGeneros();
+        listaGenerosSelected = new ArrayList<>();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,15 +103,15 @@ private BookDestroyer bookdestroyer;
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(68, 68, 68)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(28, 28, 28))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -160,57 +159,56 @@ private BookDestroyer bookdestroyer;
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-    dispose();
+        dispose();
     }//GEN-LAST:event_exitActionPerformed
 
     private void genListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genListMouseClicked
- int pos = genList.locationToIndex(evt.getPoint());
-         selectedList.setModel(demolist2);
-         System.out.println(pos);
+        int pos = genList.locationToIndex(evt.getPoint());
+        selectedList.setModel(demolist2);
+        System.out.println(pos);
 
-            if(!listaGenerosSelected.contains(listaGeneros.get(pos).getNombre())){
-                listaGenerosSelected.add(listaGeneros.get(pos).getNombre());
-                demolist2.addElement(listaGeneros.get(pos).getNombre()); 
+        if (!listaGenerosSelected.contains(listaGeneros.get(pos).getNombre())) {
+            listaGenerosSelected.add(listaGeneros.get(pos).getNombre());
+            demolist2.addElement(listaGeneros.get(pos).getNombre());
 
-                 System.out.println("entra");
-            }else{
-
+            System.out.println("entra");
+        } else {
             String nl = System.getProperty("line.separator");
-            JOptionPane.showMessageDialog(null, "ese genero ya habi sido seleccionado" , "SI", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, "ese genero ya habi sido seleccionado", "SI", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_genListMouseClicked
 
     private void selectedListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectedListMouseClicked
-         if(listaGenerosSelected.size() > 0){
+        if (listaGenerosSelected.size() > 0) {
             selectedList.setModel(demolist2);
-        int pos = selectedList.locationToIndex(evt.getPoint());      
-        listaGenerosSelected.remove(pos);  
-        System.out.println("removed from arry");   
-        demolist2.removeElementAt(pos);
-        System.out.println("removed from list");
+            int pos = selectedList.locationToIndex(evt.getPoint());
+            listaGenerosSelected.remove(pos);
+            System.out.println("removed from arry");
+            demolist2.removeElementAt(pos);
+            System.out.println("removed from list");
         }
     }//GEN-LAST:event_selectedListMouseClicked
 
     private void selectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectMouseClicked
-       
     }//GEN-LAST:event_selectMouseClicked
 
     private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
- BookCreator.cont = true;
- listener.disposed();
- dispose();
+        BookCreator.cont = true;
+        listener.disposed();
+        dispose();
     }//GEN-LAST:event_selectActionPerformed
 
- private void listaGeneros(){
-     DefaultListModel<String> demolist = new DefaultListModel<>();
-     genList.setModel(demolist);
-      for(int i = 0 ; i<listaGeneros.size();i++){
-          demolist.addElement(listaGeneros.get(i).getNombre());
+    private void listaGeneros() {
+        DefaultListModel<String> demolist = new DefaultListModel<>();
+        genList.setModel(demolist);
+        for (int i = 0; i < listaGeneros.size(); i++) {
+            demolist.addElement(listaGeneros.get(i).getNombre());
         }
- }
- private void fuckingGeneroGetter() throws LibreriaExcepciones{
-    listaGeneros= (ArrayList<Genero>) g.getListAllGeneros();
-}
+    }
+
+    private void fuckingGeneroGetter() throws LibreriaExcepciones {
+        listaGeneros = (ArrayList<Genero>) g.getListAllGeneros();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exit;
@@ -228,4 +226,3 @@ private BookDestroyer bookdestroyer;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
-

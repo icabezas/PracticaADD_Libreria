@@ -8,8 +8,6 @@ package swing;
 import daos.LibroDAO;
 import exceptiones.LibreriaExcepciones;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import modelo.Libro;
 
@@ -17,7 +15,7 @@ import modelo.Libro;
  *
  * @author dam2t1
  */
-public class BookDestroyer extends javax.swing.JFrame{
+public class BookDestroyer extends javax.swing.JFrame {
 
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
     LibroDAO l = new LibroDAO();
@@ -113,31 +111,25 @@ public class BookDestroyer extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void listaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaMouseClicked
-
-         
-            if (listaLibros.size() > 0) {
-                lista.setModel(demolist2);
-                int pos = lista.locationToIndex(evt.getPoint());
-                try {
-                    l.borrarLibro(listaLibros.get(pos).getIdLibro());
-                } catch (LibreriaExcepciones ex) {
-
-                }
-
-                listaLibros.remove(pos);
-                System.out.println("removed from arry");
-                demolist2.removeElementAt(pos);
-                lista.setModel(demolist2);
-                System.out.println("removed from list");
+        if (listaLibros.size() > 0) {
+            lista.setModel(demolist2);
+            int pos = lista.locationToIndex(evt.getPoint());
+            try {
+                l.borrarLibro(listaLibros.get(pos).getIdLibro());
+            } catch (LibreriaExcepciones ex) {
 
             }
-        
+            listaLibros.remove(pos);
+            System.out.println("removed from arry");
+            demolist2.removeElementAt(pos);
+            lista.setModel(demolist2);
+            System.out.println("removed from list");
+        }
     }//GEN-LAST:event_listaMouseClicked
     private void listUpdater() {
         listaLibros = l.getListaLibrosBBDD();
         lista.setModel(demolist2);
         for (Libro libro : listaLibros) {
-
             String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
             demolist2.addElement(infoLibro);
         }
@@ -151,9 +143,6 @@ public class BookDestroyer extends javax.swing.JFrame{
     private javax.swing.JList<String> lista;
     // End of variables declaration//GEN-END:variables
 public boolean isReally() {
-
         return know;
     }
-
-
 }

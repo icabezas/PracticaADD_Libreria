@@ -19,6 +19,7 @@ public class Register extends javax.swing.JFrame {
      * Creates new form Register
      */
     UsuarioDAO u = new UsuarioDAO();
+
     public Register() {
         initComponents();
     }
@@ -103,9 +104,9 @@ public class Register extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(p1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(p2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(p2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(35, 35, 35)
                 .addComponent(complete)
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -116,16 +117,16 @@ public class Register extends javax.swing.JFrame {
 
     private void completeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeActionPerformed
         String newuser = usname.getText();
-        String password= p1.getText();
+        String password = p1.getText();
         String nl = System.getProperty("line.separator");
-        try{
-        u.crearUsuario(newuser, password);
-        JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
-        }catch(LibreriaExcepciones ex){
+        try {
+            u.crearUsuario(newuser, password);
+            JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } catch (LibreriaExcepciones ex) {
             JOptionPane.showMessageDialog(null, "No" + nl + "se ha completado" + newuser + nl + "el registro: " + password, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-       
+
     }//GEN-LAST:event_completeActionPerformed
 
     private void usnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usnameActionPerformed

@@ -18,14 +18,13 @@ import exceptiones.LibreriaExcepciones;
  * @author dam2t1
  */
 public class Añadirlibrerias extends javax.swing.JFrame {
-    
-    
+
     private ArrayList<Libro> listaLibrosNuevacolection;
     private ArrayList<Libro> listaLibrosAñadir;
     private LibroDAO libroDAO = new LibroDAO();
     ColeccionDAO c = new ColeccionDAO();
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
-    
+
     /**
      * Creates new form Añadirlibrerias
      */
@@ -34,7 +33,6 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         listaLibrosNuevacolection = new ArrayList<>();
         listaLibrosAñadir = new ArrayList<>();
         llenarListaLibros();
-
     }
 
     /**
@@ -82,7 +80,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
         jLabel2.setText("Nombre de la libreria:");
 
-        jLabel5.setText("-----------------------------------------");
+        jLabel5.setText("-----------------------------------------------------------------------------");
 
         listaLibroColeccion.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { " " };
@@ -100,21 +98,21 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(114, 114, 114)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel5))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(n, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2)))
                 .addContainerGap())
@@ -131,14 +129,15 @@ public class Añadirlibrerias extends javax.swing.JFrame {
                     .addComponent(n, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jLabel3.setText("Listado de libros");
 
-        jLabel4.setText("--------------------------------------");
+        jLabel4.setText("--------------------------------------------------------------------------");
 
         listalibrosbbdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -152,14 +151,15 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(97, 97, 97))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(jLabel3)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -170,7 +170,7 @@ public class Añadirlibrerias extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
 
         jButton1.setText("Crear");
@@ -192,10 +192,9 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(salir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -211,8 +210,8 @@ public class Añadirlibrerias extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(salir))))
@@ -226,9 +225,9 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         String nl = System.getProperty("line.separator");
         try {
             c.crearColeccion(1, n.getText(), listaLibrosNuevacolection);
-            JOptionPane.showMessageDialog(null, "Colección creada" , "Soy un mensaje de información", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Colección creada", "Soy un mensaje de información", JOptionPane.INFORMATION_MESSAGE);
         } catch (LibreriaExcepciones ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage() , "Soy un mensaje de error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Soy un mensaje de error", JOptionPane.ERROR_MESSAGE);
         }
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -239,36 +238,35 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
         int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
-       listaLibroColeccion.setModel(demolist2);
-         System.out.println(pos);
+        listaLibroColeccion.setModel(demolist2);
+        System.out.println(pos);
         String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor() + " | " + listaLibrosAñadir.get(pos).getIsbn();
-            if(!listaLibrosNuevacolection.contains(listaLibrosAñadir.get(pos))){
-                listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
-                demolist2.addElement(listaLibrosAñadir.get(pos).getTitulo()); 
+        if (!listaLibrosNuevacolection.contains(listaLibrosAñadir.get(pos))) {
+            listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
+            demolist2.addElement(listaLibrosAñadir.get(pos).getTitulo());
 
-                 System.out.println("entra");
-            }else{
+            System.out.println("entra");
+        } else {
 
             String nl = System.getProperty("line.separator");
-            JOptionPane.showMessageDialog(null, "ese libro ya esta en tu lista" , "SI", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, "ese libro ya esta en tu lista", "SI", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_listalibrosbbddMouseClicked
 
     private void listaLibroColeccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaLibroColeccionMouseClicked
-      
+
     }//GEN-LAST:event_listaLibroColeccionMouseClicked
 
     private void llenarListaLibros() {
-         listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
+        listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
         //System.out.println(listaLibrosAñadir.get(0).getTitulo());
-        
-        
+
         DefaultListModel<String> demolist = new DefaultListModel<>();
         if (listaLibrosAñadir.isEmpty()) {
             System.out.println("Caca, no hay libros");
-        }else{
+        } else {
             for (Libro libro : listaLibrosAñadir) {
-                
+
                 String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
                 demolist.addElement(infoLibro);
             }
@@ -276,8 +274,6 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
         listalibrosbbdd.setModel(demolist);
     }
-    
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
