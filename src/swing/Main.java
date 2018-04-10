@@ -6,14 +6,22 @@
 package swing;
 
 import daos.ColeccionDAO;
+import daos.LibroColeccionDAO;
+import daos.LibroGeneroDAO;
 import exceptiones.LibreriaExcepciones;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.Coleccion;
+import modelo.Genero;
 import modelo.Libro;
+import modelo.LibroColeccion;
 
 /**
  *
@@ -22,7 +30,11 @@ import modelo.Libro;
 public class Main extends javax.swing.JFrame {
    DefaultListModel<String> demolist2 = new DefaultListModel<>();
    private ArrayList<Coleccion> listaUser;
+   private ArrayList<Libro> listaLibros;
    ColeccionDAO c = new ColeccionDAO();
+   LibroColeccionDAO co = new LibroColeccionDAO();
+   LibroGeneroDAO g = new LibroGeneroDAO();
+   private String listChoosed;
     /**
      * Creates new form main
      */
@@ -63,6 +75,8 @@ public class Main extends javax.swing.JFrame {
         list = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listBook = new javax.swing.JList<>();
         createlibrary = new javax.swing.JButton();
         choose = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -84,6 +98,11 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setText("Mis colecciones");
 
+        list.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                listMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(list);
 
         jLabel2.setText("------------------------------------");
@@ -112,15 +131,17 @@ public class Main extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
+        jScrollPane2.setViewportView(listBook);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 506, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
         );
 
         createlibrary.setText("Crear colección");
@@ -211,8 +232,8 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(createlibrary, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                            .addComponent(createlibrary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(choose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
@@ -253,12 +274,22 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_createlibraryActionPerformed
 
     private void chooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseActionPerformed
-            try {
-                    EjemploJFileChooser frame = new EjemploJFileChooser();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        
+        JFileChooser fc =  new  JFileChooser ();
+        FileFilter filter =  new  FileNameExtensionFilter ( "txt " , "xml " );
+        fc . setFileFilter (filter);
+        int response = fc.showOpenDialog(null);
+        try {
+            if (response == JFileChooser.APPROVE_OPTION) {
+                String pathName = fc.getSelectedFile().getPath();
+                //implementar aqui lo de edu
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al elegir archivo");
+            }
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_chooseActionPerformed
 
     private void desActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desActionPerformed
@@ -295,6 +326,32 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bookListActionPerformed
 
+    private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
+      listChoosed = list.getSelectedValue();
+      int pos = list.locationToIndex(evt.getPoint());
+    listaLibros=(ArrayList<Libro>) co.getLibrosDadaColeccion(listaUser.get(pos).getIdColeccion());
+        DefaultListModel<String> demolist3 = new DefaultListModel<>();
+     listBook.setModel(demolist3);
+    
+ 
+    for(Libro l : listaLibros){
+        String genes = "";
+          try {
+              
+              ArrayList<Genero> gen = g.getLibroGenero(l.getIdLibro());
+              for(Genero g : gen){
+                  
+                  genes += g.getNombre() + " | ";
+                  
+              }
+          } catch (LibreriaExcepciones ex) {
+              Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        String infoLibro = l.getTitulo() + " | " + l.getAutor() + " | " + l.getIsbn() + " | " + l.getIdioma() + " | " + genes;
+        demolist3.addElement(infoLibro + " | " + l.getPrecio()+" | " + " | " + l.getEdicion());
+    }
+    }//GEN-LAST:event_listMousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -318,7 +375,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> list;
+    private javax.swing.JList<String> listBook;
     private javax.swing.JMenuBar menu;
     // End of variables declaration//GEN-END:variables
 }
