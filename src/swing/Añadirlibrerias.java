@@ -226,9 +226,9 @@ public class Añadirlibrerias extends javax.swing.JFrame {
         String nl = System.getProperty("line.separator");
         try {
             c.crearColeccion(1, n.getText(), listaLibrosNuevacolection);
-            JOptionPane.showMessageDialog(null, "Colección creada" , "SI", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Colección creada" , "Soy un mensaje de información", JOptionPane.INFORMATION_MESSAGE);
         } catch (LibreriaExcepciones ex) {
-            JOptionPane.showMessageDialog(null, "Error no se ha podido crear la lista" , "SI", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage() , "Soy un mensaje de error", JOptionPane.ERROR_MESSAGE);
         }
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
