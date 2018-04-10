@@ -31,12 +31,12 @@ public class ColeccionDAO {
         LibroDAO libroDAO = new LibroDAO();
         ArrayList<Libro> librosDB = libroDAO.existenTodosLibros(libros);
         if (existeColeccionUsuarioNombre(idUsuario, nombreColeccion) == null && librosDB != null) {
-            Coleccion coleccion = new Coleccion(getIdColeccionLast(), nombreColeccion, idUsuario);
             for (Libro libro : librosDB) {
                 LibroColeccionDAO libroColeccion = new LibroColeccionDAO();
                 libroColeccion.crearLibroColeccion(libro.getIdLibro(), getIdColeccionLast());
             }
             try {
+                Coleccion coleccion = new Coleccion(getIdColeccionLast(), nombreColeccion, idUsuario);
                 abrirConexion();
                 db.store(coleccion);
             } catch (Exception ex) {
@@ -90,13 +90,17 @@ public class ColeccionDAO {
     }
 
     public ArrayList<Coleccion> getAllColeccionesUsuario(int idUsuario) throws LibreriaExcepciones {
-        ArrayList<Coleccion> coleccionesUsuario = new ArrayList<>();
-        Coleccion coleccion = new Coleccion(idUsuario);
         abrirConexion();
-        ObjectSet resultado = db.queryByExample(coleccion);
+        ArrayList<Coleccion> coleccionesUsuario = new ArrayList<>();
+        Coleccion coleccion = new Coleccion(0, "", idUsuario);
+        ObjectSet resultado = db.query(Coleccion.class);
         if (!resultado.isEmpty()) {
-            coleccion = (Coleccion) resultado.next();
-            coleccionesUsuario.add(coleccion);
+            for (int i = 0; i < resultado.size(); i++) {
+                coleccion = (Coleccion) resultado.next();
+                if (coleccion.getIdUsuario() == idUsuario) {
+                    coleccionesUsuario.add(coleccion);
+                }
+            }
         }
         cerrarConexion();
         return coleccionesUsuario;
@@ -109,6 +113,21 @@ public class ColeccionDAO {
         int total = resultado.size() + 1;
         cerrarConexion();
         return total;
+    }
+
+    //TESTING
+    public void showAllColeccionesDB() throws LibreriaExcepciones {
+        abrirConexion();
+        ObjectSet resultado = db.query(Coleccion.class);
+        if (!resultado.isEmpty()) {
+            for (int i = 0; i < resultado.size(); i++) {
+                Coleccion coleccion = (Coleccion) resultado.next();
+                System.out.println("Nombre: " + coleccion.getNombre() + "\nID: " + coleccion.getIdColeccion() + "\nID USUARIO: " + coleccion.getIdUsuario());
+            }
+        } else {
+            System.out.println("No hay colecciones");
+        }
+        cerrarConexion();
     }
 
     public void abrirConexion() throws LibreriaExcepciones {
