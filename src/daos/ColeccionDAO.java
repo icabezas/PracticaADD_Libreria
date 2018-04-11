@@ -52,27 +52,29 @@ public class ColeccionDAO {
     //BORRAR COLECCION
     public void borrarColeccion(String nombreColeccion, int idUsuario) throws LibreriaExcepciones {
         abrirConexion();
+        LibroColeccionDAO libroColeccionDAO = new LibroColeccionDAO();
         ObjectSet result = db.queryByExample(new Coleccion(idUsuario, nombreColeccion));
         if (!result.isEmpty()) {
             Coleccion coleccion = (Coleccion) result.next();
             try {
                 db.delete(coleccion);
-                LibroColeccionDAO libroColeccionDAO = new LibroColeccionDAO();
-                //COMPROBAR SI FUNCIONA
-                libroColeccionDAO.borrarLibroColeccion(coleccion.getIdColeccion(), false);
-
-                System.out.println("Deleted " + nombreColeccion);
+                cerrarConexion();
             } catch (Exception ex) {
                 cerrarConexion();
                 throw new LibreriaExcepciones("Problema al borrar la coleccion " + nombreColeccion);
             }
+            try {
+                libroColeccionDAO.borrarLibroColeccion(coleccion.getIdColeccion(), false);
+            } catch (LibreriaExcepciones ex) {
+                throw new LibreriaExcepciones("Problema al borrar la relacion de libroColeccion " + nombreColeccion);
+            }
         } else {
+            cerrarConexion();
             throw new LibreriaExcepciones("No se ha encontrado la coleccion con nombre " + nombreColeccion);
         }
-        cerrarConexion();
     }
-
     //MODIFICAR COLECCION
+
     public void modificarColeccion(String nombreColeccion, List<Libro> libros) {
         //ESTO SE DEBERIA HACER EN LIBROCOLECCION
     }

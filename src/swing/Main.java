@@ -7,10 +7,12 @@ package swing;
 
 import daos.ColeccionDAO;
 import daos.LibroColeccionDAO;
+import daos.LibroDAO;
 import daos.LibroGeneroDAO;
 import exceptiones.LibreriaExcepciones;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -35,6 +37,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
     private ArrayList<Coleccion> listaUser;
     private ArrayList<Libro> listaLibros;
     ColeccionDAO c = new ColeccionDAO();
+    LibroDAO libroDAO = new LibroDAO();
     LibroColeccionDAO co = new LibroColeccionDAO();
     LibroGeneroDAO g = new LibroGeneroDAO();
     private String listChoosed;
@@ -58,6 +61,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
 
     private void colectionsView() {
         try {
+            demolist2.clear();
             list.setModel(demolist2);
             listaUser = (ArrayList<Coleccion>) c.getAllColeccionesUsuario(Swim.userSession.getIdUsuario());
             for (int i = 0; i < listaUser.size(); i++) {
@@ -67,13 +71,15 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-private void colectionsViewDelete() {
+
+    private void colectionsViewDelete() {
         int mySize = list.getComponentCount();
         System.out.println(mySize);
-         for (int i = 0; i < mySize; i++) {
-             demolist2.remove(i);
-         }
-}
+        for (int i = 0; i < mySize; i++) {
+            demolist2.remove(i);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,6 +101,7 @@ private void colectionsViewDelete() {
         choose = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         des = new javax.swing.JButton();
+        eliminarColeccion = new javax.swing.JButton();
         menu = new javax.swing.JMenuBar();
         getion = new javax.swing.JMenu();
         createBook = new javax.swing.JMenuItem();
@@ -181,6 +188,14 @@ private void colectionsViewDelete() {
             }
         });
 
+        eliminarColeccion.setText("Eliminar colección");
+        eliminarColeccion.setToolTipText("Elimina la colección seleccionada");
+        eliminarColeccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarColeccionActionPerformed(evt);
+            }
+        });
+
         menu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         getion.setText("Gestion de datos");
@@ -255,7 +270,10 @@ private void colectionsViewDelete() {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(eliminarColeccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -270,10 +288,12 @@ private void colectionsViewDelete() {
                         .addGap(18, 18, 18)
                         .addComponent(createlibrary)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(eliminarColeccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                         .addComponent(choose)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(des))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -283,10 +303,16 @@ private void colectionsViewDelete() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createlibraryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createlibraryActionPerformed
-        Añadirlibrerias principal = new Añadirlibrerias(this);
-        // para centrarlo
-        principal.setLocationRelativeTo(null);
-        principal.setVisible(true);
+        if (libroDAO.getListaLibrosBBDD() == null) {
+            JOptionPane.showMessageDialog(null, "No hay libros en la DB");
+        } else {
+            Añadirlibrerias principal = new Añadirlibrerias(this);
+            // para centrarlo
+
+            principal.setLocationRelativeTo(null);
+            principal.setVisible(true);
+        }
+
     }//GEN-LAST:event_createlibraryActionPerformed
 
     private void chooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseActionPerformed
@@ -311,7 +337,7 @@ private void colectionsViewDelete() {
         interfaz.setLocationRelativeTo(null);
         interfaz.setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_desActionPerformed
 
     private void deleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookActionPerformed
@@ -341,32 +367,59 @@ private void colectionsViewDelete() {
     }//GEN-LAST:event_bookListActionPerformed
 
     private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
-        listChoosed = list.getSelectedValue();
-        int pos = list.locationToIndex(evt.getPoint());
-        listaLibros = (ArrayList<Libro>) co.getLibrosDadaColeccion(listaUser.get(pos).getIdColeccion());
-        DefaultListModel<String> demolist3 = new DefaultListModel<>();
-        listBook.setModel(demolist3);
+        if (!demolist2.isEmpty()) {
+            listChoosed = list.getSelectedValue();
+            int pos = list.locationToIndex(evt.getPoint());
+            listaLibros = (ArrayList<Libro>) co.getLibrosDadaColeccion(listaUser.get(pos).getIdColeccion());
+            DefaultListModel<String> demolist3 = new DefaultListModel<>();
+            listBook.setModel(demolist3);
 
-        for (Libro l : listaLibros) {
-            String genes = "";
-            try {
-                ArrayList<Genero> gen = g.getLibroGenero(l.getIdLibro());
-                for (Genero g : gen) {
-                    genes += g.getNombre() + " | ";
+            for (Libro l : listaLibros) {
+                String genes = "";
+                try {
+                    ArrayList<Genero> gen = g.getLibroGenero(l.getIdLibro());
+                    for (Genero g : gen) {
+                        genes += g.getNombre() + " | ";
+                    }
+                } catch (LibreriaExcepciones ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (LibreriaExcepciones ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                String infoLibro = l.getTitulo() + " | " + l.getAutor() + " | " + l.getIsbn() + " | " + l.getIdioma() + " | " + genes;
+                demolist3.addElement(infoLibro + " | " + l.getPrecio() + " | " + " | " + l.getEdicion());
             }
-            String infoLibro = l.getTitulo() + " | " + l.getAutor() + " | " + l.getIsbn() + " | " + l.getIdioma() + " | " + genes;
-            demolist3.addElement(infoLibro + " | " + l.getPrecio() + " | " + " | " + l.getEdicion());
         }
     }//GEN-LAST:event_listMousePressed
+
+    private void eliminarColeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarColeccionActionPerformed
+        // TODO add your handling code here:
+        List<String> coleccionesSeleccionadas = new ArrayList<>();
+        coleccionesSeleccionadas = list.getSelectedValuesList();
+        if (!coleccionesSeleccionadas.isEmpty()) {
+            String message = "Se eliminaran las siguientes colecciones:";
+            for (String nombre : coleccionesSeleccionadas) {
+                message += "\n" + nombre;
+            }
+            int confirmDelete = JOptionPane.showConfirmDialog(null, message, "", NORMAL);
+            if (confirmDelete == 0) {
+                for (String nombre : coleccionesSeleccionadas) {
+                    try {
+                        c.borrarColeccion(nombre, Swim.userSession.getIdUsuario());
+                    } catch (LibreriaExcepciones ex) {
+                        JOptionPane.showMessageDialog(null, "Error al intentar eliminar: " + nombre, "Error message", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar alguna colección para eliminar", "Error message", JOptionPane.ERROR_MESSAGE);
+        }
+        mainRepaint();
+    }//GEN-LAST:event_eliminarColeccionActionPerformed
     @Override
     public void mainRepaint() {
-        colectionsViewDelete();
+//        colectionsViewDelete();
         colectionsView();
-         repaint();
-        
+        repaint();
+
     }
 
     /**
@@ -380,6 +433,7 @@ private void colectionsViewDelete() {
     private javax.swing.JButton createlibrary;
     private javax.swing.JMenuItem deleteBook;
     private javax.swing.JButton des;
+    private javax.swing.JButton eliminarColeccion;
     private javax.swing.JMenu getion;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -398,5 +452,4 @@ private void colectionsViewDelete() {
     private javax.swing.JMenuBar menu;
     // End of variables declaration//GEN-END:variables
 
-   
 }

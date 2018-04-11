@@ -25,7 +25,6 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     ColeccionDAO c = new ColeccionDAO();
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
 
-   
     interface OnDisposeListener {
 
         void mainRepaint();
@@ -229,16 +228,22 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String nl = System.getProperty("line.separator");
-        try {
-            c.crearColeccion(Swim.userSession.getIdUsuario(), n.getText(), listaLibrosNuevacolection);
-            JOptionPane.showMessageDialog(null, "Colección creada", "Soy un mensaje de información", JOptionPane.INFORMATION_MESSAGE);
-            listener.mainRepaint();
-        } catch (LibreriaExcepciones ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Soy un mensaje de error", JOptionPane.ERROR_MESSAGE);
+        if (!listaLibrosNuevacolection.isEmpty()) {
+            if (!n.getText().equals("")) {
+                try {
+                    c.crearColeccion(Swim.userSession.getIdUsuario(), n.getText(), listaLibrosNuevacolection);
+                    JOptionPane.showMessageDialog(null, "Colección creada", "Soy un mensaje de información", JOptionPane.INFORMATION_MESSAGE);
+                    listener.mainRepaint();
+                } catch (LibreriaExcepciones ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                }
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Debes ponerle un nombre a la coleccion", "", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar algún libro", "", JOptionPane.ERROR_MESSAGE);
         }
-        
-        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
@@ -248,15 +253,11 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     private void listalibrosbbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listalibrosbbddMouseClicked
         int pos = listalibrosbbdd.locationToIndex(evt.getPoint());
         listaLibroColeccion.setModel(demolist2);
-        System.out.println(pos);
         String infoLibro = listaLibrosAñadir.get(pos).getTitulo() + " | " + listaLibrosAñadir.get(pos).getAutor() + " | " + listaLibrosAñadir.get(pos).getIsbn();
         if (!listaLibrosNuevacolection.contains(listaLibrosAñadir.get(pos))) {
             listaLibrosNuevacolection.add(listaLibrosAñadir.get(pos));
             demolist2.addElement(listaLibrosAñadir.get(pos).getTitulo());
-
-            System.out.println("entra");
         } else {
-
             String nl = System.getProperty("line.separator");
             JOptionPane.showMessageDialog(null, "ese libro ya esta en tu lista", "SI", JOptionPane.ERROR_MESSAGE);
         }
@@ -268,14 +269,9 @@ public class Añadirlibrerias extends javax.swing.JFrame {
 
     private void llenarListaLibros() {
         listaLibrosAñadir = libroDAO.getListaLibrosBBDD();
-        //System.out.println(listaLibrosAñadir.get(0).getTitulo());
-
         DefaultListModel<String> demolist = new DefaultListModel<>();
-        if (listaLibrosAñadir.isEmpty()) {
-            System.out.println("Caca, no hay libros");
-        } else {
+        if (listaLibrosAñadir != null) {
             for (Libro libro : listaLibrosAñadir) {
-
                 String infoLibro = libro.getTitulo() + " | " + libro.getAutor() + " | " + libro.getIsbn();
                 demolist.addElement(infoLibro);
             }

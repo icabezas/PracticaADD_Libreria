@@ -121,6 +121,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButton2" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="eliminarColeccion" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanel2" max="32767" attributes="0"/>
@@ -138,10 +142,12 @@
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="createlibrary" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="eliminarColeccion" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="13" max="32767" attributes="0"/>
                       <Component id="choose" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="63" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="des" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jPanel2" max="32767" attributes="0"/>
@@ -291,6 +297,15 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="desActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="eliminarColeccion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Eliminar colecci&#xf3;n"/>
+        <Property name="toolTipText" type="java.lang.String" value="Elimina la colecci&#xf3;n seleccionada"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="eliminarColeccionActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

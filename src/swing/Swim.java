@@ -14,7 +14,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import modelo.Usuario;
-import com.seaglasslookandfeel.*;
 
 public class Swim {
 
@@ -49,10 +48,10 @@ public class Swim {
         icons.add(ImageIO.read(url64));
 
         //PARA CAMBIAR EL TEMA DE SWING
-        try {
-            UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }
