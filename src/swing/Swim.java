@@ -21,14 +21,21 @@ public class Swim {
     public static Usuario userSession;
     public static List<Image> icons;
 
-    public static void main(String[] args) throws MalformedURLException, IOException {
-
+    public static void main(String[] args) throws IOException {
+        
+        ponerIconosFrames();
+        
         Interfaz principal = new Interfaz();
 
         principal.setLocationRelativeTo(null);
 
         principal.setVisible(true);
 
+        principal.setIconImages(Swim.icons);
+
+    }
+
+    public static void ponerIconosFrames() throws MalformedURLException, IOException {
         //PARA PONER ICONOS EN LOS FRAMES TITLES
         URL url16 = new URL("https://i.imgur.com/5ickJfa.png");
         URL url24 = new URL("https://i.imgur.com/TjxzPiA.png");
