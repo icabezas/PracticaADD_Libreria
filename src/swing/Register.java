@@ -121,13 +121,17 @@ public class Register extends javax.swing.JFrame {
         String newuser = usname.getText();
         String password = p1.getText();
         String nl = System.getProperty("line.separator");
+        if(!newuser.equals("") && !password.equals("") ){
         try {
+            
             u.crearUsuario(newuser, password);
+          
             JOptionPane.showMessageDialog(null, "Registro completado" + nl + "Usuario: " + newuser + nl + "Contraseña: " + password, "SI", JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } catch (LibreriaExcepciones ex) {
             JOptionPane.showMessageDialog(null, "No" + nl + "se ha completado" + newuser + nl + "el registro: " + password, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+          }
 
     }//GEN-LAST:event_completeActionPerformed
 

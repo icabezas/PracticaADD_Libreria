@@ -25,11 +25,17 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     ColeccionDAO c = new ColeccionDAO();
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
 
-    /**
-     * Creates new form Añadirlibrerias
-     */
-    public Añadirlibrerias() {
+   
+    interface OnDisposeListener {
+
+        void mainRepaint();
+    }
+
+    private OnDisposeListener listener;
+
+    public Añadirlibrerias(OnDisposeListener listener) {
         this.setIconImages(Swim.icons);
+        this.listener = listener;
         initComponents();
         listaLibrosNuevacolection = new ArrayList<>();
         listaLibrosAñadir = new ArrayList<>();
@@ -225,11 +231,13 @@ public class Añadirlibrerias extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String nl = System.getProperty("line.separator");
         try {
-            c.crearColeccion(1, n.getText(), listaLibrosNuevacolection);
+            c.crearColeccion(Swim.userSession.getIdUsuario(), n.getText(), listaLibrosNuevacolection);
             JOptionPane.showMessageDialog(null, "Colección creada", "Soy un mensaje de información", JOptionPane.INFORMATION_MESSAGE);
+            listener.mainRepaint();
         } catch (LibreriaExcepciones ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Soy un mensaje de error", JOptionPane.ERROR_MESSAGE);
         }
+        
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

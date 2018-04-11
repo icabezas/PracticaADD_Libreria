@@ -22,7 +22,7 @@ public class GeneroSelector extends javax.swing.JFrame {
 
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
     GeneroDAO g = new GeneroDAO();
-    private BookDestroyer bookdestroyer;
+    
 
     interface OnDisposeListener {
 

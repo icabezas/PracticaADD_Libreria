@@ -9,6 +9,7 @@ import daos.ColeccionDAO;
 import daos.LibroColeccionDAO;
 import daos.LibroGeneroDAO;
 import exceptiones.LibreriaExcepciones;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,12 +22,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.Coleccion;
 import modelo.Genero;
 import modelo.Libro;
+import static swing.BookCreator.cont;
+import swing.GeneroSelector.OnDisposeListener;
 
 /**
  *
  * @author dam2t1
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDisposeListener {
 
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
     private ArrayList<Coleccion> listaUser;
@@ -64,7 +67,13 @@ public class Main extends javax.swing.JFrame {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+private void colectionsViewDelete() {
+        int mySize = list.getComponentCount();
+        System.out.println(mySize);
+         for (int i = 0; i < mySize; i++) {
+             demolist2.remove(i);
+         }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -274,7 +283,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createlibraryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createlibraryActionPerformed
-        Añadirlibrerias principal = new Añadirlibrerias();
+        Añadirlibrerias principal = new Añadirlibrerias(this);
         // para centrarlo
         principal.setLocationRelativeTo(null);
         principal.setVisible(true);
@@ -298,7 +307,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseActionPerformed
 
     private void desActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desActionPerformed
+        Interfaz interfaz = new Interfaz();
+        interfaz.setLocationRelativeTo(null);
+        interfaz.setVisible(true);
         dispose();
+        
     }//GEN-LAST:event_desActionPerformed
 
     private void deleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookActionPerformed
@@ -348,6 +361,13 @@ public class Main extends javax.swing.JFrame {
             demolist3.addElement(infoLibro + " | " + l.getPrecio() + " | " + " | " + l.getEdicion());
         }
     }//GEN-LAST:event_listMousePressed
+    @Override
+    public void mainRepaint() {
+        colectionsViewDelete();
+        colectionsView();
+         repaint();
+        
+    }
 
     /**
      * @param args the command line arguments
@@ -377,4 +397,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JList<String> listBook;
     private javax.swing.JMenuBar menu;
     // End of variables declaration//GEN-END:variables
+
+   
 }
