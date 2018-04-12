@@ -11,6 +11,11 @@ import daos.LibroDAO;
 import daos.LibroGeneroDAO;
 import exceptiones.LibreriaExcepciones;
 import java.awt.Dimension;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,9 +26,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import jaxb.generated.LibreriaType;
+import jaxbFunc.Obj2XML;
 import modelo.Coleccion;
 import modelo.Genero;
 import modelo.Libro;
+import sax.Utils;
 import static swing.BookCreator.cont;
 import swing.GeneroSelector.OnDisposeListener;
 
@@ -34,12 +42,16 @@ import swing.GeneroSelector.OnDisposeListener;
 public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDisposeListener {
 
     DefaultListModel<String> demolist2 = new DefaultListModel<>();
+     private List<Libro> auxList;
     private ArrayList<Coleccion> listaUser;
     private ArrayList<Libro> listaLibros;
     ColeccionDAO c = new ColeccionDAO();
     LibroDAO libroDAO = new LibroDAO();
     LibroColeccionDAO co = new LibroColeccionDAO();
     LibroGeneroDAO g = new LibroGeneroDAO();
+    Utils u = new Utils();
+    LibreriaType  t;
+    Obj2XML exportXML = new Obj2XML();
     private String listChoosed;
 
     /**
@@ -99,7 +111,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
         listBook = new javax.swing.JList<>();
         createlibrary = new javax.swing.JButton();
         choose = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        export = new javax.swing.JButton();
         des = new javax.swing.JButton();
         eliminarColeccion = new javax.swing.JButton();
         menu = new javax.swing.JMenuBar();
@@ -179,7 +191,12 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
             }
         });
 
-        jButton2.setText("Exportar una colección");
+        export.setText("Exportar una colección");
+        export.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportActionPerformed(evt);
+            }
+        });
 
         des.setText("Desconectar");
         des.addActionListener(new java.awt.event.ActionListener() {
@@ -270,7 +287,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(export, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(eliminarColeccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -292,7 +309,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                         .addComponent(choose)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(export)
                         .addGap(18, 18, 18)
                         .addComponent(des))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -322,8 +339,15 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
         int response = fc.showOpenDialog(null);
         try {
             if (response == JFileChooser.APPROVE_OPTION) {
-                String pathName = fc.getSelectedFile().getPath();
-                //implementar aqui lo de edu
+                String ruta = fc.getSelectedFile().getPath();
+                String[] parts = ruta.split(".");
+                if(parts[1].equals("txt")){
+                 
+                }
+                if(parts[1].equals("xml")){
+                 u.xml2Obj(ruta);   
+                }
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Error al elegir archivo");
             }
@@ -414,6 +438,29 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
         }
         mainRepaint();
     }//GEN-LAST:event_eliminarColeccionActionPerformed
+
+    private void exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportActionPerformed
+
+        JFileChooser  fc = new JFileChooser(".");
+    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    fc.setSelectedFile(new File("Nombredetuarchivo.xml"));
+    int returnVal = fc.showSaveDialog(this);
+    if (returnVal == JFileChooser.APPROVE_OPTION)
+    {
+        String colName = list.getSelectedValue();
+        for(int i  = 0; i< listaUser.size(); i++ ){
+            if(listaUser.get(i).getNombre().equals(colName)){
+         auxList = co.getLibrosDadaColeccion(listaUser.get(i).getIdColeccion());
+            }
+        }
+        LibreriaType lib = new LibreriaType();
+        
+        exportXML.obj2xml(lib, colName);
+    }
+    else
+    {
+        System.out.println("cancelled");
+    }    }//GEN-LAST:event_exportActionPerformed
     @Override
     public void mainRepaint() {
 //        colectionsViewDelete();
@@ -434,8 +481,8 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
     private javax.swing.JMenuItem deleteBook;
     private javax.swing.JButton des;
     private javax.swing.JButton eliminarColeccion;
+    private javax.swing.JButton export;
     private javax.swing.JMenu getion;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;

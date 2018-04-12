@@ -59,7 +59,11 @@ import javax.xml.bind.annotation.XmlType;
 public class LibreriaType {
 
     @XmlElement(name = "libro")
-    protected List<Libro> libro;
+    public List<Libro> libro;
+
+  
+
+    
 
     /**
      * Gets the value of the libro property.
