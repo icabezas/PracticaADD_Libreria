@@ -112,9 +112,10 @@ public class ColeccionDAO {
     public int getIdColeccionLast() throws LibreriaExcepciones {
         abrirConexion();
         ObjectSet resultado = db.query(Coleccion.class);
-        int total = resultado.size() + 1;
+        Coleccion coleccion = (Coleccion) resultado.get(resultado.size() -1);
+        int total = coleccion.getIdColeccion();
         cerrarConexion();
-        return total;
+        return total + 1;
     }
 
     //TESTING

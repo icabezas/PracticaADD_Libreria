@@ -27,11 +27,11 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jaxb.generated.LibreriaType;
-import jaxbFunc.Obj2XML;
+import jaxbFunc.ExportXML;
 import modelo.Coleccion;
 import modelo.Genero;
 import modelo.Libro;
-import sax.Utils;
+import sax.ImportXML;
 import static swing.BookCreator.cont;
 import swing.GeneroSelector.OnDisposeListener;
 
@@ -49,9 +49,9 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
     LibroDAO libroDAO = new LibroDAO();
     LibroColeccionDAO co = new LibroColeccionDAO();
     LibroGeneroDAO g = new LibroGeneroDAO();
-    Utils u = new Utils();
+    ImportXML u = new ImportXML();
     LibreriaType  t;
-    Obj2XML exportXML = new Obj2XML();
+    ExportXML exportXML = new ExportXML();
     private String listChoosed;
 
     /**
@@ -69,6 +69,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
         for (int i = 0; i < listaUser.size(); i++) {
             System.out.print(listaUser.get(i));
         }
+        
     }
 
     private void colectionsView() {
@@ -334,18 +335,20 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
 
     private void chooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseActionPerformed
         JFileChooser fc = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("txt ", "xml ");
-        fc.setFileFilter(filter);
         int response = fc.showOpenDialog(null);
         try {
             if (response == JFileChooser.APPROVE_OPTION) {
                 String ruta = fc.getSelectedFile().getPath();
-                String[] parts = ruta.split(".");
+                String[] parts = ruta.split("\\.");
+                System.out.println("");
+                System.out.println(ruta);
                 if(parts[1].equals("txt")){
-                 
+                  
                 }
                 if(parts[1].equals("xml")){
                  u.xml2Obj(ruta);   
+                }else{
+                 JOptionPane.showMessageDialog(null, "Formato incorrecto");
                 }
                 
             } else {
@@ -354,6 +357,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mainRepaint();
     }//GEN-LAST:event_chooseActionPerformed
 
     private void desActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desActionPerformed
@@ -443,7 +447,7 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
 
         JFileChooser  fc = new JFileChooser(".");
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    fc.setSelectedFile(new File("Nombredetuarchivo.xml"));
+    
     int returnVal = fc.showSaveDialog(this);
     if (returnVal == JFileChooser.APPROVE_OPTION)
     {
@@ -453,9 +457,12 @@ public class Main extends javax.swing.JFrame implements Añadirlibrerias.OnDispo
          auxList = co.getLibrosDadaColeccion(listaUser.get(i).getIdColeccion());
             }
         }
+        String ruta = fc.getSelectedFile().getPath();
+        System.out.println("");
+        System.out.println(ruta);
         LibreriaType lib = new LibreriaType();
-        
-        exportXML.obj2xml(lib, colName);
+        lib.libro = auxList;
+        exportXML.obj2xml(lib, colName,ruta);
     }
     else
     {

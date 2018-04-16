@@ -18,4 +18,14 @@
         <precio>15.2</precio>
         <idLibro>3</idLibro>
     </libro>
+    <libro ISBN="147258369">
+        <titulo>Ready Player Three</titulo>
+        <autor>Ernest Cline</autor>
+        <idioma>EN</idioma>
+        <categoria>dfhfgdgf</categoria>
+        <anyo>2015</anyo>
+        <edicion>1</edicion>
+        <precio>15.2</precio>
+        <idLibro>3</idLibro>
+    </libro>
 </libreria>

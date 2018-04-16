@@ -15,8 +15,8 @@ public class test {
 
         //EJEMPLO PARA POL, para ejecutar SAX sólo tienes que pasarle la ruta como parámetro. :*
         //De xml a objetos (IMPORTAR librería)
-        Utils utils = new Utils();
-        utils.xml2Obj("libreria.xml");
+        ImportXML utils = new ImportXML();
+      //  utils.xml2Obj("libreria.xml");
 
     }
 }

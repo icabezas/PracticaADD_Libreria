@@ -5,9 +5,13 @@
  */
 package sax;
 
+import daos.ColeccionDAO;
+import daos.LibroDAO;
+import exceptiones.LibreriaExcepciones;
 import modelo.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,12 +22,13 @@ import javax.xml.parsers.SAXParserFactory;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import org.xml.sax.SAXException;
+import swing.Swim;
 
 /**
  *
  * @author edust
  */
-public class Utils {
+public class ImportXML {
 
 
 
@@ -60,7 +65,7 @@ public class Utils {
     }
 
 
-    public void xml2Obj(String rutaFichero) {
+    public void xml2Obj(String rutaFichero) throws LibreriaExcepciones {
         try {
 
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
@@ -81,6 +86,14 @@ public class Utils {
                 System.out.println("edicion: " + l.getEdicion());
                 System.out.println("precio: " + l.getPrecio());
                 System.out.println("*************************");
+                
+                //comprobar si existe ya el libro en la DB
+                LibroDAO libroDAO = new LibroDAO();
+                Libro libroDB = libroDAO.existeLibroPorISBN(l.getIsbn());
+                if(libroDB == null){
+                    libroDAO.crearLibro(l, (ArrayList<String>) l.getGenero());
+                }
+                
                 /*"titulo",
                 "autor",
                 "categoria",
@@ -89,8 +102,14 @@ public class Utils {
                 "edicion",
                 "precio"*/
             }
+            //crear coleccion en db
+                ColeccionDAO coleccionDAO = new ColeccionDAO();
+                
+                coleccionDAO.crearColeccion(Swim.userSession.getIdUsuario(), "Colección importada " + coleccionDAO.getIdColeccionLast(), m.getMisLibros());
+                
+                
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ImportXML.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /**

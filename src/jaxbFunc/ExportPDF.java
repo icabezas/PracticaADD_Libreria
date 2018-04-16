@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class PDF {
+public class ExportPDF {
 
     //OJOOOOO NECESITAMOS EL PATH ABSOLUTO O NO FUNCIONAAAA
     //public static  final String DEST= "D:\\Stucom\\AAD\\AAD-Library\\gitanada.pdf";

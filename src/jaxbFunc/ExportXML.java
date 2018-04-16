@@ -11,12 +11,13 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Obj2XML {
+public class ExportXML {
 
     //Hay que pasarle como parámetro una libreria y el nombre que le queremos dar al fichero
     // RECUERDA poner el .xml
-    public void obj2xml(LibreriaType misLibros, String nombrelibreria) {
-        File miXML = new File(nombrelibreria);
+    public void obj2xml(LibreriaType misLibros, String nombrelibreria,String path) {
+        String ruta = path + "/" + nombrelibreria + ".xml";
+        File miXML = new File(ruta);
         JAXBContext contexto = null;
         try {
             contexto = JAXBContext.newInstance(LibreriaType.class);

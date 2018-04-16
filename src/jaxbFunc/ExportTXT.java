@@ -10,12 +10,13 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Txt2XML {
+public class ExportTXT {
 
 
     //Esta función sólo hay que decirle la ruta donde está el txt y el nombre que le queremos dar al fichero
     // RECUERDA poner el .xml
-    public void txt2xml(String rutaFichero, String nombrelibreria) {
+    public void txt2xml(String rutaFichero, String nombrelibreria,String path) {
+        String ruta = path + "/" + nombrelibreria + ".txt";
         try {
             LibreriaType misLibros = new LibreriaType ();
             BufferedReader in = new BufferedReader(new FileReader(rutaFichero));
@@ -59,11 +60,11 @@ public class Txt2XML {
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(misLibros, miXML);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Txt2XML.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExportTXT.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Txt2XML.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExportTXT.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JAXBException ex) {
-            Logger.getLogger(Txt2XML.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExportTXT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -5,7 +5,7 @@ package jaxbFunc;
  */
 
 import jaxb.generated.*;
-import jaxbFunc.Obj2XML;
+import jaxbFunc.ExportXML;
 import  modelo.*;
 
 import java.io.BufferedReader;
@@ -65,16 +65,16 @@ public class test {
             //Los objetos (LibreriaType), como soy un poco guau, ya me los traigo del txt en lugar de picarlos a mano
 
             //De Objetos a XML (EXPORTAR librería)
-            Obj2XML o = new Obj2XML();
-            o.obj2xml(misLibros, "libros.xml");
+            ExportXML o = new ExportXML();
+            o.obj2xml(misLibros, "libros.xml","");
 
             //De txt a XML (Con esto podemos hacer varias cositas, importar y exportar)
-            Txt2XML t = new Txt2XML();
-            t.txt2xml("libros.txt", "librostxt.xml");
+            ExportTXT t = new ExportTXT();
+            t.txt2xml("libros.txt", "librostxt.xml","");
 
             //De objetos a PDF, necesita el path y una librería (LibreriaType)
             //OJOOOOO NECESITAMOS EL PATH ABSOLUTO O NO FUNCIONAAAA
-            PDF pdf = new PDF();
+            ExportPDF pdf = new ExportPDF();
             pdf.createPDF("D:\\Stucom\\AAD\\AAD-Library\\gitanada.pdf", misLibros);
 
 
